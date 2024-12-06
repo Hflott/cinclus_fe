@@ -7,10 +7,9 @@ import { styles as classes } from "../styles/Home.styles";
 import { useMovies, usePopularMovies } from "../hooks/movies.hooks";
 import { useSeries } from "../hooks/series.hooks";
 import { usePeople } from "../hooks/people.hooks";
-import TileSlider from "../components/TileSider/TileSlider";
+import TileSlider from "../components/TileSlider/TileSlider";
 import TvTileSlider from "../components/TvTileSlider/TvTileSlider";
 import CustomHead from "../components/CustomHead/CustomHead";
-import PersonTileSlider from "../components/PersonTileSlider/PersonTileSlider";
 import MovieSlider from "../components/MovieSlider/MovieSlider";
 import SkeletonSlider from "../components/SkeletonSlider/SkeletonSlider";
 import SkeletonMovieSlider from "../components/SkeletonMovieSlider/SkeletonMovieSlider";
@@ -27,45 +26,10 @@ const Home: NextPage<HomeProps> = () => {
   // console.log("MovieDATA", toPercent(movieData[1].vote_average || 0));
   // console.log("seriesDATA", seriesData);
 
-  const adRef = useRef<HTMLDivElement>();
-
-  useEffect(() => {
-    const script1 = document.createElement("script");
-    script1.async = true;
-    script1.type = "application/javascript";
-    script1.src = "https://a.exdynsrv.com/ad-provider.js";
-
-    const script2 = document.createElement("script");
-    script2.async = true;
-    script2.type = "application/javascript";
-    script2.innerHTML =
-      '(AdProvider = window.AdProvider || []).push({"serve": {}});';
-
-    const adEl1 = document.createElement("ins");
-    adEl1.className = "eas6a97888ec52c042c679a36e919843cca";
-    adEl1.dataset.zoneid = "5018914";
-
-    const adEl2 = document.createElement("ins");
-    adEl2.className = "eas6a97888ec52c042c679a36e919843cca";
-    adEl2.dataset.zoneid = "5019068";
-
-    adRef.current?.appendChild(script1);
-    adRef.current?.appendChild(adEl1);
-    adRef.current?.appendChild(adEl2);
-    adRef.current?.appendChild(script2);
-
-    return () => {
-      adRef.current?.removeChild(script1);
-      adRef.current?.removeChild(adEl1);
-      adRef.current?.removeChild(adEl2);
-      adRef.current?.removeChild(script2);
-    };
-  }, []);
-
   return (
     <>
       <CustomHead
-        title="ThiccFlix - Watch Movies & TV Shows"
+        title="Cinclus - Watch Movies & TV Shows"
         media_type={"movie"}
       />
 
@@ -88,9 +52,6 @@ const Home: NextPage<HomeProps> = () => {
             <Typography variant="h4" sx={classes.headTxt}>
               Trending Movies
             </Typography>
-            <Typography variant="body1" sx={classes.subTxt}>
-              The most recent movies recommended by our community
-            </Typography>
           </Box>
 
           {isMoviesLoading ? (
@@ -105,9 +66,6 @@ const Home: NextPage<HomeProps> = () => {
             <Typography variant="h4" sx={classes.headTxt}>
               Trending Shows
             </Typography>
-            <Typography variant="body1" sx={classes.subTxt}>
-              The most recent shows recommended by our community
-            </Typography>
           </Box>
 
           {isSeriesLoading ? (
@@ -116,8 +74,6 @@ const Home: NextPage<HomeProps> = () => {
             <TvTileSlider seriesData={seriesData} />
           )}
         </Box>
-
-        <Box sx={{ display: "flex" }} ref={adRef}></Box>
       </div>
     </>
   );

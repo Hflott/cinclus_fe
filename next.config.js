@@ -5,9 +5,14 @@ const nextConfig = {
     scrollRestoration: true,
   },
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ["image.tmdb.org", "i.ytimg.com", "flixtr.netlify.app"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
+        pathname: "**",
+      },
+    ],
   },
 };
 

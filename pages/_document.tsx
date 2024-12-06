@@ -1,6 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import Script from "next/script";
-import { disableAds } from "../utils/utils";
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
@@ -20,11 +18,6 @@ export default class MyDocument extends Document {
             name="exoclick-site-verification"
             content="7282b61ce99ff60fa82adfd51862bc53"
           />
-
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7007879471382156"
-          ></script>
 
           <script
             async
@@ -72,11 +65,6 @@ export default class MyDocument extends Document {
               `,
             }}
           /> */}
-
-          {!disableAds && (
-            <Script src="adScript.js" strategy="lazyOnload" />
-          )}
-
         </body>
       </Html>
     );

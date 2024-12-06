@@ -7,7 +7,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { styles as classes } from "./tvPosterAlt.styles";
 import { SeriesResult } from "../../types/apiResponses";
-import { formatImgSrc, toPercent, toUrlFriendly } from "../../utils/utils";
+import { formatImgSrc, toUrlFriendly } from "../../utils/utils";
 
 type TvPosterAltProps = {
   singleShowData: SeriesResult;
@@ -62,7 +62,7 @@ const TvPosterAlt = ({ singleShowData }: TvPosterAltProps) => {
           <Box sx={classes.posterTxtSub}>
             <Box>{first_air_date}</Box>
             <Box sx={classes.posterType}>TV</Box>
-            <Box>{`${toPercent(vote_average)}%`}</Box>
+            <Box>{`${vote_average * 10}%`}</Box>
           </Box>
         </Grid>
       </Grid>

@@ -79,13 +79,6 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
                   sx={classes.mediaItemContent}
                 >
                   <Box sx={classes.miContent}>
-                    <Typography
-                      variant="h6"
-                      color="secondary"
-                      sx={classes.rating}
-                    >
-                      #{i + 1} Spotlight
-                    </Typography>
                     <Typography variant="h4" sx={classes.title}>
                       {title}
                     </Typography>

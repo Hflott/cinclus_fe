@@ -7,7 +7,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { styles as classes } from "./tvPoster.styles";
 import { SeriesResult } from "../../types/apiResponses";
-import { formatImgSrc, toPercent, toUrlFriendly } from "../../utils/utils";
+import { formatImgSrc, rounded, toUrlFriendly } from "../../utils/utils";
 
 type TvPosterProps = {
   singleShowData: SeriesResult;
@@ -82,7 +82,7 @@ const TvPoster = ({ singleShowData }: TvPosterProps) => {
               <CircularProgress
                 color="secondary"
                 variant="determinate"
-                value={toPercent(vote_average)}
+                value={rounded(vote_average * 10)}
               />
               <Box sx={classes.ratingsTxt}>
                 <Typography
@@ -90,7 +90,9 @@ const TvPoster = ({ singleShowData }: TvPosterProps) => {
                   variant="caption"
                   component="div"
                   color="secondary"
-                >{`${toPercent(vote_average)}%`}</Typography>
+                >
+                  {rounded(vote_average)}
+                </Typography>
               </Box>
             </Box>
           </Box>

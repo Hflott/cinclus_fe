@@ -46,7 +46,7 @@ const Sidebar = ({ sidebarOpen, handleCloseNavMenu }: SidebarProps) => {
       <Divider />
       <List>
         {/* mobile btn links */}
-        {appRoutes.map(({ title, icon, path, childRoutes }) => (
+        {appRoutes.map(({ title, icon, path }) => (
           <ListItem
             key={title}
             disablePadding
@@ -65,25 +65,6 @@ const Sidebar = ({ sidebarOpen, handleCloseNavMenu }: SidebarProps) => {
               <ListItemText primary={title} />
               {!path && (isDropped == title ? <ExpandLess /> : <ExpandMore />)}
             </ListItemButton>
-
-            <Collapse in={isDropped == title} timeout="auto" unmountOnExit>
-              {childRoutes &&
-                childRoutes.map(({ childTitle, childPath, childIcon }) => (
-                  <List component="div" disablePadding key={childPath}>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      onClick={() => {
-                        customRedirect(childPath);
-                        handleCloseNavMenu();
-                      }}
-                      selected={router.asPath === childPath}
-                    >
-                      <ListItemIcon>{childIcon}</ListItemIcon>
-                      <ListItemText primary={childTitle} />
-                    </ListItemButton>
-                  </List>
-                ))}
-            </Collapse>
           </ListItem>
         ))}
       </List>

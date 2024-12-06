@@ -2,14 +2,16 @@ export const styles = {
   poster: {
     position: "relative",
     color: "secondary.main",
-    maxWidth: "150px",
+    maxWidth: "210px",
     width: "100%",
-    margin: "10px",
+    margin: "20px",
+    transition: "transform 0.3s ease, color 0.3s ease",
     "& .poster-img": {
-      borderRadius: "8px",
+      borderRadius: "12px",
     },
     "&:hover": {
       color: "#fff",
+      transform: "scale(1.05)",
     },
     "@media (max-width: 900px)": {
       margin: "10px 3px",
@@ -18,18 +20,18 @@ export const styles = {
   },
   posterUp: {
     position: "relative",
-    width: "150px",
-    height: "225px",
+    width: "250px",
+    height: "320px",
     "@media (max-width: 900px)": {
       width: "108px",
       height: "162px",
     },
   },
   posterDown: {
-    paddingTop: "10px",
+    paddingTop: "20px",
   },
   posterTitle: {
-    fontSize: "0.85rem",
+    fontSize: "1rem",
     display: "-webkit-box",
     WebkitLineClamp: "1",
     WebkitBoxOrient: "vertical",
@@ -40,7 +42,6 @@ export const styles = {
       fontSize: "11px",
     },
   },
-
   posterYearMain: {
     display: "flex",
     justifyContent: "space-between",
@@ -69,7 +70,11 @@ export const styles = {
     backgroundColor: "primary.main",
     padding: "3px",
     borderRadius: "50%",
-    scale: "0.8",
+    transform: "scale(1.1)",
+    transition: "transform 0.3s ease",
+    "&:hover": {
+      transform: "scale(1.3)",
+    },
   },
   ratingsInner: { position: "relative", display: "flex" },
   ratingsTxt: {

@@ -10,7 +10,7 @@ import { styles as classes } from "../../../../styles/personInfo.styles";
 import { usePersonById } from "../../../../hooks/people.hooks";
 import CustomHead from "../../../../components/CustomHead/CustomHead";
 import TvTileSlider from "../../../../components/TvTileSlider/TvTileSlider";
-import TileSlider from "../../../../components/TileSider/TileSlider";
+import TileSlider from "../../../../components/TileSlider/TileSlider";
 import ProfileImgRoll from "../../../../components/ProfileImgRoll/ProfileImgRoll";
 import { PeopleResult } from "../../../../types/apiResponses";
 import { formatImgSrc } from "../../../../utils/utils";

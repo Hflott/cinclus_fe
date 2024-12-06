@@ -1,6 +1,7 @@
 import { Box, Typography, Grid, Link as MuiLink } from "@mui/material";
 import React from "react";
 import { styles as classes } from "./footer.styles";
+import Image from "next/image";
 
 // type Props = {}
 
@@ -8,14 +9,14 @@ const Footer = () => {
   return (
     <Box sx={classes.footerMain}>
       <Box sx={classes.footerXD}>
-        <Typography variant="h1" sx={classes.footerXDtxt}>
-          ThiccFlix
+        <Typography variant="h2" sx={classes.footerXDtxt}>
+          Cinclus
         </Typography>
       </Box>
       <Box sx={classes.footerInner}>
         <Box sx={classes.footerTop}>
           <Typography variant="h4" sx={classes.footerTopHead}>
-            Your favorite movies on ThiccFlix
+            Stream everything on Cinclus
           </Typography>
           <Grid container sx={classes.socials}>
             <Grid item>
@@ -25,10 +26,12 @@ const Footer = () => {
                 rel="noreferrer"
                 // sx={classes.sociallink}
               >
-                <img
+                <Image
                   src="/assets/fb.svg"
                   alt="facebookLogo"
                   style={classes.socialLogo}
+                  width={185}
+                  height={100}
                 />
               </MuiLink>
             </Grid>
@@ -39,10 +42,12 @@ const Footer = () => {
                 rel="noreferrer"
                 // sx={classes.sociallink}
               >
-                <img
+                <Image
                   src="/assets/twt.svg"
                   alt="twitterLogo"
                   style={classes.socialLogo}
+                  width={185}
+                  height={100}
                 />
               </MuiLink>
             </Grid>
@@ -53,10 +58,12 @@ const Footer = () => {
                 rel="noreferrer"
                 // sx={classes.sociallink}
               >
-                <img
+                <Image
                   src="/assets/insta.svg"
                   alt="instagramLogo"
                   style={classes.socialLogo}
+                  width={185}
+                  height={100}
                 />
               </MuiLink>
             </Grid>
@@ -67,10 +74,12 @@ const Footer = () => {
                 rel="noreferrer"
                 // sx={classes.sociallink}
               >
-                <img
+                <Image
                   src="/assets/yt.svg"
                   alt="ytlogo"
                   style={classes.socialLogo}
+                  width={185}
+                  height={100}
                 />
               </MuiLink>
             </Grid>
@@ -130,7 +139,7 @@ const Footer = () => {
             </Grid>
             <Grid item sx={classes.footerCol}>
               <Typography variant="h6" sx={classes.footerColHead}>
-                Flixtr for Business
+                Cinclus for Business
               </Typography>
               <Typography variant="subtitle1" sx={{ fontSize: "0.9rem" }}>
                 What we offer
@@ -152,36 +161,6 @@ const Footer = () => {
               <Typography variant="subtitle1" sx={{ fontSize: "0.9rem" }}>
                 Find a store
               </Typography>
-            </Grid>
-          </Grid>
-          <Grid container sx={classes.playstore}>
-            <Grid item>
-              <MuiLink
-                href="https://play.google.com/store"
-                target="_blank"
-                rel="noreferrer"
-                // sx={classes.sociallink}
-              >
-                <img
-                  src="/assets/playstr.png"
-                  alt="Playstore Logo"
-                  style={classes.downloadLogo}
-                />
-              </MuiLink>
-            </Grid>
-            <Grid item>
-              <MuiLink
-                href="https://apps.apple.com/ae/"
-                target="_blank"
-                rel="noreferrer"
-                // sx={classes.sociallink}
-              >
-                <img
-                  src="/assets/appstr.png"
-                  alt="Appstore Logo"
-                  style={classes.downloadLogo}
-                />
-              </MuiLink>
             </Grid>
           </Grid>
         </Box>

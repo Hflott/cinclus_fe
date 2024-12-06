@@ -50,7 +50,7 @@ export const formatImgSrc = (urlLink: string, path?: string): string => {
   return urlLink + path;
 };
 
-export const toPercent = (num: number): number => Math.round(num * 10);
+export const rounded = (num: number): number => Math.round(num * 100) / 100;
 
 // export const blurData =
 //   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNce8f0KQAGoQKlpcmuHQAAAABJRU5ErkJggg==";

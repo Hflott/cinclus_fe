@@ -8,18 +8,26 @@ export const styles = {
     },
   },
   footerXD: {
-    paddingTop: "70px",
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    paddingTop: "5px",
     backgroundColor: "secondary.main",
     opacity: 1,
     // backgroundImage:
     //   "repeating-radial-gradient( circle at 0 0, transparent 0, #ff0000 10px ), repeating-linear-gradient( #ff434355, #ff4343 )",
   },
+  footerimg: {
+    width: "auto", // Ensure the image fills its container
+    height: "100%", // Maintain the aspect ratio
+    maxWidth: "8vw", // Default max width for larger screens
+  },
   footerXDtxt: {
+    display: "flex",
     textTransform: "uppercase",
     fontWeight: "bold",
-    marginBottom: "-47px",
     color: "#303030",
-    fontSize: "150px",
+    fontSize: "8vw",
   },
   footerInner: {
     padding: "70px 70px 50px 70px",
@@ -80,27 +88,11 @@ export const styles = {
     height: "30px",
   },
   footerBottom: {
-    // display: "flex",
-    display: "none",
+    display: "flex",
     "@media (max-width: 900px)": {
       flexDirection: "column",
       alignItems: "center",
     },
-  },
-  playstore: {
-    width: "auto",
-    flexDirection: "column",
-    "@media (max-width: 900px)": {
-      flexDirection: "initial",
-      justifyContent: "center",
-    },
-  },
-  downloadLogo: {
-    margin: "0 5px",
-    // marginLeft: "10px",
-    display: "block",
-    width: "185px",
-    // height: "54px",
   },
   footerLinksMob: {
     display: "none",

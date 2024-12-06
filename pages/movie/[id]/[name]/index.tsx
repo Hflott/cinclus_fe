@@ -11,7 +11,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import ImgRoll from "../../../../components/ImgRoll/ImgRoll";
 import CastRoll from "../../../../components/CastRoll/CastRoll";
 import ClipRoll from "../../../../components/ClipRoll/ClipRoll";
-import TileSlider from "../../../../components/TileSider/TileSlider";
+import TileSlider from "../../../../components/TileSlider/TileSlider";
 import { styles as classes } from "../../../../styles/movieInfo.styles";
 import { MovieResult } from "../../../../types/apiResponses";
 import { useMovieById } from "../../../../hooks/movies.hooks";
@@ -349,12 +349,7 @@ function MovieInfo() {
           { movieData: recommendations?.results, title: "Our recommendations" },
           { movieData: similar?.results, title: "Something similar" },
         ].map(({ movieData, title }) => (
-          <Grid
-            item
-            key={title}
-            sx={{ p: "20px 0" }}
-            onClick={() => scrollToTop()}
-          >
+          <Grid item key={title} sx={{ p: "20px 0" }}>
             <TileSlider title={title} movieData={movieData} />
           </Grid>
         ))}

@@ -30,12 +30,9 @@ export const styles = {
     },
   },
   btnGroup: {
-    width: "calc(100% - 48px)",
-    m: "15px 24px 0 24px",
-    "@media (max-width: 900px)": {
-      width: "calc(100% - 20px)",
-      m: "15px 10px 0 10px",
-    },
+    display: "flex",
+    justifyContent: "center",
+    gap: 1,
   },
   backIco: {
     marginRight: "5px",

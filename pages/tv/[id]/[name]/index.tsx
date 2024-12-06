@@ -345,12 +345,7 @@ function TvShowInfo() {
           { seriesData: recommendations?.results, title: "Must watch shows" },
           { seriesData: similar?.results, title: "Shows you may like" },
         ].map(({ seriesData, title }) => (
-          <Grid
-            item
-            key={title}
-            sx={{ p: "20px 0" }}
-            onClick={() => scrollToTop()}
-          >
+          <Grid item key={title} sx={{ p: "20px 0" }}>
             <TvTileSlider title={title} seriesData={seriesData} />
           </Grid>
         ))}

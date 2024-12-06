@@ -21,10 +21,6 @@ a {
   max-width: 100% !important;
 }
 
-.layout-inner {
-  /* width: 100%; */
-}
-
 .main {
   /* padding: 0 24px; */
   min-height: 100vh;
@@ -36,11 +32,6 @@ a {
 }
 
 @media (max-width: 900px) {
-  .multi-slider .swiper-button-prev,
-  .multi-slider .swiper-button-next {
-    top: 98px !important;
-  }
-
   .multi-slider .swiper-button-prev:after,
   .multi-slider .swiper-button-next:after {
     font-size: 26px;
@@ -52,8 +43,9 @@ a {
   color: #ea738d !important;
   background-color: #333;
   border-radius: 6px;
-  top: 120px;
+  top: 50%;
   padding: 6px 8px;
   width: auto;
   height: auto;
+  transform: translateY(-50%);
 }

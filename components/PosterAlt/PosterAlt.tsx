@@ -7,7 +7,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { styles as classes } from "./posterAlt.styles";
 import { MovieResult } from "../../types/apiResponses";
-import { formatImgSrc, toPercent, toUrlFriendly } from "../../utils/utils";
+import { formatImgSrc, toUrlFriendly } from "../../utils/utils";
 
 type PosterAltProps = {
   singleMovieData: MovieResult;
@@ -62,7 +62,7 @@ const PosterAlt = ({ singleMovieData }: PosterAltProps) => {
           <Box sx={classes.posterTxtSub}>
             <Box>{release_date}</Box>
             <Box sx={classes.posterType}>Movie</Box>
-            <Box>{`${toPercent(vote_average)}%`}</Box>
+            <Box>{`${vote_average * 10}%`}</Box>
           </Box>
         </Grid>
       </Grid>

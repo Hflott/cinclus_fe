@@ -28,6 +28,7 @@ import CustomHead from "../../components/CustomHead/CustomHead";
 import { signIn, useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setNotify } from "../../redux/notifySlice";
+import { FiberPin } from "@mui/icons-material";
 
 interface IFormValues {
   email: string;
@@ -121,8 +122,8 @@ const Login = () => {
             <LazyLoadImage
               placeholderSrc="/assets/flixtr-placeholder.svg"
               effect="blur"
-              src="/assets/flixtr.png"
-              alt="Flixtr logo"
+              src="/icon.svg"
+              alt="Cinclus Logo"
               style={classes.logo}
             />
           </Grid>

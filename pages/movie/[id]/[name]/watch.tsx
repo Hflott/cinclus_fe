@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
+  Box,
   Button,
   ButtonGroup,
   Grid,
@@ -10,12 +11,13 @@ import {
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
-import TileSlider from "../../../../components/TileSider/TileSlider";
+import TileSlider from "../../../../components/TileSlider/TileSlider";
 import { styles as classes } from "../../../../styles/watchMovie.styles";
 import { MovieResult } from "../../../../types/apiResponses";
 import { useMovieById } from "../../../../hooks/movies.hooks";
 import CustomHead from "../../../../components/CustomHead/CustomHead";
 import { convertToNumber } from "../../../../utils/utils";
+import DisqusComments from "../../../../components/Disqus/Disqus";
 
 function Watch() {
   const router = useRouter();
@@ -80,54 +82,6 @@ function Watch() {
         </Grid>
 
         <Grid item sx={classes.moviePlayer}>
-          <ButtonGroup
-            variant="contained"
-            aria-label="Media player list"
-            sx={classes.btnGroup}
-          >
-            <Button
-              fullWidth
-              color={player === 1 ? "secondary" : "primary"}
-              onClick={() => changePlayer(1)}
-            >
-              Player #1
-            </Button>
-            <Button
-              fullWidth
-              color={player === 2 ? "secondary" : "primary"}
-              onClick={() => changePlayer(2)}
-            >
-              Player #2
-            </Button>
-            <Button
-              fullWidth
-              color={player === 3 ? "secondary" : "primary"}
-              onClick={() => changePlayer(3)}
-            >
-              Player #3
-            </Button>
-            <Button
-              fullWidth
-              color={player === 4 ? "secondary" : "primary"}
-              onClick={() => changePlayer(4)}
-            >
-              Player #4
-            </Button>
-            <Button
-              fullWidth
-              color={player === 5 ? "secondary" : "primary"}
-              onClick={() => changePlayer(5)}
-            >
-              Player #5
-            </Button>
-          </ButtonGroup>
-
-          {/* <iframe
-            allowFullScreen
-            id="watch-iframe"
-            src={`${process.env.NEXT_PUBLIC_Player_URL}/movie?id=${id}`}
-          ></iframe> */}
-
           {player === 1 && (
             <iframe
               allowFullScreen
@@ -167,6 +121,57 @@ function Watch() {
               src={`${process.env.NEXT_PUBLIC_Player_URL_SEVIP}video_id=${id}&tmdb=1`}
             ></iframe>
           )}
+
+          <Box sx={{ textAlign: "center", marginBottom: 1 }}>
+            <h4 style={{ fontSize: "30px", margin: 0 }}>Servers</h4>
+          </Box>
+          <ButtonGroup
+            variant="contained"
+            aria-label="Media player list"
+            sx={classes.btnGroup}
+          >
+            <Button
+              sx={{ flexGrow: 1, ml: "30px", borderRadius: "20px" }}
+              color={player === 1 ? "secondary" : "primary"}
+              onClick={() => changePlayer(1)}
+            >
+              Vidsrc.xyz
+            </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              color={player === 2 ? "secondary" : "primary"}
+              onClick={() => changePlayer(2)}
+            >
+              SuperEmbed
+            </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              color={player === 3 ? "secondary" : "primary"}
+              onClick={() => changePlayer(3)}
+            >
+              Embed
+            </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              color={player === 4 ? "secondary" : "primary"}
+              onClick={() => changePlayer(4)}
+            >
+              Vidlink
+            </Button>
+            <Button
+              sx={{ flexGrow: 1, mr: "30px", borderRadius: "20px" }}
+              color={player === 5 ? "secondary" : "primary"}
+              onClick={() => changePlayer(5)}
+            >
+              SuperEmbed VIP
+            </Button>
+          </ButtonGroup>
+        </Grid>
+        <Grid container justifyContent={"center"} sx={{ marginTop: "40px" }}>
+          <DisqusComments
+            identifier={`${id}`} // Use the unique identifier
+            title={title}
+          />
         </Grid>
 
         {[

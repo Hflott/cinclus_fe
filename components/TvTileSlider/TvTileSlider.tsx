@@ -19,15 +19,17 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
 
   // console.log("TileSlider", seriesData);
   const sliderOptions = {
-    slidesPerView: 7,
+    slidesPerView: 6,
+    slidesPerGroup: 6,
+    speed: 600,
     pagination: false,
     navigation: true,
-    loop: true,
+    loop: false,
     autoplay: false,
     breakpoints: {
       // when window width is >= 320px
       320: {
-        slidesPerView: 3,
+        slidesPerView: 2,
       },
       420: {
         slidesPerView: 3,
@@ -39,29 +41,32 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
         slidesPerView: 5,
       },
       786: {
-        slidesPerView: 6,
-      },
-      900: {
         slidesPerView: 5,
       },
-      1050: {
-        slidesPerView: 6,
+      900: {
+        slidesPerView: 3,
       },
-      1200: {
-        slidesPerView: 7,
+      1050: {
+        slidesPerView: 4,
+      },
+      1280: {
+        slidesPerView: 5,
+      },
+      1440: {
+        slidesPerView: 6,
       },
     },
   };
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       {title && (
         <Typography variant="h5" textAlign="center" sx={classes.headTxt}>
           {title}
         </Typography>
       )}
 
-      <Box className="multi-slider">
+      <Box className="multi-slider" sx={{ width: "100%" }}>
         <Swiper {...sliderOptions} modules={[Autoplay, Navigation]}>
           {seriesData?.map((singleShowData, index) => (
             <SwiperSlide

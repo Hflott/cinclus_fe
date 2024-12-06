@@ -21,9 +21,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
-import AutoModeIcon from "@mui/icons-material/AutoMode";
-import InsightsIcon from "@mui/icons-material/Insights";
-import StarIcon from "@mui/icons-material/Star";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import Sidebar from "../Sidebar/Sidebar";
@@ -35,18 +32,18 @@ import { MovieQueryKey } from "../../hooks/movies.hooks";
 import { getSearchQuery } from "../../apis/search.api";
 import Loader from "../Loader/Loader";
 import { useRouter } from "next/router";
-import path from "path";
+import Image from "next/image";
 
 export const appRoutes = [
   {
     title: "Movies",
     icon: <OndemandVideoIcon />,
-    path: "/movie/popular",
+    path: "/movie",
   },
   {
     title: "TV Shows",
     icon: <LiveTvIcon />,
-    path: "/tv/popular",
+    path: "/tv",
   },
   {
     title: "Watchlist",
@@ -123,16 +120,15 @@ const Navbar = () => {
       <AppBar position="static">
         <Container maxWidth="xl" sx={{ color: "secondary.main" }} id="app-nav">
           <Toolbar disableGutters>
-            <Avatar
-              src="/ThiccIcon.png"
-              sx={{
-                display: { xs: "none", md: "flex" },
-                mr: 1,
-                width: "50px",
-                height: "50px",
-              }}
-            />
-
+            <Link href="/" passHref>
+              <Image
+                src="/icon.svg"
+                height={30}
+                width={30}
+                alt="Icon"
+                style={{ margin: "0 10px" }}
+              />
+            </Link>
             <Typography
               noWrap
               variant="h6"
@@ -140,7 +136,7 @@ const Navbar = () => {
               href="/"
               sx={classes.logoTxt}
             >
-              ThiccFlix
+              Cinclus
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -155,15 +151,6 @@ const Navbar = () => {
                 <MenuIcon />
               </IconButton>
             </Box>
-            <Avatar
-              src="/ThiccIcon.png"
-              sx={{
-                display: { xs: "flex", md: "none" },
-                mr: 1,
-                width: "40px",
-                height: "40px",
-              }}
-            />
             <Typography
               variant="h5"
               noWrap
@@ -171,7 +158,7 @@ const Navbar = () => {
               href="/"
               sx={classes.logoTxtMob}
             >
-              ThiccFlix
+              Cinclus
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {/* desktop btn links */}

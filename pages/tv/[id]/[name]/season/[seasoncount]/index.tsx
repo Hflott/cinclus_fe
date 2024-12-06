@@ -20,6 +20,7 @@ import {
 } from "../../../../../../hooks/series.hooks";
 import CustomHead from "../../../../../../components/CustomHead/CustomHead";
 import { convertToNumber } from "../../../../../../utils/utils";
+import DisqusComments from "../../../../../../components/Disqus/Disqus";
 
 function SeasonCount() {
   const router = useRouter();
@@ -102,47 +103,6 @@ function SeasonCount() {
         </Grid>
 
         <Grid item sx={classes.moviePlayer}>
-          <ButtonGroup
-            variant="contained"
-            aria-label="Media player list"
-            sx={classes.btnGroup}
-          >
-            <Button
-              fullWidth
-              color={player === 1 ? "secondary" : "primary"}
-              onClick={() => changePlayer(1)}
-            >
-              Player #1
-            </Button>
-            <Button
-              fullWidth
-              color={player === 2 ? "secondary" : "primary"}
-              onClick={() => changePlayer(2)}
-            >
-              Player #2
-            </Button>
-            <Button
-              fullWidth
-              color={player === 3 ? "secondary" : "primary"}
-              onClick={() => changePlayer(3)}
-            >
-              Player #3
-            </Button>
-            <Button
-              fullWidth
-              color={player === 4 ? "secondary" : "primary"}
-              onClick={() => changePlayer(4)}
-            >
-              Player #4
-            </Button>
-            <Button
-              fullWidth
-              color={player === 5 ? "secondary" : "primary"}
-              onClick={() => changePlayer(5)}
-            >
-              Player #5
-            </Button>
-          </ButtonGroup>
           {/* <iframe
             allowFullScreen
             id="watch-iframe"
@@ -204,6 +164,50 @@ function SeasonCount() {
               }&e=${ep}`}
             ></iframe>
           )}
+          <Box sx={{ textAlign: "center", marginBottom: 1 }}>
+            <h4 style={{ fontSize: "30px", margin: 0 }}>Servers</h4>
+          </Box>
+          <ButtonGroup
+            variant="contained"
+            aria-label="Media player list"
+            sx={classes.btnGroup}
+          >
+            <Button
+              sx={{ flexGrow: 1, ml: "30px", borderRadius: "20px" }}
+              color={player === 1 ? "secondary" : "primary"}
+              onClick={() => changePlayer(1)}
+            >
+              Vidsrc.xyz
+            </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              color={player === 2 ? "secondary" : "primary"}
+              onClick={() => changePlayer(2)}
+            >
+              SuperEmbed
+            </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              color={player === 3 ? "secondary" : "primary"}
+              onClick={() => changePlayer(3)}
+            >
+              Embed
+            </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              color={player === 4 ? "secondary" : "primary"}
+              onClick={() => changePlayer(4)}
+            >
+              Vidlink
+            </Button>
+            <Button
+              sx={{ flexGrow: 1, mr: "30px", borderRadius: "20px" }}
+              color={player === 5 ? "secondary" : "primary"}
+              onClick={() => changePlayer(5)}
+            >
+              SuperEmbed VIP
+            </Button>
+          </ButtonGroup>
         </Grid>
 
         <Grid item sx={classes.episodeBtns}>
@@ -238,6 +242,12 @@ function SeasonCount() {
           ))}
         </Grid>
 
+        <Grid container justifyContent={"center"} sx={{ marginTop: "40px" }}>
+          <DisqusComments
+            identifier={`${id}-season-${seasoncount}-ep${ep}`} // Use the unique identifier
+            title={`${showTitle}-season-${seasoncount}-ep${ep}-${name}`}
+          />
+        </Grid>
         {[
           { movieData: recommendations?.results, title: "Recommended for you" },
           { movieData: similar?.results, title: "Related shows" },
