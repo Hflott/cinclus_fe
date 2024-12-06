@@ -1,5 +1,5 @@
 export const styles = {
-  container: { 
+  container: {
     // "@media (min-width: 1200px)": {
     //   maxWidth: 1230,
     // },
@@ -10,7 +10,7 @@ export const styles = {
   },
   headTxt: {
     "@media (max-width: 900px)": {
-      fontSize: '18px'
+      fontSize: "18px",
     },
   },
   posterUp: {},

@@ -26,7 +26,7 @@ function SeasonCount() {
 
   const { id, name, seasoncount, e, p } = router.query;
   const [ep, setEp] = useState(1);
-  const [player, setPlayer] = useState<1 | 2 | 3>(1);
+  const [player, setPlayer] = useState<1 | 2 | 3 | 4 | 5>(1);
 
   const { data: tvShowSeasonData, isLoading: isSeasonLoading } =
     useSeriesSeasonById(id, seasoncount);
@@ -41,6 +41,8 @@ function SeasonCount() {
       if (pNum === 1) setPlayer(pNum);
       if (pNum === 2) setPlayer(pNum);
       if (pNum === 3) setPlayer(pNum);
+      if (pNum === 4) setPlayer(pNum);
+      if (pNum === 5) setPlayer(pNum);
     }
   }, [isShowLoading]);
 
@@ -126,6 +128,20 @@ function SeasonCount() {
             >
               Player #3
             </Button>
+            <Button
+              fullWidth
+              color={player === 4 ? "secondary" : "primary"}
+              onClick={() => changePlayer(4)}
+            >
+              Player #4
+            </Button>
+            <Button
+              fullWidth
+              color={player === 5 ? "secondary" : "primary"}
+              onClick={() => changePlayer(5)}
+            >
+              Player #5
+            </Button>
           </ButtonGroup>
           {/* <iframe
             allowFullScreen
@@ -149,7 +165,9 @@ function SeasonCount() {
             <iframe
               allowFullScreen
               id="watch-iframe2"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_SE}video_id=${id}&s=${
+              src={`${
+                process.env.NEXT_PUBLIC_Player_URL_SE
+              }video_id=${id}&tmdb=1&s=${
                 seasoncount ? seasoncount : 1
               }&e=${ep}`}
             ></iframe>
@@ -159,9 +177,31 @@ function SeasonCount() {
             <iframe
               allowFullScreen
               id="watch-iframe3"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_AE}/tv/tmdb/${id}-${
+              src={`${process.env.NEXT_PUBLIC_Player_URL_EM}tv/${id}/${
                 seasoncount ? seasoncount : 1
-              }-${ep}`}
+              }/${ep}`}
+            ></iframe>
+          )}
+
+          {player === 4 && (
+            <iframe
+              allowFullScreen
+              id="watch-iframe4"
+              src={`${process.env.NEXT_PUBLIC_Player_URL_VL}tv/${id}/${
+                seasoncount ? seasoncount : 1
+              }/${ep}`}
+            ></iframe>
+          )}
+
+          {player === 5 && (
+            <iframe
+              allowFullScreen
+              id="watch-iframe5"
+              src={`${
+                process.env.NEXT_PUBLIC_Player_URL_SEVIP
+              }video_id=${id}&tmdb=1&s=${
+                seasoncount ? seasoncount : 1
+              }&e=${ep}`}
             ></iframe>
           )}
         </Grid>

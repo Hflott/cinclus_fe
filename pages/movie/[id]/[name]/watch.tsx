@@ -20,7 +20,7 @@ import { convertToNumber } from "../../../../utils/utils";
 function Watch() {
   const router = useRouter();
   const { id, name, p } = router.query;
-  const [player, setPlayer] = useState<1 | 2 | 3>(1);
+  const [player, setPlayer] = useState<1 | 2 | 3 | 4 | 5>(1);
   const { data: singleMovieData, isLoading } = useMovieById(id);
 
   useEffect(() => {
@@ -30,6 +30,8 @@ function Watch() {
       if (pNum === 1) setPlayer(pNum);
       if (pNum === 2) setPlayer(pNum);
       if (pNum === 3) setPlayer(pNum);
+      if (pNum === 4) setPlayer(pNum);
+      if (pNum === 5) setPlayer(pNum);
     }
   }, [isLoading]);
 
@@ -104,6 +106,20 @@ function Watch() {
             >
               Player #3
             </Button>
+            <Button
+              fullWidth
+              color={player === 4 ? "secondary" : "primary"}
+              onClick={() => changePlayer(4)}
+            >
+              Player #4
+            </Button>
+            <Button
+              fullWidth
+              color={player === 5 ? "secondary" : "primary"}
+              onClick={() => changePlayer(5)}
+            >
+              Player #5
+            </Button>
           </ButtonGroup>
 
           {/* <iframe
@@ -124,7 +140,7 @@ function Watch() {
             <iframe
               allowFullScreen
               id="watch-iframe2"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_SE}video_id=${id}`}
+              src={`${process.env.NEXT_PUBLIC_Player_URL_SE}video_id=${id}&tmdb=1`}
             ></iframe>
           )}
 
@@ -132,7 +148,23 @@ function Watch() {
             <iframe
               allowFullScreen
               id="watch-iframe3"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_AE}/movie/tmdb/${id}`}
+              src={`${process.env.NEXT_PUBLIC_Player_URL_EM}movie/${id}`}
+            ></iframe>
+          )}
+
+          {player === 4 && (
+            <iframe
+              allowFullScreen
+              id="watch-iframe4"
+              src={`${process.env.NEXT_PUBLIC_Player_URL_VL}/movie/${id}`}
+            ></iframe>
+          )}
+
+          {player === 5 && (
+            <iframe
+              allowFullScreen
+              id="watch-iframe5"
+              src={`${process.env.NEXT_PUBLIC_Player_URL_SEVIP}video_id=${id}&tmdb=1`}
             ></iframe>
           )}
         </Grid>

@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
 
 import Poster from "../Poster/Poster";
 import { MovieResult } from "../../types/apiResponses";
@@ -23,10 +23,7 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
     pagination: false,
     navigation: true,
     loop: true,
-    autoplay: {
-      delay: 2800,
-      disableOnInteraction: false,
-    },
+    autoplay: false,
     breakpoints: {
       // when window width is >= 320px
       320: {
@@ -52,8 +49,11 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
       },
       1200: {
         slidesPerView: 7,
-      }
-    }
+      },
+      1400: {
+        slidesPerView: 7,
+      },
+    },
   };
 
   return (
@@ -65,18 +65,17 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
       )}
 
       <Box className="multi-slider">
-        <Swiper
-          {...sliderOptions}
-          modules={[Autoplay, Navigation]}
-        >
+        <Swiper {...sliderOptions} modules={[Autoplay, Navigation]}>
           {movieData?.map((singleMovieData, index) => (
-            <SwiperSlide key={index} style={{ display: 'grid', placeContent: 'center' }}>
+            <SwiperSlide
+              key={index}
+              style={{ display: "grid", placeContent: "center" }}
+            >
               <Poster singleMovieData={singleMovieData} />
             </SwiperSlide>
           ))}
         </Swiper>
       </Box>
-
     </Container>
   );
 };

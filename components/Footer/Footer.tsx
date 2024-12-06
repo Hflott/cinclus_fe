@@ -9,13 +9,13 @@ const Footer = () => {
     <Box sx={classes.footerMain}>
       <Box sx={classes.footerXD}>
         <Typography variant="h1" sx={classes.footerXDtxt}>
-          Flixtr
+          ThiccFlix
         </Typography>
       </Box>
       <Box sx={classes.footerInner}>
         <Box sx={classes.footerTop}>
           <Typography variant="h4" sx={classes.footerTopHead}>
-            Your favorite movies on Flixtr
+            Your favorite movies on ThiccFlix
           </Typography>
           <Grid container sx={classes.socials}>
             <Grid item>

@@ -30,8 +30,8 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
     slidesToShow: 1,
     slidesToScroll: -1,
     autoplay: true,
-    speed: 500,
-    autoplaySpeed: 5000,
+    speed: 800,
+    autoplaySpeed: 10000,
     cssEase: "ease",
     centerPadding: isMobile ? "20px" : "50px",
   };

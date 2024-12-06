@@ -65,7 +65,7 @@ const Home: NextPage<HomeProps> = () => {
   return (
     <>
       <CustomHead
-        title="Flixtr - Watch Movies & TV Shows"
+        title="ThiccFlix - Watch Movies & TV Shows"
         media_type={"movie"}
       />
 
@@ -118,23 +118,6 @@ const Home: NextPage<HomeProps> = () => {
         </Box>
 
         <Box sx={{ display: "flex" }} ref={adRef}></Box>
-
-        <Box sx={classes.sliderContainer}>
-          <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h4" sx={classes.headTxt}>
-              Trending Artists
-            </Typography>
-            <Typography variant="body1" sx={classes.subTxt}>
-              The top rated artists recommended by our community
-            </Typography>
-          </Box>
-
-          {isPeopleLoading ? (
-            <SkeletonSlider />
-          ) : (
-            <PersonTileSlider peopleData={peopleData} />
-          )}
-        </Box>
       </div>
     </>
   );

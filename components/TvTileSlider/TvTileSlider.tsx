@@ -2,8 +2,8 @@ import React from "react";
 import { Container, Typography, Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
 
 import { SeriesResult } from "../../types/apiResponses";
 import TvPoster from "../TvPoster/TvPoster";
@@ -23,10 +23,7 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
     pagination: false,
     navigation: true,
     loop: true,
-    autoplay: {
-      delay: 2200,
-      disableOnInteraction: false,
-    },
+    autoplay: false,
     breakpoints: {
       // when window width is >= 320px
       320: {
@@ -52,8 +49,8 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
       },
       1200: {
         slidesPerView: 7,
-      }
-    }
+      },
+    },
   };
 
   return (
@@ -63,20 +60,19 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
           {title}
         </Typography>
       )}
-      
+
       <Box className="multi-slider">
-        <Swiper
-          {...sliderOptions}
-          modules={[Autoplay, Navigation]}
-        >
+        <Swiper {...sliderOptions} modules={[Autoplay, Navigation]}>
           {seriesData?.map((singleShowData, index) => (
-            <SwiperSlide key={index} style={{ display: 'grid', placeContent: 'center' }}>
+            <SwiperSlide
+              key={index}
+              style={{ display: "grid", placeContent: "center" }}
+            >
               <TvPoster singleShowData={singleShowData} />
             </SwiperSlide>
           ))}
         </Swiper>
       </Box>
-      
     </Container>
   );
 };

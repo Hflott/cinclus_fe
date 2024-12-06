@@ -35,49 +35,18 @@ import { MovieQueryKey } from "../../hooks/movies.hooks";
 import { getSearchQuery } from "../../apis/search.api";
 import Loader from "../Loader/Loader";
 import { useRouter } from "next/router";
+import path from "path";
 
 export const appRoutes = [
   {
     title: "Movies",
     icon: <OndemandVideoIcon />,
-    childRoutes: [
-      {
-        childTitle: "Popular",
-        childPath: "/movie/popular",
-        childIcon: <InsightsIcon />,
-      },
-      {
-        childTitle: "Recent",
-        childPath: "/movie/recent",
-        childIcon: <AutoModeIcon />,
-      },
-      {
-        childTitle: "Top rated",
-        childPath: "/movie/top-rated",
-        childIcon: <StarIcon />,
-      },
-    ],
+    path: "/movie/popular",
   },
   {
     title: "TV Shows",
     icon: <LiveTvIcon />,
-    childRoutes: [
-      {
-        childTitle: "Popular",
-        childPath: "/tv/popular",
-        childIcon: <InsightsIcon />,
-      },
-      {
-        childTitle: "Recent",
-        childPath: "/tv/recent",
-        childIcon: <AutoModeIcon />,
-      },
-      {
-        childTitle: "Top rated",
-        childPath: "/tv/top-rated",
-        childIcon: <StarIcon />,
-      },
-    ],
+    path: "/tv/popular",
   },
   {
     title: "Watchlist",
@@ -155,12 +124,12 @@ const Navbar = () => {
         <Container maxWidth="xl" sx={{ color: "secondary.main" }} id="app-nav">
           <Toolbar disableGutters>
             <Avatar
-              src="/assets/flixtr.png"
+              src="/ThiccIcon.png"
               sx={{
                 display: { xs: "none", md: "flex" },
                 mr: 1,
-                width: "24px",
-                height: "24px",
+                width: "50px",
+                height: "50px",
               }}
             />
 
@@ -171,7 +140,7 @@ const Navbar = () => {
               href="/"
               sx={classes.logoTxt}
             >
-              FLIXTR
+              ThiccFlix
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -187,12 +156,12 @@ const Navbar = () => {
               </IconButton>
             </Box>
             <Avatar
-              src="/assets/flixtr.png"
+              src="/ThiccIcon.png"
               sx={{
                 display: { xs: "flex", md: "none" },
                 mr: 1,
-                width: "24px",
-                height: "24px",
+                width: "40px",
+                height: "40px",
               }}
             />
             <Typography
@@ -202,11 +171,11 @@ const Navbar = () => {
               href="/"
               sx={classes.logoTxtMob}
             >
-              FLIXTR
+              ThiccFlix
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {/* desktop btn links */}
-              {appRoutes.map(({ title, path, childRoutes }) => (
+              {appRoutes.map(({ title, path }) => (
                 <Box key={title}>
                   <Button
                     onClick={(e) => {
@@ -220,36 +189,6 @@ const Navbar = () => {
                   >
                     {title}
                   </Button>
-                  <Menu
-                    id="link-menu"
-                    anchorEl={anchorElLinks}
-                    open={openLinksMenu == title}
-                    onClose={handleCloseMenuLinks}
-                    sx={{
-                      "& .MuiMenu-list, & .MuiMenu-paper": {
-                        background: "#333",
-                      },
-                    }}
-                  >
-                    {childRoutes &&
-                      childRoutes.map(({ childTitle, childPath }) => (
-                        <MenuItem
-                          key={childPath}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "secondary.main",
-                              color: "#303030",
-                            },
-                          }}
-                          onClick={() => {
-                            customRedirect(childPath ? childPath : "/");
-                            handleCloseMenuLinks();
-                          }}
-                        >
-                          {childTitle ? childTitle : ""}
-                        </MenuItem>
-                      ))}
-                  </Menu>
                 </Box>
               ))}
             </Box>
