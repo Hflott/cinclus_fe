@@ -1,7 +1,8 @@
 export const styles = {
   footerMain: {
     textAlign: "center",
-    backgroundColor: "#212121",
+    background:
+      "linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(234, 115, 141, 0.5) 100%)",
     overflow: "hidden",
     "@media (max-width: 900px)": {
       paddingBottom: "50px",
@@ -31,7 +32,6 @@ export const styles = {
   },
   footerInner: {
     padding: "70px 70px 50px 70px",
-    backgroundColor: "#303030",
     color: "#fff",
     maxWidth: "1200px",
     margin: "0 auto",

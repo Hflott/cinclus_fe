@@ -1,30 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
 // import Image from "next/image";
 import Link from "next/link";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { styles as classes } from "./tvPoster.styles";
 import { SeriesResult } from "../../types/apiResponses";
 import { formatImgSrc, rounded, toUrlFriendly } from "../../utils/utils";
+import StarIcon from "@mui/icons-material/Star";
 
 type TvPosterProps = {
   singleShowData: SeriesResult;
 };
 
 const TvPoster = ({ singleShowData }: TvPosterProps) => {
-  const { id, name, first_air_date, poster_path, vote_average } =
-    singleShowData;
+  const {
+    id,
+    name,
+    first_air_date,
+    poster_path,
+    vote_average,
+    overview,
+    number_of_seasons,
+  } = singleShowData;
   const titleConverted = toUrlFriendly(name);
 
+  const [showOverlay, setShowOverlay] = useState(false);
   return (
-    <Box sx={classes.poster}>
+    <Box
+      onMouseEnter={() => setShowOverlay(true)}
+      onMouseLeave={() => setShowOverlay(false)}
+      sx={classes.poster}
+    >
       <Link
         shallow
         href={`/tv/${id}/${titleConverted}`}
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
+        {/* Overlay with Movie Details */}
+        {showOverlay && (
+          <Box
+            sx={{
+              ...classes.overlay,
+            }}
+          >
+            <Box sx={{ ...classes.overlayContent }}>
+              <Typography variant="h6" gutterBottom>
+                {name}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ position: "relative", zIndex: 1 }}
+              >
+                {rounded(vote_average)}
+                <StarIcon
+                  sx={{
+                    position: "relative",
+                    top: 3,
+                    left: 0,
+                    fontSize: "1rem",
+                  }}
+                />
+              </Typography>
+              <Typography variant="body2" textAlign="left">
+                {overview || "No description available."}
+              </Typography>
+            </Box>
+          </Box>
+        )}
         <Box sx={classes.posterUp}>
           {/* <Image
             fill
@@ -51,7 +96,7 @@ const TvPoster = ({ singleShowData }: TvPosterProps) => {
             )}
             style={{
               objectFit: "cover",
-              objectPosition: "top",
+              objectPosition: "center",
               width: "100%",
               height: "100%",
             }}
@@ -69,13 +114,8 @@ const TvPoster = ({ singleShowData }: TvPosterProps) => {
             <Typography variant="subtitle2" sx={classes.posterYear}>
               {new Date(first_air_date).getFullYear()}
             </Typography>
-
-            <Typography variant="subtitle2" sx={classes.posterType}>
-              TV
-            </Typography>
           </Box>
         </Box>
-
         {vote_average ? (
           <Box sx={classes.ratings}>
             <Box sx={classes.ratingsInner}>

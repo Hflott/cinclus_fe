@@ -8,9 +8,7 @@ import { LoadingButton } from "@mui/lab";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-import ImgRoll from "../../../../components/ImgRoll/ImgRoll";
 import CastRoll from "../../../../components/CastRoll/CastRoll";
-import ClipRoll from "../../../../components/ClipRoll/ClipRoll";
 import TileSlider from "../../../../components/TileSlider/TileSlider";
 import { styles as classes } from "../../../../styles/movieInfo.styles";
 import { MovieResult } from "../../../../types/apiResponses";
@@ -22,7 +20,6 @@ import {
   toUrlFriendly,
 } from "../../../../utils/utils";
 import CustomHead from "../../../../components/CustomHead/CustomHead";
-import { scrollToTop } from "../../../../hooks/app.hooks";
 import { signIn, useSession } from "next-auth/react";
 import {
   useWatchlistById,
@@ -77,9 +74,7 @@ function MovieInfo() {
     budget,
     imdb_id,
     spoken_languages,
-    images: { backdrops },
     credits: { cast },
-    videos,
     recommendations,
     similar,
   } = singleMovieData as MovieResult;
@@ -257,7 +252,7 @@ function MovieInfo() {
               </Grid>
             </Grid>
             <Grid>
-              <Grid item sx={classes.bulletHead}>
+              <Grid item sx={{ fontWeight: "bold" }}>
                 Genres:{" "}
               </Grid>
               <Grid item sx={classes.bulletInfo}>
@@ -332,15 +327,6 @@ function MovieInfo() {
             </Grid>
           </Box>
         </Grid>
-
-        <Grid item>
-          <ImgRoll imageList={backdrops} />
-        </Grid>
-
-        <Grid item>
-          <ClipRoll clipList={videos.results} />
-        </Grid>
-
         <Grid item>
           <CastRoll castList={cast} />
         </Grid>

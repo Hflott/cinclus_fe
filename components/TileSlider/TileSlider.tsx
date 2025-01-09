@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 import Poster from "../Poster/Poster";
 import { MovieResult } from "../../types/apiResponses";
@@ -22,10 +23,7 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
     slidesPerView: 6,
     slidesPerGroup: 6,
     speed: 600,
-    pagination: false,
     navigation: true,
-    loop: false,
-    autoplay: false,
     breakpoints: {
       // when window width is >= 320px
       320: {
@@ -67,7 +65,7 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
       )}
 
       <Box className="multi-slider" sx={{ width: "100%" }}>
-        <Swiper {...sliderOptions} modules={[Autoplay, Navigation]}>
+        <Swiper {...sliderOptions} modules={[Autoplay, Navigation, Pagination]}>
           {movieData?.map((singleMovieData, index) => (
             <SwiperSlide
               key={index}

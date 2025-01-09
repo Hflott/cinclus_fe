@@ -23,17 +23,16 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
   if (!movieData?.length) return null;
 
   const config = {
+    dots: true,
     arrows: false,
-    dots: false,
-    centerMode: true,
+    fade: true,
     infinite: true,
     slidesToShow: 1,
-    slidesToScroll: -1,
+    slidesToScroll: 1,
     autoplay: true,
     speed: 800,
-    autoplaySpeed: 10000,
+    autoplaySpeed: 6000,
     cssEase: "ease",
-    centerPadding: isMobile ? "20px" : "50px",
   };
 
   return (

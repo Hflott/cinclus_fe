@@ -37,18 +37,18 @@ const Movies: NextPage<MovieProps> = () => {
         <Box sx={{ ...classes.sliderContainer, m: "20px 0 60px 0" }}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h4" sx={classes.headTxt}>
-              Recently added
+              Popular Movies
             </Typography>
           </Box>
 
           {isRecentLoading ? (
             <SkeletonSlider />
           ) : (
-            <TileSlider movieData={recentMovies?.pages[0].results} />
+            <TileSlider movieData={popularMovies?.pages[0].results} />
           )}
           <Grid container justifyContent="center">
             <Button
-              href="/movie/recent"
+              href="/movie/popular"
               color="secondary"
               variant="contained"
               size="large"
@@ -61,18 +61,18 @@ const Movies: NextPage<MovieProps> = () => {
         <Box sx={classes.sliderContainer}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h4" sx={classes.headTxt}>
-              Popular Movies
+              Recently added
             </Typography>
           </Box>
 
           {isMovieLoading ? (
             <SkeletonSlider />
           ) : (
-            <TileSlider movieData={popularMovies?.pages[0].results} />
+            <TileSlider movieData={recentMovies?.pages[0].results} />
           )}
           <Grid container justifyContent="center">
             <Button
-              href="/movie/popular"
+              href="/movie/recent"
               color="secondary"
               variant="contained"
               size="large"

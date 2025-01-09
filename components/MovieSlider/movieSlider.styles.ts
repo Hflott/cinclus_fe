@@ -1,27 +1,30 @@
+import zIndex from "@mui/material/styles/zIndex";
+
 export const styles = {
   mediaSlide: {
-    marginBottom: "10px",
+    marginBottom: "20px",
   },
   mediaItem: {
     position: "relative",
+    width: "100%",
     outline: "none",
-    margin: "0 10px",
     "@media (max-width: 768px)": {
       margin: "0 3px",
     },
   },
   mediaItemImg: {
     position: "relative",
-    height: "500px",
-    overflow: 'hidden',
+    height: "1000px",
+    width: "100%",
+    overflow: "hidden",
     "@media (max-width: 1400px)": {
-      height: "450px",
+      height: "700px",
     },
     "@media (max-width: 1300px)": {
-      height: "450px",
+      height: "600px",
     },
     "@media (max-width: 768px)": {
-      height: "350px",
+      height: "400px",
     },
     "@media (max-width: 576px)": {
       height: "220px",
@@ -35,9 +38,20 @@ export const styles = {
         height: "100%",
         margin: "0 auto",
         // marginBottom: "25px",
-        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.25)",
         borderRadius: "0 0 6px 6px",
+        transition: "opacity 0.5s ease",
       },
+    },
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "50%", // Adjust the width for the amount of opacity fade
+      height: "100%",
+      background:
+        "linear-gradient(to right, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)", // Fade from black to transparent
+      zIndex: 1,
     },
     "&::after": {
       content: '""',
@@ -51,7 +65,7 @@ export const styles = {
       // background: "-moz-linear-gradient(0deg,#242428 0,rgba(36,36,40,0) 50%,#242428 100%)",
       // background: "-webkit-linear-gradient(0deg,#242428 0,rgba(36,36,40,0) 50%,#242428 100%)",
       background:
-        "linear-gradient(0deg,#242428 0,rgba(36,36,40,0) 70%,#242428 100%)",
+        "linear-gradient(0deg,#000 5%,rgba(36,36,40,0) 70%,#242428 100%)",
       zIndex: 2,
     },
   },
@@ -148,6 +162,7 @@ export const styles = {
     padding: "20px",
     zIndex: 3,
     width: "50%",
+    top: "40%",
     position: "absolute",
     bottom: 0,
     opacity: 0,

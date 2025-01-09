@@ -22,7 +22,7 @@ const DisqusComments: React.FC<DisqusCommentsProps> = ({
 
   return (
     <div style={{ width: "60%", minHeight: "400px", margin: "20px auto" }}>
-      <DiscussionEmbed shortname="Cinclus" config={disqusConfig} />
+      <DiscussionEmbed shortname="cinclus" config={disqusConfig} />
     </div>
   );
 };

@@ -21,7 +21,6 @@ const Home: NextPage<HomeProps> = () => {
     usePopularMovies();
   const { data: movieData, isLoading: isMoviesLoading } = useMovies();
   const { data: seriesData, isLoading: isSeriesLoading } = useSeries();
-  const { data: peopleData, isLoading: isPeopleLoading } = usePeople();
   // console.log("MovieDATA", movieData);
   // console.log("MovieDATA", toPercent(movieData[1].vote_average || 0));
   // console.log("seriesDATA", seriesData);
@@ -29,15 +28,14 @@ const Home: NextPage<HomeProps> = () => {
   return (
     <>
       <CustomHead
-        title="Cinclus - Watch Movies & TV Shows"
+        title="MonkeyFlix - Watch Movies & TV Shows"
         media_type={"movie"}
       />
 
       <div className={styles.container}>
-        {(isPopularLoading ||
-          isMoviesLoading ||
-          isSeriesLoading ||
-          isPeopleLoading) && <LinearProgress />}
+        {(isPopularLoading || isMoviesLoading || isSeriesLoading) && (
+          <LinearProgress />
+        )}
 
         <Box>
           {isPopularLoading ? (
@@ -47,7 +45,7 @@ const Home: NextPage<HomeProps> = () => {
           )}
         </Box>
 
-        <Box sx={{ ...classes.sliderContainer, m: "20px 0 60px 0" }}>
+        <Box sx={{ ...classes.sliderContainerHome }}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h4" sx={classes.headTxt}>
               Trending Movies
@@ -61,7 +59,7 @@ const Home: NextPage<HomeProps> = () => {
           )}
         </Box>
 
-        <Box sx={classes.sliderContainer}>
+        <Box sx={classes.sliderContainerHome}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h4" sx={classes.headTxt}>
               Trending Shows

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, Typography, Grid } from "@mui/material";
 
@@ -7,6 +7,7 @@ import TvPoster from "../../components/TvPoster/TvPoster";
 import { styles as classes } from "../../styles/styles";
 import { usePopularSeries } from "../../hooks/series.hooks";
 import CustomHead from "../../components/CustomHead/CustomHead";
+import { useInView } from "react-intersection-observer";
 
 function Popular() {
   const {
@@ -17,9 +18,20 @@ function Popular() {
     hasNextPage,
   } = usePopularSeries();
   // console.log('popularSeries: ', popularSeries)
+  // Set up the IntersectionObserver using react-intersection-observer
+  const { ref, inView } = useInView({
+    triggerOnce: false, // Allow triggering multiple times as the user keeps scrolling
+    threshold: 0.9, // Trigger when 90% of the element is in view
+  });
+
+  // Automatically fetch more movies when the "load more" button comes into view
+  useEffect(() => {
+    if (inView && !isFetching && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, isFetching, hasNextPage]);
 
   if (isLoading) return <Loader />;
-
   return (
     <>
       <CustomHead title="Popular TV shows to watch." media_type="tv" />
@@ -37,19 +49,7 @@ function Popular() {
           )}
         </Grid>
         {hasNextPage && (
-          <Grid container justifyContent="center">
-            <LoadingButton
-              onClick={() => fetchNextPage()}
-              loading={isFetching || isLoading}
-              loadingIndicator="Loading…"
-              color="secondary"
-              variant="contained"
-              size="large"
-              sx={classes.loadBtn}
-            >
-              show more
-            </LoadingButton>
-          </Grid>
+          <Grid container justifyContent="center" ref={ref}></Grid>
         )}
       </Box>
     </>

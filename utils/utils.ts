@@ -1,10 +1,18 @@
 export const disableAds = process.env.NEXT_PUBLIC_DISABLE_ADS == "true";
 
-export const removeSpecialCharacters = (phrase: string) => {
+export const removeSpecialCharacters = (
+  phrase: string | undefined | null
+): string => {
+  // Ensure that phrase is a valid string before calling replace
+  if (typeof phrase !== "string") return ""; // Return empty string if invalid
   return phrase.replace(/[&#,+()$~%'."!:*?<>{}\/\\]/g, "");
 };
 
-export const replaceSpacesWithDash = (phrase: string) => {
+export const replaceSpacesWithDash = (
+  phrase: string | undefined | null
+): string => {
+  // Ensure that phrase is a valid string before calling replace
+  if (typeof phrase !== "string") return ""; // Return empty string if invalid
   return phrase.replace(/\s+/g, "-");
 };
 
@@ -50,7 +58,7 @@ export const formatImgSrc = (urlLink: string, path?: string): string => {
   return urlLink + path;
 };
 
-export const rounded = (num: number): number => Math.round(num * 100) / 100;
+export const rounded = (num: number): number => Math.round(num * 10) / 10;
 
 // export const blurData =
 //   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNce8f0KQAGoQKlpcmuHQAAAABJRU5ErkJggg==";

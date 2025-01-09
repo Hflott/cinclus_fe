@@ -2,12 +2,12 @@ import { createTheme } from "@mui/material/styles";
 
 export const colors = {
   primary: {
-    main: "#222",
+    main: "#000",
     contrastText: "#fff",
   },
   secondary: {
     main: "#EA738D",
-    contrastText: "#222",
+    contrastText: "#000",
   },
 };
 
@@ -17,7 +17,7 @@ const theme = createTheme({
       primary: "#fff",
     },
     background: {
-      default: "#191919",
+      default: "#000",
     },
     primary: {
       main: colors.primary.main,

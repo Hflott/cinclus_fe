@@ -8,15 +8,10 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <Box sx={classes.footerMain}>
-      <Box sx={classes.footerXD}>
-        <Typography variant="h2" sx={classes.footerXDtxt}>
-          Cinclus
-        </Typography>
-      </Box>
       <Box sx={classes.footerInner}>
         <Box sx={classes.footerTop}>
           <Typography variant="h4" sx={classes.footerTopHead}>
-            Stream everything on Cinclus
+            Stream everything on MonkeyFlix
           </Typography>
           <Grid container sx={classes.socials}>
             <Grid item>
@@ -139,7 +134,7 @@ const Footer = () => {
             </Grid>
             <Grid item sx={classes.footerCol}>
               <Typography variant="h6" sx={classes.footerColHead}>
-                Cinclus for Business
+                MonkeyFlix for Business
               </Typography>
               <Typography variant="subtitle1" sx={{ fontSize: "0.9rem" }}>
                 What we offer

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Typography, Grid } from "@mui/material";
 
@@ -9,6 +9,7 @@ import { useTopMovies } from "../../hooks/movies.hooks";
 import CustomHead from "../../components/CustomHead/CustomHead";
 import { IConutry } from "../../utils/filterUtils";
 import Filter from "../../components/Filter/Filter";
+import { useInView } from "react-intersection-observer";
 
 function TopRated() {
   const [country, setCountry] = useState<IConutry | undefined>();
@@ -21,9 +22,21 @@ function TopRated() {
     isFetching,
     hasNextPage,
   } = useTopMovies(releaseYear, country);
-  // console.log('topMovies: ', topMovies)
 
-  // if (isLoading) return <Loader />;
+  // Set up the IntersectionObserver using react-intersection-observer
+  const { ref, inView } = useInView({
+    triggerOnce: false, // Allow triggering multiple times as the user keeps scrolling
+    threshold: 0.9, // Trigger when 90% of the element is in view
+  });
+
+  // Automatically fetch more movies when the "load more" button comes into view
+  useEffect(() => {
+    if (inView && !isFetching && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, isFetching, hasNextPage]);
+
+  if (isLoading) return <Loader />;
 
   return (
     <>
@@ -54,19 +67,7 @@ function TopRated() {
               )}
             </Grid>
             {hasNextPage && (
-              <Grid container justifyContent="center">
-                <LoadingButton
-                  onClick={() => fetchNextPage()}
-                  loading={isFetching || isLoading}
-                  loadingIndicator="Loading…"
-                  color="secondary"
-                  variant="contained"
-                  size="large"
-                  sx={classes.loadBtn}
-                >
-                  show more
-                </LoadingButton>
-              </Grid>
+              <Grid container justifyContent="center" ref={ref}></Grid>
             )}
           </>
         )}

@@ -48,9 +48,24 @@ export const styles = {
       margin: "20px 10px",
     },
   },
-  episodeBtnBox: {
-    flex: "1",
-    m: 1,
+  episodeBtnList: {
+    maxHeight: "80vh",
+    overflowY: "auto",
+    marginTop: "20px",
+    "&::-webkit-scrollbar": {
+      width: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#222",
+      borderRadius: "4px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      backgroundColor: "#FF99A5",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "#222",
+      borderRadius: "4px",
+    },
   },
   episodeBtn: {
     width: "100%",

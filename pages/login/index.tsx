@@ -123,7 +123,7 @@ const Login = () => {
               placeholderSrc="/assets/flixtr-placeholder.svg"
               effect="blur"
               src="/icon.svg"
-              alt="Cinclus Logo"
+              alt="MonkeyFlix Logo"
               style={classes.logo}
             />
           </Grid>

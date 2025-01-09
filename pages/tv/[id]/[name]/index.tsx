@@ -330,14 +330,6 @@ function TvShowInfo() {
         </Grid>
 
         <Grid item>
-          <ImgRoll imageList={backdrops} />
-        </Grid>
-
-        <Grid item>
-          <ClipRoll clipList={videos.results} />
-        </Grid>
-
-        <Grid item>
           <CastRoll castList={cast} />
         </Grid>
 

@@ -152,7 +152,7 @@ const Signup = () => {
               placeholderSrc="/assets/flixtr-placeholder.svg"
               effect="blur"
               src="icon.svg"
-              alt="Cinclus logo"
+              alt="MonkeyFlix logo"
               style={classes.logo}
             />
           </Grid>

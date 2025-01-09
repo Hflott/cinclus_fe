@@ -1,49 +1,70 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
-// import Image from "next/image";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography, Button, Grid } from "@mui/material";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-
 import { styles as classes } from "./poster.styles";
 import { MovieResult } from "../../types/apiResponses";
 import { formatImgSrc, rounded, toUrlFriendly } from "../../utils/utils";
+import StarIcon from "@mui/icons-material/Star";
 
 type PosterProps = {
   singleMovieData: MovieResult;
 };
 
 const Poster = ({ singleMovieData }: PosterProps) => {
-  // console.log("singleMovieData:", singleMovieData);
-  const { id, title, release_date, poster_path, vote_average } =
+  const { id, title, release_date, poster_path, vote_average, overview } =
     singleMovieData;
   const titleConverted = toUrlFriendly(title);
 
+  const [showOverlay, setShowOverlay] = useState(false);
+
   return (
-    <Box sx={classes.poster}>
+    <Box
+      onMouseEnter={() => setShowOverlay(true)}
+      onMouseLeave={() => setShowOverlay(false)}
+      sx={{
+        ...classes.poster,
+        position: "relative", // Ensure the overlay is correctly positioned
+      }}
+    >
       <Link
         shallow
         href={`/movie/${id}/${titleConverted}`}
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
+        {/* Overlay with Movie Details */}
+        {showOverlay && (
+          <Box
+            sx={{
+              ...classes.overlay,
+            }}
+          >
+            <Box sx={{ ...classes.overlayContent, pointerEvents: "auto" }}>
+              <Typography variant="h6" gutterBottom>
+                {title}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ position: "relative", zIndex: 1 }}
+              >
+                {rounded(vote_average)}
+                <StarIcon
+                  sx={{
+                    position: "relative",
+                    top: 3,
+                    left: 0,
+                    fontSize: "1rem",
+                  }}
+                />
+              </Typography>
+              <Typography variant="body2" textAlign="left">
+                {overview || "No description available."}
+              </Typography>
+            </Box>
+          </Box>
+        )}
         <Box sx={classes.posterUp}>
-          {/* <Image
-            fill
-            placeholder="blur"
-            className="poster-img"
-            blurDataURL={blurData}
-            src={formatImgSrc(
-              "https://image.tmdb.org/t/p/w220_and_h330_face/",
-              poster_path
-            )}
-            sizes={formatImgSrc(
-              "https://image.tmdb.org/t/p/w220_and_h330_face/",
-              poster_path
-            )}
-            style={{ objectFit: "cover", objectPosition: "top" }}
-            alt={titleConverted}
-          /> */}
-
           <LazyLoadImage
             placeholderSrc="/assets/flixtr-placeholder.svg"
             src={formatImgSrc(
@@ -52,7 +73,7 @@ const Poster = ({ singleMovieData }: PosterProps) => {
             )}
             style={{
               objectFit: "cover",
-              objectPosition: "top",
+              objectPosition: "center",
               width: "100%",
               height: "100%",
             }}
@@ -73,13 +94,9 @@ const Poster = ({ singleMovieData }: PosterProps) => {
             <Typography variant="subtitle2" sx={classes.posterYear}>
               {new Date(release_date).getFullYear()}
             </Typography>
-            <Typography variant="subtitle2" sx={classes.posterType}>
-              Movie
-            </Typography>
           </Box>
         </Box>
-
-        {vote_average ? (
+        {vote_average > 0 && (
           <Box sx={classes.ratings}>
             <Box sx={classes.ratingsInner}>
               <CircularProgress
@@ -99,7 +116,7 @@ const Poster = ({ singleMovieData }: PosterProps) => {
               </Box>
             </Box>
           </Box>
-        ) : null}
+        )}
       </Link>
     </Box>
   );

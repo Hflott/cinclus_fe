@@ -2,16 +2,13 @@ export const styles = {
   poster: {
     position: "relative",
     color: "secondary.main",
-    maxWidth: "210px",
+    maxWidth: "220px",
     width: "100%",
+    height: "100%",
     margin: "20px",
     transition: "transform 0.3s ease, color 0.3s ease",
     "& .poster-img": {
       borderRadius: "12px",
-    },
-    "&:hover": {
-      color: "#fff",
-      transform: "scale(1.05)",
     },
     "@media (max-width: 900px)": {
       margin: "10px 3px",
@@ -20,7 +17,7 @@ export const styles = {
   },
   posterUp: {
     position: "relative",
-    width: "250px",
+    width: "220px",
     height: "320px",
     "@media (max-width: 900px)": {
       width: "108px",
@@ -65,15 +62,14 @@ export const styles = {
   },
   ratings: {
     position: "absolute",
-    bottom: 33,
+    bottom: "20%",
     right: 0,
     backgroundColor: "primary.main",
     padding: "3px",
     borderRadius: "50%",
-    transform: "scale(1.1)",
     transition: "transform 0.3s ease",
-    "&:hover": {
-      transform: "scale(1.3)",
+    "@media (max-width: 900px)": {
+      transform: "scale(0.8)", // Scale down the rating to 50% on small screens
     },
   },
   ratingsInner: { position: "relative", display: "flex" },
@@ -86,5 +82,50 @@ export const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.8)", // Dark semi-transparent overlay
+    color: "white",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "5px",
+    zIndex: 3,
+    "@media (max-width: 1024px)": {
+      display: "none",
+    },
+  },
+  overlayContent: {
+    overflowY: "auto", // Enables vertical scrolling
+    borderRadius: "10px",
+    paddingRight: "5px",
+    height: "calc(100% - 50px)",
+
+    // WebKit-based browser scrollbar styling
+    "&::-webkit-scrollbar": {
+      width: "8px", // Set width of scrollbar
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "rgba(255, 255, 255, 0.1)", // Track color
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(255, 255, 255, 0.4)", // Thumb color
+      borderRadius: "10px",
+      border: "2px solid rgba(0, 0, 0, 0.8)", // Optional border for contrast
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.6)", // Hover effect on the thumb
+    },
+
+    // Firefox scrollbar styling
+    scrollbarWidth: "thin", // Makes the scrollbar thinner
+    scrollbarColor: "rgba(255, 255, 255, 0.4) rgba(0, 0, 0, 0.8)", // Thumb and track colors for Firefox
   },
 };

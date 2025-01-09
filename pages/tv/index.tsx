@@ -37,18 +37,18 @@ const Tv: NextPage<TvProps> = () => {
         <Box sx={{ ...classes.sliderContainer, m: "20px 0 60px 0" }}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h4" sx={classes.headTxt}>
-              Recently added
+              Popular Shows
             </Typography>
           </Box>
 
           {isRecentLoading ? (
             <SkeletonSlider />
           ) : (
-            <TvTileSlider seriesData={recentSeries?.pages[0].results} />
+            <TvTileSlider seriesData={popularSeries?.pages[0].results} />
           )}
           <Grid container justifyContent="center">
             <Button
-              href="/tv/recent"
+              href="/tv/popular"
               color="secondary"
               variant="contained"
               size="large"
@@ -61,18 +61,18 @@ const Tv: NextPage<TvProps> = () => {
         <Box sx={classes.sliderContainer}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h4" sx={classes.headTxt}>
-              Popular Shows
+              Recently added
             </Typography>
           </Box>
 
           {isSeriesLoading ? (
             <SkeletonSlider />
           ) : (
-            <TvTileSlider seriesData={popularSeries?.pages[0].results} />
+            <TvTileSlider seriesData={recentSeries?.pages[0].results} />
           )}
           <Grid container justifyContent="center">
             <Button
-              href="/tv/popular"
+              href="/tv/recent"
               color="secondary"
               variant="contained"
               size="large"

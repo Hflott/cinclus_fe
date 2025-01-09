@@ -123,10 +123,10 @@ const Navbar = () => {
             <Link href="/" passHref>
               <Image
                 src="/icon.svg"
-                height={30}
-                width={30}
+                height={50}
+                width={50}
                 alt="Icon"
-                style={{ margin: "0 10px" }}
+                style={{ margin: "0 6px" }}
               />
             </Link>
             <Typography
@@ -136,7 +136,7 @@ const Navbar = () => {
               href="/"
               sx={classes.logoTxt}
             >
-              Cinclus
+              MonkeyFlix
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -158,7 +158,7 @@ const Navbar = () => {
               href="/"
               sx={classes.logoTxtMob}
             >
-              Cinclus
+              MonkeyFlix
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {/* desktop btn links */}

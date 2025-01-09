@@ -21,6 +21,15 @@ import {
 import CustomHead from "../../../../../../components/CustomHead/CustomHead";
 import { convertToNumber } from "../../../../../../utils/utils";
 import DisqusComments from "../../../../../../components/Disqus/Disqus";
+import EpisodeList from "../../../../../../components/EpisodeList/EpisodeList";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  IconButton,
+} from "@mui/material";
+import { PlayArrow } from "@mui/icons-material";
 
 function SeasonCount() {
   const router = useRouter();
@@ -101,9 +110,19 @@ function SeasonCount() {
             {typeof name === "string" && name?.replaceAll("-", " ")}
           </Typography>
         </Grid>
-
-        <Grid item sx={classes.moviePlayer}>
-          {/* <iframe
+        <Grid sx={classes.moviePlayer}>
+          <Grid
+            container
+            item
+            xs={12}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Grid item xs={9} sx={{ padding: "10px" }}>
+              {/* <iframe
             allowFullScreen
             id="watch-iframe"
             src={`${process.env.NEXT_PUBLIC_Player_URL}/tv?id=${id}&s=${
@@ -111,59 +130,126 @@ function SeasonCount() {
             }&e=${ep}`}
           ></iframe> */}
 
-          {player === 1 && (
-            <iframe
-              allowFullScreen
-              id="watch-iframe1"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_VS}/${id}/${
-                seasoncount ? seasoncount : 1
-              }-${ep}/color-ADDC35`}
-            ></iframe>
-          )}
+              {player === 1 && (
+                <iframe
+                  allowFullScreen
+                  id="watch-iframe1"
+                  src={`${process.env.NEXT_PUBLIC_Player_URL_VS}/${id}/${
+                    seasoncount ? seasoncount : 1
+                  }-${ep}/color-ADDC35`}
+                ></iframe>
+              )}
 
-          {player === 2 && (
-            <iframe
-              allowFullScreen
-              id="watch-iframe2"
-              src={`${
-                process.env.NEXT_PUBLIC_Player_URL_SE
-              }video_id=${id}&tmdb=1&s=${
-                seasoncount ? seasoncount : 1
-              }&e=${ep}`}
-            ></iframe>
-          )}
+              {player === 2 && (
+                <iframe
+                  allowFullScreen
+                  id="watch-iframe2"
+                  src={`${
+                    process.env.NEXT_PUBLIC_Player_URL_SE
+                  }video_id=${id}&tmdb=1&s=${
+                    seasoncount ? seasoncount : 1
+                  }&e=${ep}`}
+                ></iframe>
+              )}
 
-          {player === 3 && (
-            <iframe
-              allowFullScreen
-              id="watch-iframe3"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_EM}tv/${id}/${
-                seasoncount ? seasoncount : 1
-              }/${ep}`}
-            ></iframe>
-          )}
+              {player === 3 && (
+                <iframe
+                  allowFullScreen
+                  id="watch-iframe3"
+                  src={`${process.env.NEXT_PUBLIC_Player_URL_EM}tv/${id}/${
+                    seasoncount ? seasoncount : 1
+                  }/${ep}`}
+                ></iframe>
+              )}
 
-          {player === 4 && (
-            <iframe
-              allowFullScreen
-              id="watch-iframe4"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_VL}tv/${id}/${
-                seasoncount ? seasoncount : 1
-              }/${ep}`}
-            ></iframe>
-          )}
+              {player === 4 && (
+                <iframe
+                  allowFullScreen
+                  id="watch-iframe4"
+                  src={`${process.env.NEXT_PUBLIC_Player_URL_VL}tv/${id}/${
+                    seasoncount ? seasoncount : 1
+                  }/${ep}`}
+                ></iframe>
+              )}
 
-          {player === 5 && (
-            <iframe
-              allowFullScreen
-              id="watch-iframe5"
-              src={`${
-                process.env.NEXT_PUBLIC_Player_URL_SEVIP
-              }video_id=${id}&tmdb=1&s=${
-                seasoncount ? seasoncount : 1
-              }&e=${ep}`}
-            ></iframe>
-          )}
+              {player === 5 && (
+                <iframe
+                  allowFullScreen
+                  id="watch-iframe5"
+                  src={`${
+                    process.env.NEXT_PUBLIC_Player_URL_SEVIP
+                  }video_id=${id}&tmdb=1&s=${
+                    seasoncount ? seasoncount : 1
+                  }&e=${ep}`}
+                ></iframe>
+              )}
+            </Grid>
+            <Grid item xs={2.5} sx={{ padding: "10px", maxHeight: "80vh" }}>
+              <Box sx={{ ...classes.episodeBtnList }}>
+                <List>
+                  {tvShowSeasonData?.episodes?.map(
+                    ({ episode_number, name }) => (
+                      <ListItem
+                        key={episode_number}
+                        sx={{
+                          cursor: "pointer",
+                          backgroundColor:
+                            ep === episode_number ? "#EA738D" : "transparent",
+                          color: ep === episode_number ? "#000" : "#fff",
+                          "&:hover": {
+                            backgroundColor:
+                              ep === episode_number
+                                ? "#EA738D"
+                                : "rgba(255, 255, 255, 0.1)",
+                          },
+                          borderRadius: "8px",
+                          marginBottom: "4px",
+                        }}
+                        onClick={() => {
+                          setEp((prevEp) => {
+                            if (prevEp === episode_number) return prevEp;
+
+                            router.replace(
+                              {
+                                pathname: router.asPath.split("?")[0],
+                                query: { e: episode_number, p: player },
+                              },
+                              undefined,
+                              {
+                                shallow: true,
+                              }
+                            );
+
+                            return episode_number;
+                          });
+                        }}
+                      >
+                        <ListItemIcon>
+                          <IconButton edge="start">
+                            <PlayArrow />
+                          </IconButton>
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={`Ep ${episode_number}`}
+                          secondary={name || "No title available."}
+                          primaryTypographyProps={{
+                            fontWeight:
+                              ep === episode_number ? "bold" : "normal",
+                          }}
+                          secondaryTypographyProps={{
+                            color:
+                              ep === episode_number
+                                ? "rgba(0,0,0,0.8)"
+                                : "rgba(255,255,255,0.7)",
+                          }}
+                        />
+                      </ListItem>
+                    )
+                  )}
+                </List>
+              </Box>
+            </Grid>
+          </Grid>
           <Box sx={{ textAlign: "center", marginBottom: 1 }}>
             <h4 style={{ fontSize: "30px", margin: 0 }}>Servers</h4>
           </Box>
@@ -209,39 +295,6 @@ function SeasonCount() {
             </Button>
           </ButtonGroup>
         </Grid>
-
-        <Grid item sx={classes.episodeBtns}>
-          {tvShowSeasonData?.episodes?.map(({ episode_number }) => (
-            <Box sx={classes.episodeBtnBox} key={episode_number}>
-              <Button
-                variant="contained"
-                sx={classes.episodeBtn}
-                color={ep === episode_number ? "secondary" : "primary"}
-                onClick={() => {
-                  setEp((prevEp) => {
-                    if (prevEp === episode_number) return prevEp;
-
-                    router.replace(
-                      {
-                        pathname: router.asPath.split("?")[0],
-                        query: { e: episode_number, p: player },
-                      },
-                      undefined,
-                      {
-                        shallow: true,
-                      }
-                    );
-
-                    return episode_number;
-                  });
-                }}
-              >
-                Ep {episode_number}
-              </Button>
-            </Box>
-          ))}
-        </Grid>
-
         <Grid container justifyContent={"center"} sx={{ marginTop: "40px" }}>
           <DisqusComments
             identifier={`${id}-season-${seasoncount}-ep${ep}`} // Use the unique identifier
