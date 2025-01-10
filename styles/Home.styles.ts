@@ -11,8 +11,7 @@ export const styles = {
       padding: "0 10px",
     },
   },
-  sliderContainerHome: {
-    zIndex: 2,
+  sliderContainerOverlay: {
     position: "relative",
     top: "-300px",
     m: "60px 0",

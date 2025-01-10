@@ -3,17 +3,23 @@ import Head from "next/head";
 
 type CustomHeadProps = {
   title: string;
-  media_type: "movie" | "tv";
+  media_type: "movie" | "tv" | "all";
 };
 
 const CustomHead = ({ title, media_type }: CustomHeadProps) => {
   const overview =
     "MonkeyFlix is the largest free streaming platform for movies and tv shows. Collaborative media and info service featuring high quality content for a huge selection of titles and new releases! Available in all countries.";
+  const getMediaTypeText = () => {
+    if (media_type === "movie") {
+      return "Movies";
+    } else if (media_type === "tv") {
+      return "TV Shows";
+    }
+    return "Movies and TV Shows"; // For "all"
+  };
   return (
     <Head>
-      <title>{`${title} ${
-        media_type == "movie" ? "| Movies" : "| Tv Shows"
-      } - MonkeyFlix`}</title>
+      <title>{`${title} | ${getMediaTypeText()} - MonkeyFlix`}</title>
       <link rel="icon" href="/icon.svg" />
       <meta name="title" content={"MonkeyFlix - Watch Movies & TV Shows"} />
       <meta name="description" content={overview} />

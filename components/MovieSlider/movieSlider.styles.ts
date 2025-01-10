@@ -1,3 +1,4 @@
+import { Scale } from "@mui/icons-material";
 import zIndex from "@mui/material/styles/zIndex";
 
 export const styles = {
@@ -33,12 +34,9 @@ export const styles = {
       width: "100%",
       height: "100%",
       "& img": {
-        // maxWidth: "100%",
         width: "100%",
         height: "100%",
         margin: "0 auto",
-        // marginBottom: "25px",
-        borderRadius: "0 0 6px 6px",
         transition: "opacity 0.5s ease",
       },
     },
@@ -65,7 +63,7 @@ export const styles = {
       // background: "-moz-linear-gradient(0deg,#242428 0,rgba(36,36,40,0) 50%,#242428 100%)",
       // background: "-webkit-linear-gradient(0deg,#242428 0,rgba(36,36,40,0) 50%,#242428 100%)",
       background:
-        "linear-gradient(0deg,#000 5%,rgba(36,36,40,0) 70%,#242428 100%)",
+        "linear-gradient(0deg,#000 0%,rgba(86, 86, 91, 0) 80%,#000 100%)",
       zIndex: 2,
     },
   },
@@ -125,7 +123,7 @@ export const styles = {
     whiteSpace: "nowrap",
     width: "120px",
     "@media (max-width: 1400px)": {
-      fontSize: "18px",
+      fontSize: "14px",
     },
     "@media (max-width: 1300px)": {
       fontSize: "14px",
@@ -143,7 +141,7 @@ export const styles = {
     ml: "20px",
     width: "120px",
     "@media (max-width: 1400px)": {
-      fontSize: "18px",
+      fontSize: "14px",
     },
     "@media (max-width: 1300px)": {
       fontSize: "14px",
@@ -162,7 +160,7 @@ export const styles = {
     padding: "20px",
     zIndex: 3,
     width: "50%",
-    top: "40%",
+    top: "30%",
     position: "absolute",
     bottom: 0,
     opacity: 0,
@@ -178,6 +176,23 @@ export const styles = {
     mb: "20px",
     "@media (max-width: 768px)": {
       mb: "5px",
+    },
+  },
+  dotsContainer: {
+    position: "absolute",
+    bottom: "30%",
+    left: 30,
+    "@media (max-width: 1400px)": {
+      bottom: "28%",
+    },
+    "@media (max-width: 1300px)": {
+      bottom: "28%",
+    },
+    "@media (max-width: 768px)": {
+      bottom: "22%",
+    },
+    "@media (max-width: 576px)": {
+      display: "none",
     },
   },
 };

@@ -20,6 +20,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
+import SortIcon from "@mui/icons-material/Sort";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -44,6 +45,11 @@ export const appRoutes = [
     title: "TV Shows",
     icon: <LiveTvIcon />,
     path: "/tv",
+  },
+  {
+    title: "Browse",
+    icon: <SortIcon />,
+    path: "/browse",
   },
   {
     title: "Watchlist",

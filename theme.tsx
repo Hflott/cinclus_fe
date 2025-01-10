@@ -9,6 +9,10 @@ export const colors = {
     main: "#EA738D",
     contrastText: "#000",
   },
+  accent: {
+    main: "#222",
+    contrastText: "#fff",
+  },
 };
 
 const theme = createTheme({

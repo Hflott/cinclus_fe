@@ -1,0 +1,32 @@
+/* Container for custom dots */
+.customDotsContainer {
+  position: relative; /* Remove !important */
+  justify-content: flex-start;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+/* List styling for dots */
+.customDotsList {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+/* Styling for individual dots */
+.customDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: gray;
+  transition: background-color 0.3s ease;
+  cursor: pointer; /* Make sure it’s clickable */
+}
+
+/* Active dot styling */
+.activeDot {
+  background-color: white; /* Active dot color */
+  scale: 1.6;
+}

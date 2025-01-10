@@ -1,29 +1,33 @@
-import React from "react";
-// import Image from "next/image";
+import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Box, Button, Typography } from "@mui/material";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-
 import { styles as classes } from "./movieSlider.styles";
 import { MovieResult } from "../../types/apiResponses";
 import { formatImgSrc, toUrlFriendly } from "../../utils/utils";
 import Link from "next/link";
-import { useIsMobile } from "../../hooks/app.hooks";
+import SliderDots from "../SliderDots/SliderDots";
 
 type MovieSliderProps = {
   movieData?: MovieResult[];
 };
 
 const MovieSlider = ({ movieData }: MovieSliderProps) => {
-  const isMobile = useIsMobile();
-
   if (!movieData?.length) return null;
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const sliderRef = useRef<any>(null); // Create ref for the Slider
+
+  const handleDotClick = (index: number) => {
+    setActiveIndex(index); // Update the active dot
+    if (sliderRef.current) {
+      sliderRef.current.slickGoTo(index); // Navigate to the clicked index
+    }
+  };
 
   const config = {
-    dots: true,
     arrows: false,
     fade: true,
     infinite: true,
@@ -33,35 +37,24 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
     speed: 800,
     autoplaySpeed: 6000,
     cssEase: "ease",
+    beforeChange: (current: number, next: number) => {
+      setActiveIndex(next); // Set the active index during automatic transition
+    },
+    afterChange: (index: number) => {
+      setActiveIndex(index); // Set the active index when the slide changes
+    },
   };
 
   return (
     <Box sx={classes.mediaSlide}>
       <div>
-        <Slider {...config}>
+        <Slider ref={sliderRef} {...config}>
           {movieData?.map(({ id, title, backdrop_path, overview }, i) => (
             <div key={id}>
               <Box sx={classes.mediaItem}>
                 <Box sx={classes.mediaItemBanner}>
                   <Box sx={classes.mediaItemImg}>
-                    {/* <Image
-                      fill
-                      placeholder="blur"
-                      style={{ objectFit: "cover", objectPosition: "top" }}
-                      blurDataURL={blurData}
-                      src={formatImgSrc(
-                        "https://image.tmdb.org/t/p/original",
-                        backdrop_path
-                      )}
-                      sizes={formatImgSrc(
-                        "https://image.tmdb.org/t/p/w780",
-                        backdrop_path
-                      )}
-                      alt={title}
-                    /> */}
-
                     <LazyLoadImage
-                      placeholderSrc="/assets/flixtr-placeholder.svg"
                       src={formatImgSrc(
                         "https://image.tmdb.org/t/p/original",
                         backdrop_path
@@ -72,7 +65,6 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
                     />
                   </Box>
                 </Box>
-
                 <Box
                   className="media-item-content"
                   sx={classes.mediaItemContent}
@@ -113,6 +105,13 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
                       </Button>
                     </Link>
                   </Box>
+                </Box>
+                <Box sx={classes.dotsContainer}>
+                  <SliderDots
+                    activeIndex={activeIndex}
+                    onDotClick={handleDotClick}
+                    dotCount={movieData?.length || 0}
+                  />
                 </Box>
               </Box>
             </div>

@@ -27,10 +27,7 @@ const Home: NextPage<HomeProps> = () => {
 
   return (
     <>
-      <CustomHead
-        title="MonkeyFlix - Watch Movies & TV Shows"
-        media_type={"movie"}
-      />
+      <CustomHead title="MonkeyFlix - Home" media_type={"movie"} />
 
       <div className={styles.container}>
         {(isPopularLoading || isMoviesLoading || isSeriesLoading) && (
@@ -44,33 +41,34 @@ const Home: NextPage<HomeProps> = () => {
             <MovieSlider movieData={popularMovies?.pages[0].results} />
           )}
         </Box>
+        <Box sx={{ ...classes.sliderContainerOverlay }}>
+          <Box sx={{ ...classes.sliderContainer }}>
+            <Box sx={{ textAlign: "center" }}>
+              <Typography variant="h4" sx={classes.headTxt}>
+                Trending Movies
+              </Typography>
+            </Box>
 
-        <Box sx={{ ...classes.sliderContainerHome }}>
-          <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h4" sx={classes.headTxt}>
-              Trending Movies
-            </Typography>
+            {isMoviesLoading ? (
+              <SkeletonSlider />
+            ) : (
+              <TileSlider movieData={movieData} />
+            )}
           </Box>
 
-          {isMoviesLoading ? (
-            <SkeletonSlider />
-          ) : (
-            <TileSlider movieData={movieData} />
-          )}
-        </Box>
+          <Box sx={classes.sliderContainer}>
+            <Box sx={{ textAlign: "center" }}>
+              <Typography variant="h4" sx={classes.headTxt}>
+                Trending Shows
+              </Typography>
+            </Box>
 
-        <Box sx={classes.sliderContainerHome}>
-          <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h4" sx={classes.headTxt}>
-              Trending Shows
-            </Typography>
+            {isSeriesLoading ? (
+              <SkeletonSlider />
+            ) : (
+              <TvTileSlider seriesData={seriesData} />
+            )}
           </Box>
-
-          {isSeriesLoading ? (
-            <SkeletonSlider />
-          ) : (
-            <TvTileSlider seriesData={seriesData} />
-          )}
         </Box>
       </div>
     </>

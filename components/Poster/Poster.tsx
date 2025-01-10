@@ -30,7 +30,7 @@ const Poster = ({ singleMovieData }: PosterProps) => {
     >
       <Link
         shallow
-        href={`/movie/${id}/${titleConverted}`}
+        href={`/movie/${id}/${titleConverted}/watch`}
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
         {/* Overlay with Movie Details */}

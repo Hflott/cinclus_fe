@@ -36,7 +36,7 @@ const TvPoster = ({ singleShowData }: TvPosterProps) => {
     >
       <Link
         shallow
-        href={`/tv/${id}/${titleConverted}`}
+        href={`/tv/${id}/${titleConverted}/season/1`}
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
         {/* Overlay with Movie Details */}

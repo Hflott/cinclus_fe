@@ -31,10 +31,10 @@ export const useMovieById = (movieId?: string | string[]) => {
 
 export const usePopularMovies = (
   releaseYear?: number | "",
-  conutry?: IConutry
+  country?: IConutry
 ) => {
   return useInfiniteQuery(
-    [MovieQueryKey.PopularMovies, conutry, releaseYear],
+    [MovieQueryKey.PopularMovies, country, releaseYear],
     (props) => getPopularMovies(props),
     {
       getNextPageParam: ({ page, total_pages }) => {
@@ -49,10 +49,10 @@ export const usePopularMovies = (
 
 export const useRecentMovies = (
   releaseYear?: number | "",
-  conutry?: IConutry
+  country?: IConutry
 ) => {
   return useInfiniteQuery(
-    [MovieQueryKey.RecentMovies, conutry, releaseYear],
+    [MovieQueryKey.RecentMovies, country, releaseYear],
     (props) => getRecentMovies(props),
     {
       getNextPageParam: ({ page, total_pages }) => {
@@ -65,9 +65,9 @@ export const useRecentMovies = (
   );
 };
 
-export const useTopMovies = (releaseYear?: number | "", conutry?: IConutry) => {
+export const useTopMovies = (releaseYear?: number | "", country?: IConutry) => {
   return useInfiniteQuery(
-    [MovieQueryKey.TopMovies, conutry, releaseYear],
+    [MovieQueryKey.TopMovies, country, releaseYear],
     (prop) => getTopMovies(prop),
     {
       getNextPageParam: ({ page, total_pages }) => {

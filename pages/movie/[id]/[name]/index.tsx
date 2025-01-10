@@ -132,24 +132,6 @@ function MovieInfo() {
             }}
           ></Box>
           <Box sx={classes.imageBox}>
-            {/* <Image
-              fill
-              className="poster-img"
-              placeholder="blur"
-              style={
-                poster_path
-                  ? { objectFit: "cover", objectPosition: "top" }
-                  : { objectFit: "contain", objectPosition: "center" }
-              }
-              blurDataURL={blurData}
-              src={formatImgSrc("https://image.tmdb.org/t/p/w780", poster_path)}
-              sizes={formatImgSrc(
-                "https://image.tmdb.org/t/p/w780",
-                poster_path
-              )}
-              alt={title}
-              /> */}
-
             <LazyLoadImage
               placeholderSrc="/assets/flixtr-placeholder.svg"
               src={formatImgSrc("https://image.tmdb.org/t/p/w780", poster_path)}
