@@ -8,8 +8,11 @@ import {
   Grid,
   LinearProgress,
   Typography,
+  Breadcrumbs,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 import TileSlider from "../../../../components/TileSlider/TileSlider";
 import { styles as classes } from "../../../../styles/watchMovie.styles";
@@ -18,16 +21,13 @@ import { useMovieById } from "../../../../hooks/movies.hooks";
 import CustomHead from "../../../../components/CustomHead/CustomHead";
 import {
   convertToNumber,
-  formatImgSrc,
   formatMinutes,
-  formatToUSD,
   rounded,
-  toUrlFriendly,
 } from "../../../../utils/utils";
 import DisqusComments from "../../../../components/Disqus/Disqus";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import StarIcon from "@mui/icons-material/Star";
 import { LoadingButton } from "@mui/lab";
-import CastRoll from "../../../../components/CastRoll/CastRoll";
 import {
   useWatchlistById,
   useAddToWatchlist,
@@ -43,7 +43,7 @@ function Watch() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id, name, p } = router.query;
-  const [player, setPlayer] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const [player, setPlayer] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(1);
   const { data: singleMovieData, isLoading } = useMovieById(id);
   const [watchlistExists, setWatchlistExists] = useState(false);
 
@@ -74,6 +74,8 @@ function Watch() {
       if (pNum === 3) setPlayer(pNum);
       if (pNum === 4) setPlayer(pNum);
       if (pNum === 5) setPlayer(pNum);
+      if (pNum === 6) setPlayer(pNum);
+      if (pNum === 7) setPlayer(pNum);
     }
   }, [isLoading]);
 
@@ -87,11 +89,8 @@ function Watch() {
     runtime,
     overview,
     genres,
-    status,
     release_date,
     vote_average,
-    revenue,
-    budget,
     spoken_languages,
     credits: { cast },
     recommendations,
@@ -167,45 +166,167 @@ function Watch() {
             Watching {typeof name === "string" && name?.replaceAll("-", " ")}
           </Typography>
         </Grid>
+        {/* Player Menu */}
+        <FormControl fullWidth sx={classes.playermenu}>
+          <Select
+            labelId="select-player-label"
+            id="select-player"
+            value={player}
+            onChange={(e) => {
+              const selectedPlayer = Number(e.target.value) as
+                | 1
+                | 2
+                | 3
+                | 4
+                | 5
+                | 6
+                | 7;
+              setPlayer(selectedPlayer);
+              changePlayer(selectedPlayer);
+            }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  backgroundColor: "transparent", // Make the background transparent
+                  borderRadius: "20px",
+                  boxShadow: "none", // Optional: removes the dropdown shadow if you don't need it
+                },
+              },
+            }}
+          >
+            {[1, 2, 3, 4, 5, 6, 7].map((playerId) => (
+              <MenuItem
+                key={playerId}
+                value={playerId}
+                sx={{
+                  backgroundColor: player === playerId ? "secondary" : "#222", // Custom color for active/inactive state
+                  "&:hover": {
+                    backgroundColor: player === playerId ? "secondary" : "#444", // Custom hover color
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#EA738D", // Set selected background color
+                  },
+                }}
+              >
+                Server {playerId}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <ButtonGroup
           variant="contained"
           aria-label="Media player list"
           sx={classes.btnGroup}
         >
           <Button
-            sx={{ flexGrow: 1, ml: "30px", borderRadius: "20px" }}
+            sx={{
+              borderRadius: "30px",
+              backgroundColor: player === 1 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 1 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
             color={player === 1 ? "secondary" : "primary"}
             onClick={() => changePlayer(1)}
           >
-            Server 1
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <StarIcon />
+              <p>Server 1</p>
+            </span>
           </Button>
           <Button
-            sx={{ flexGrow: 1 }}
+            sx={{
+              backgroundColor: player === 2 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 2 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
             color={player === 2 ? "secondary" : "primary"}
             onClick={() => changePlayer(2)}
           >
             Server 2
           </Button>
           <Button
-            sx={{ flexGrow: 1 }}
+            sx={{
+              backgroundColor: player === 3 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 3 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
             color={player === 3 ? "secondary" : "primary"}
             onClick={() => changePlayer(3)}
           >
             Server 3
           </Button>
           <Button
-            sx={{ flexGrow: 1 }}
+            sx={{
+              backgroundColor: player === 4 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 4 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
             color={player === 4 ? "secondary" : "primary"}
             onClick={() => changePlayer(4)}
           >
-            Server 4
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <StarIcon />
+              <p>Server 4</p>
+            </span>
           </Button>
           <Button
-            sx={{ flexGrow: 1, mr: "30px", borderRadius: "20px" }}
+            sx={{
+              backgroundColor: player === 5 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 5 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
             color={player === 5 ? "secondary" : "primary"}
             onClick={() => changePlayer(5)}
           >
             Server 5
+          </Button>
+          <Button
+            sx={{
+              backgroundColor: player === 6 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 6 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
+            color={player === 6 ? "secondary" : "primary"}
+            onClick={() => changePlayer(6)}
+          >
+            Server 6
+          </Button>
+          <Button
+            sx={{
+              borderRadius: "30px",
+              backgroundColor: player === 7 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 7 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
+            color={player === 7 ? "secondary" : "primary"}
+            onClick={() => changePlayer(7)}
+          >
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <StarIcon />
+              <p>Server 7</p>
+            </span>
           </Button>
         </ButtonGroup>
 
@@ -214,7 +335,7 @@ function Watch() {
             <iframe
               allowFullScreen
               id="watch-iframe1"
-              src={`${process.env.NEXT_PUBLIC_Player_URL_VS}/${id}/color-ADDC35`}
+              src={`${process.env.NEXT_PUBLIC_Player_URL_VS}/movie/${id}`}
             ></iframe>
           )}
 
@@ -249,6 +370,20 @@ function Watch() {
               src={`${process.env.NEXT_PUBLIC_Player_URL_SEVIP}video_id=${id}&tmdb=1`}
             ></iframe>
           )}
+          {player === 6 && (
+            <iframe
+              allowFullScreen
+              id="watch-iframe6"
+              src={`${process.env.NEXT_PUBLIC_Player_URL_EMSTR}/?id=${id}`}
+            ></iframe>
+          )}
+          {player === 7 && (
+            <iframe
+              allowFullScreen
+              id="watch-iframe6"
+              src={`${process.env.NEXT_PUBLIC_Player_URL_AUTOEM}/movie/${id}`}
+            ></iframe>
+          )}
         </Grid>
         <Grid item xs={12} sx={{ padding: "80px" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -268,7 +403,7 @@ function Watch() {
               />
             </Box>
             <Box>
-              <Typography variant="h3">{title}</Typography>
+              <Typography sx={classes.title}>{title}</Typography>
               <Typography variant="body1" sx={{ marginTop: "10px" }}>
                 {overview}
               </Typography>
@@ -327,12 +462,26 @@ function Watch() {
                     {rounded(vote_average)}
                   </Typography>
                 </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                    Cast:
+                  </Typography>
+                  <Typography variant="body2">
+                    {cast?.slice(0, 6).map((actor, index) => (
+                      <React.Fragment key={actor.name}>
+                        {actor.name}
+                        {index < Math.min(cast.length, 6) - 1 && ", "}
+                      </React.Fragment>
+                    ))}
+                    {cast?.length > 6 && " ..."}
+                  </Typography>
+                </Grid>
               </Grid>
               <Link href={`/movie/${id}/${name}`}>
                 <Button
                   variant="outlined"
                   color="secondary"
-                  sx={classes.watchlistBtn}
+                  sx={{ width: "200px" }}
                 >
                   More details
                 </Button>

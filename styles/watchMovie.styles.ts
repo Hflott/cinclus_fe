@@ -29,11 +29,22 @@ export const styles = {
       padding: "0 10px",
     },
   },
+  playermenu: {
+    display: "none",
+    backgroundColor: "#222",
+    m: "10px 0 10px 0",
+    "@media (max-width: 900px)": {
+      display: "flex",
+    },
+  },
   btnGroup: {
     display: "flex",
-    marginTop: "40px",
     justifyContent: "center",
-    gap: 1,
+    gap: "10px",
+    m: "25px 24px 0 24px",
+    "@media (max-width: 900px)": {
+      display: "none",
+    },
   },
   backIco: {
     marginRight: "5px",
@@ -78,6 +89,15 @@ export const styles = {
     alignItems: "center",
     "@media (max-width: 900px)": {
       display: "none",
+    },
+  },
+  title: {
+    fontSize: "50px",
+    "@media (max-width: 900px)": {
+      fontSize: "40px",
+    },
+    "@media (max-width: 400px)": {
+      fontSize: "30px",
     },
   },
   detailGrid: {

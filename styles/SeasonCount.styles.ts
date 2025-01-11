@@ -1,3 +1,6 @@
+import { Padding } from "@mui/icons-material";
+import { m } from "nextra/dist/types-c8e621b7";
+
 export const styles = {
   watchHead: {
     padding: "0 24px",
@@ -48,25 +51,6 @@ export const styles = {
       margin: "20px 10px",
     },
   },
-  episodeBtnList: {
-    maxHeight: "80vh",
-    overflowY: "auto",
-    marginTop: "20px",
-    "&::-webkit-scrollbar": {
-      width: "8px",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#222",
-      borderRadius: "4px",
-    },
-    "&::-webkit-scrollbar-thumb:hover": {
-      backgroundColor: "#FF99A5",
-    },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: "#222",
-      borderRadius: "4px",
-    },
-  },
   episodeBtn: {
     width: "100%",
     whiteSpace: "nowrap",
@@ -94,12 +78,21 @@ export const styles = {
       },
     },
   },
+  playermenu: {
+    display: "none",
+    backgroundColor: "#222",
+    m: "10px 0 10px 0",
+    "@media (max-width: 900px)": {
+      display: "flex",
+    },
+  },
   btnGroup: {
+    display: "flex",
+    justifyContent: "center",
     gap: "10px",
     m: "25px 24px 0 24px",
     "@media (max-width: 900px)": {
-      width: "calc(100% - 20px)",
-      m: "15px 10px 0 10px",
+      display: "none",
     },
   },
   mustWatch: {
@@ -125,6 +118,15 @@ export const styles = {
     alignItems: "center",
     "@media (max-width: 900px)": {
       display: "none",
+    },
+  },
+  title: {
+    fontSize: "50px",
+    "@media (max-width: 900px)": {
+      fontSize: "40px",
+    },
+    "@media (max-width: 400px)": {
+      fontSize: "30px",
     },
   },
   detailGrid: {

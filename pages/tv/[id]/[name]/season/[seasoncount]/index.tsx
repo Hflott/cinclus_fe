@@ -8,8 +8,12 @@ import {
   Grid,
   LinearProgress,
   Typography,
+  Select,
+  MenuItem,
+  Card,
+  CardContent,
+  FormControl,
 } from "@mui/material";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 import { SeriesResult } from "../../../../../../types/apiResponses";
 import { styles as classes } from "../../../../../../styles/SeasonCount.styles";
@@ -19,20 +23,10 @@ import {
   useSeriesSeasonById,
 } from "../../../../../../hooks/series.hooks";
 import CustomHead from "../../../../../../components/CustomHead/CustomHead";
-import {
-  convertToNumber,
-  formatMinutes,
-  rounded,
-} from "../../../../../../utils/utils";
+import { convertToNumber, rounded } from "../../../../../../utils/utils";
 import DisqusComments from "../../../../../../components/Disqus/Disqus";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  IconButton,
-} from "@mui/material";
 import { PlayArrow } from "@mui/icons-material";
+import StarIcon from "@mui/icons-material/Star";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { LoadingButton } from "@mui/lab";
 import { title } from "process";
@@ -44,6 +38,7 @@ import {
   useWatchlistById,
 } from "../../../../../../hooks/watchlist.hooks";
 import { useDispatch } from "react-redux";
+import SeasonRoll from "../../../../../../components/SeasonRoll/SeasonRoll";
 
 function SeasonCount() {
   const router = useRouter();
@@ -52,7 +47,7 @@ function SeasonCount() {
   const { id, name, seasoncount, e, p } = router.query;
   const [ep, setEp] = useState(1);
   const dispatch = useDispatch();
-  const [player, setPlayer] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const [player, setPlayer] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7>(1);
 
   const { data: tvShowSeasonData, isLoading: isSeasonLoading } =
     useSeriesSeasonById(id, seasoncount);
@@ -73,6 +68,12 @@ function SeasonCount() {
   } = useWatchlistById(tvShowData?.id);
 
   useEffect(() => {
+    if (seasoncount) {
+      setEp(1);
+    }
+  }, [seasoncount]);
+
+  useEffect(() => {
     setWatchlistExists(false);
     if (watchlistData?.media) setWatchlistExists(true);
     if (error) setWatchlistExists(false);
@@ -89,6 +90,8 @@ function SeasonCount() {
       if (pNum === 3) setPlayer(pNum);
       if (pNum === 4) setPlayer(pNum);
       if (pNum === 5) setPlayer(pNum);
+      if (pNum === 6) setPlayer(pNum);
+      if (pNum === 7) setPlayer(pNum);
     }
   }, [isShowLoading]);
 
@@ -96,9 +99,9 @@ function SeasonCount() {
 
   const {
     id: seriesId,
-    backdrop_path,
     poster_path,
     overview,
+    seasons,
     episode_run_time,
     genres,
     vote_average,
@@ -107,6 +110,7 @@ function SeasonCount() {
     spoken_languages,
     similar,
     name: showTitle,
+    credits: { cast },
   } = tvShowData as SeriesResult;
 
   // console.log(router.query);
@@ -185,6 +189,57 @@ function SeasonCount() {
             {typeof name === "string" && name?.replaceAll("-", " ")}
           </Typography>
         </Grid>
+
+        <FormControl fullWidth sx={classes.playermenu}>
+          <Select
+            labelId="select-player-label"
+            id="select-player"
+            value={player}
+            onChange={(e) => {
+              const selectedPlayer = Number(e.target.value) as
+                | 1
+                | 2
+                | 3
+                | 4
+                | 5
+                | 6
+                | 7;
+              setPlayer(selectedPlayer);
+              changePlayer(selectedPlayer);
+            }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  backgroundColor: "transparent", // Make the background transparent
+                  borderRadius: "20px",
+                  boxShadow: "none", // Optional: removes the dropdown shadow if you don't need it
+                },
+              },
+            }}
+          >
+            {[1, 2, 3, 4, 5, 6, 7].map((playerId) => (
+              <MenuItem
+                key={playerId}
+                value={playerId}
+                sx={{
+                  backgroundColor: player === playerId ? "secondary" : "#222", // Custom color for active/inactive state
+                  "&:hover": {
+                    backgroundColor: player === playerId ? "secondary" : "#444", // Custom hover color
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#EA738D", // Set selected background color
+                  },
+                  // Ensure the selected state does not conflict with hover
+                  "&:hover.Mui-selected": {
+                    backgroundColor: "#EA738D", // Set selected background color on hover
+                  },
+                }}
+              >
+                Server {playerId}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <ButtonGroup
           variant="contained"
           aria-label="Media player list"
@@ -192,7 +247,7 @@ function SeasonCount() {
         >
           <Button
             sx={{
-              flexGrow: 1,
+              borderRadius: "30px",
               backgroundColor: player === 1 ? "secondary" : "#222", // Custom color for active/inactive state
               "&:hover": {
                 backgroundColor: player === 1 ? "secondary" : "#444", // Custom hover color
@@ -201,11 +256,18 @@ function SeasonCount() {
             color={player === 1 ? "secondary" : "primary"}
             onClick={() => changePlayer(1)}
           >
-            Server 1
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <StarIcon />
+              <p>Server 1</p>
+            </span>
           </Button>
           <Button
             sx={{
-              flexGrow: 1,
               backgroundColor: player === 2 ? "secondary" : "#222", // Custom color for active/inactive state
               "&:hover": {
                 backgroundColor: player === 2 ? "secondary" : "#444", // Custom hover color
@@ -218,7 +280,6 @@ function SeasonCount() {
           </Button>
           <Button
             sx={{
-              flexGrow: 1,
               backgroundColor: player === 3 ? "secondary" : "#222", // Custom color for active/inactive state
               "&:hover": {
                 backgroundColor: player === 3 ? "secondary" : "#444", // Custom hover color
@@ -231,7 +292,6 @@ function SeasonCount() {
           </Button>
           <Button
             sx={{
-              flexGrow: 1,
               backgroundColor: player === 4 ? "secondary" : "#222", // Custom color for active/inactive state
               "&:hover": {
                 backgroundColor: player === 4 ? "secondary" : "#444", // Custom hover color
@@ -240,11 +300,18 @@ function SeasonCount() {
             color={player === 4 ? "secondary" : "primary"}
             onClick={() => changePlayer(4)}
           >
-            Server 4
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <StarIcon />
+              <p>Server 4</p>
+            </span>
           </Button>
           <Button
             sx={{
-              flexGrow: 1,
               backgroundColor: player === 5 ? "secondary" : "#222", // Custom color for active/inactive state
               "&:hover": {
                 backgroundColor: player === 5 ? "secondary" : "#444", // Custom hover color
@@ -254,6 +321,39 @@ function SeasonCount() {
             onClick={() => changePlayer(5)}
           >
             Server 5
+          </Button>
+          <Button
+            sx={{
+              backgroundColor: player === 6 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 6 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
+            color={player === 6 ? "secondary" : "primary"}
+            onClick={() => changePlayer(6)}
+          >
+            Server 6
+          </Button>
+          <Button
+            sx={{
+              borderRadius: "30px",
+              backgroundColor: player === 7 ? "secondary" : "#222", // Custom color for active/inactive state
+              "&:hover": {
+                backgroundColor: player === 7 ? "secondary" : "#444", // Custom hover color
+              },
+            }}
+            color={player === 7 ? "secondary" : "primary"}
+            onClick={() => changePlayer(7)}
+          >
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <StarIcon />
+              <p>Server 7</p>
+            </span>
           </Button>
         </ButtonGroup>
         <Grid sx={classes.moviePlayer}>
@@ -272,9 +372,9 @@ function SeasonCount() {
                 <iframe
                   allowFullScreen
                   id="watch-iframe1"
-                  src={`${process.env.NEXT_PUBLIC_Player_URL_VS}/${id}/${
+                  src={`${process.env.NEXT_PUBLIC_Player_URL_VS}/tv/${id}/${
                     seasoncount ? seasoncount : 1
-                  }-${ep}/color-ADDC35`}
+                  }/${ep}`}
                 ></iframe>
               )}
 
@@ -321,6 +421,24 @@ function SeasonCount() {
                   }&e=${ep}`}
                 ></iframe>
               )}
+              {player === 6 && (
+                <iframe
+                  allowFullScreen
+                  id="watch-iframe6"
+                  src={`${
+                    process.env.NEXT_PUBLIC_Player_URL_EMSTR
+                  }/?id=${id}&s=${seasoncount ? seasoncount : 1}&e=${ep}`}
+                ></iframe>
+              )}
+              {player === 7 && (
+                <iframe
+                  allowFullScreen
+                  id="watch-iframe6"
+                  src={`${process.env.NEXT_PUBLIC_Player_URL_AUTOEM}/tv/${id}/${
+                    seasoncount ? seasoncount : 1
+                  }/${ep}`}
+                ></iframe>
+              )}
             </Grid>
           </Grid>
         </Grid>
@@ -342,7 +460,7 @@ function SeasonCount() {
               />
             </Box>
             <Box>
-              <Typography variant="h3">{showTitle}</Typography>
+              <Typography sx={classes.title}>{showTitle}</Typography>
               <Typography variant="body1" sx={{ marginTop: "10px" }}>
                 {overview}
               </Typography>
@@ -392,16 +510,30 @@ function SeasonCount() {
                     {rounded(vote_average)}
                   </Typography>
                 </Grid>
-                <Link href={`/tv/${id}/${name}`}>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    sx={{ width: "200px" }}
-                  >
-                    More details
-                  </Button>
-                </Link>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                    Cast:
+                  </Typography>
+                  <Typography variant="body2">
+                    {cast?.slice(0, 6).map((actor, index) => (
+                      <React.Fragment key={actor.name}>
+                        {actor.name}
+                        {index < Math.min(cast.length, 6) - 1 && ", "}
+                      </React.Fragment>
+                    ))}
+                    {cast?.length > 6 && " ..."}
+                  </Typography>
+                </Grid>
               </Grid>
+              <Link href={`/tv/${id}/${name}`}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ width: "200px" }}
+                >
+                  More details
+                </Button>
+              </Link>
             </Box>
           </Box>
           <Box sx={{ marginTop: "20px" }}>
@@ -428,68 +560,79 @@ function SeasonCount() {
             )}
           </Box>
         </Grid>
-        <Grid item xs={2.5} sx={{ padding: "10px", maxHeight: "80vh" }}>
-          <Box sx={{ ...classes.episodeBtnList }}>
-            <List>
+        <Grid sx={{ padding: "10px" }}>
+          <SeasonRoll
+            seasonList={seasons}
+            showId={seriesId}
+            showName={showTitle}
+          />
+        </Grid>
+        <Grid item xs={2.5} sx={{ padding: "10px" }}>
+          <Box>
+            <Typography variant="h5" sx={{ mb: "10px" }}>
+              Episodes
+            </Typography>
+            <Grid container spacing={2}>
               {tvShowSeasonData?.episodes?.map(({ episode_number, name }) => (
-                <ListItem
-                  key={episode_number}
-                  sx={{
-                    cursor: "pointer",
-                    backgroundColor:
-                      ep === episode_number ? "#EA738D" : "transparent",
-                    color: ep === episode_number ? "#000" : "#fff",
-                    "&:hover": {
+                <Grid item xs={12} sm={6} md={4} key={episode_number}>
+                  <Card
+                    sx={{
+                      cursor: "pointer",
                       backgroundColor:
-                        ep === episode_number
-                          ? "#EA738D"
-                          : "rgba(255, 255, 255, 0.1)",
-                    },
-                    borderRadius: "8px",
-                    marginBottom: "4px",
-                  }}
-                  onClick={() => {
-                    setEp((prevEp) => {
-                      if (prevEp === episode_number) return prevEp;
-
-                      router.replace(
-                        {
-                          pathname: router.asPath.split("?")[0],
-                          query: { e: episode_number, p: player },
-                        },
-                        undefined,
-                        {
-                          shallow: true,
-                        }
-                      );
-
-                      return episode_number;
-                    });
-                  }}
-                >
-                  <ListItemIcon>
-                    <IconButton edge="start">
-                      <PlayArrow />
-                    </IconButton>
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={`Ep ${episode_number}`}
-                    secondary={name || "No title available."}
-                    primaryTypographyProps={{
-                      fontWeight: ep === episode_number ? "bold" : "normal",
+                        ep === episode_number ? "#EA738D" : "#222",
+                      color: ep === episode_number ? "#000" : "#fff",
+                      "&:hover": {
+                        backgroundColor:
+                          ep === episode_number
+                            ? "#EA738D"
+                            : "rgba(255, 255, 255, 0.31)",
+                      },
+                      borderRadius: "8px",
+                      boxShadow: 3,
                     }}
-                    secondaryTypographyProps={{
-                      color:
-                        ep === episode_number
-                          ? "rgba(0,0,0,0.8)"
-                          : "rgba(255,255,255,0.7)",
+                    onClick={() => {
+                      setEp((prevEp) => {
+                        if (prevEp === episode_number) return prevEp;
+
+                        router.replace(
+                          {
+                            pathname: router.asPath.split("?")[0],
+                            query: { e: episode_number, p: player },
+                          },
+                          undefined,
+                          {
+                            shallow: true,
+                          }
+                        );
+
+                        return episode_number;
+                      });
                     }}
-                  />
-                </ListItem>
+                  >
+                    {/* <CardMedia
+                      component="img"
+                      height="120"
+                      image={backdrop_path || "/path/to/default/image.jpg"} // Use a default image if no image is available
+                      alt={`Episode ${episode_number}`}
+                    /> */}
+                    <CardContent
+                      sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                    >
+                      <PlayArrow sx={{ color: "text.primary" }} />
+                      <Typography variant="h6" color="text.primary">
+                        {`Episode ${episode_number}`}
+                      </Typography>
+                      <Typography variant="body1" color="text.primary">
+                        {name || "No title available."}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
               ))}
-            </List>
+            </Grid>
           </Box>
         </Grid>
+
         <Grid container justifyContent={"center"} sx={{ marginTop: "40px" }}>
           <DisqusComments
             identifier={`${id}-season-${seasoncount}-ep${ep}`} // Use the unique identifier
