@@ -262,7 +262,7 @@ function SeasonCount() {
                 alignItems: "center",
               }}
             >
-              <StarIcon />
+              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
               <p>Server 1</p>
             </span>
           </Button>
@@ -306,7 +306,7 @@ function SeasonCount() {
                 alignItems: "center",
               }}
             >
-              <StarIcon />
+              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
               <p>Server 4</p>
             </span>
           </Button>
@@ -351,7 +351,7 @@ function SeasonCount() {
                 alignItems: "center",
               }}
             >
-              <StarIcon />
+              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
               <p>Server 7</p>
             </span>
           </Button>
@@ -640,7 +640,7 @@ function SeasonCount() {
           />
         </Grid>
         {[
-          { movieData: recommendations?.results, title: "Recommended for you" },
+          { movieData: recommendations?.results, title: "Recommended" },
           { movieData: similar?.results, title: "Related shows" },
         ].map(({ movieData, title }) => (
           <Grid item sx={classes.mustWatch} key={title}>

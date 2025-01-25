@@ -206,9 +206,16 @@ function Watch() {
                   "&.Mui-selected": {
                     backgroundColor: "#EA738D", // Set selected background color
                   },
+                  // Ensure the selected state does not conflict with hover
+                  "&:hover.Mui-selected": {
+                    backgroundColor: "#EA738D", // Set selected background color on hover
+                  },
                 }}
               >
                 Server {playerId}
+                {[1, 4, 7].includes(playerId) && (
+                  <StarIcon sx={{ color: "#FFD700", marginLeft: 2 }} /> // Style the star icon
+                )}
               </MenuItem>
             ))}
           </Select>
@@ -235,7 +242,7 @@ function Watch() {
                 alignItems: "center",
               }}
             >
-              <StarIcon />
+              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
               <p>Server 1</p>
             </span>
           </Button>
@@ -279,7 +286,7 @@ function Watch() {
                 alignItems: "center",
               }}
             >
-              <StarIcon />
+              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
               <p>Server 4</p>
             </span>
           </Button>
@@ -324,7 +331,7 @@ function Watch() {
                 alignItems: "center",
               }}
             >
-              <StarIcon />
+              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
               <p>Server 7</p>
             </span>
           </Button>
@@ -521,7 +528,7 @@ function Watch() {
         </Grid>
 
         {[
-          { movieData: recommendations?.results, title: "Recommended for you" },
+          { movieData: recommendations?.results, title: "Recommended" },
           { movieData: similar?.results, title: "Related movies" },
         ].map(({ movieData, title }) => (
           <Grid item sx={classes.mustWatch} key={title}>

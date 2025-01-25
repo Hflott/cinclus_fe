@@ -6,6 +6,7 @@ import {
   getSeriesById,
   getSeriesSeasonById,
   getTopSeries,
+  getSeriesTop,
 } from "../apis/series.api";
 
 import { IConutry } from "../utils/filterUtils";
@@ -21,6 +22,9 @@ export enum SeriesQueryKey {
 
 export const useSeries = () => {
   return useQuery([SeriesQueryKey.SeriesData], getSeries);
+};
+export const useSeriesPopular = () => {
+  return useQuery([SeriesQueryKey.TopSeries], getSeriesTop);
 };
 
 export const useSeriesById = (seriesId?: string | string[]) => {

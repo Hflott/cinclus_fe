@@ -5,6 +5,7 @@ import {
   getPopularMovies,
   getRecentMovies,
   getTopMovies,
+  getMoviesTop,
 } from "../apis/movies.api";
 import { IConutry } from "../utils/filterUtils";
 
@@ -21,6 +22,10 @@ export enum MovieQueryKey {
 
 export const useMovies = () => {
   return useQuery([MovieQueryKey.MovieData], getMovies);
+};
+
+export const useMoviesPopular = () => {
+  return useQuery([MovieQueryKey.TopMovies], getMoviesTop);
 };
 
 export const useMovieById = (movieId?: string | string[]) => {

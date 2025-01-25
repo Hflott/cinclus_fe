@@ -4,9 +4,12 @@ import { Box, LinearProgress, Typography } from "@mui/material";
 
 import styles from "../styles/Home.module.css";
 import { styles as classes } from "../styles/Home.styles";
-import { useMovies, usePopularMovies } from "../hooks/movies.hooks";
-import { useSeries } from "../hooks/series.hooks";
-import { usePeople } from "../hooks/people.hooks";
+import {
+  useMovies,
+  useMoviesPopular,
+  usePopularMovies,
+} from "../hooks/movies.hooks";
+import { useSeries, useSeriesPopular } from "../hooks/series.hooks";
 import TileSlider from "../components/TileSlider/TileSlider";
 import TvTileSlider from "../components/TvTileSlider/TvTileSlider";
 import CustomHead from "../components/CustomHead/CustomHead";
@@ -20,7 +23,9 @@ const Home: NextPage<HomeProps> = () => {
   const { data: popularMovies, isLoading: isPopularLoading } =
     usePopularMovies();
   const { data: movieData, isLoading: isMoviesLoading } = useMovies();
+  const { data: TopMovies, isLoading: isTopMoviesLoading } = useMoviesPopular();
   const { data: seriesData, isLoading: isSeriesLoading } = useSeries();
+  const { data: TopSeries, isLoading: isTopSeriesLoading } = useSeriesPopular();
   // console.log("MovieDATA", movieData);
   // console.log("MovieDATA", toPercent(movieData[1].vote_average || 0));
   // console.log("seriesDATA", seriesData);
@@ -30,9 +35,11 @@ const Home: NextPage<HomeProps> = () => {
       <CustomHead title="MonkeyFlix - Home" media_type={"movie"} />
 
       <div className={styles.container}>
-        {(isPopularLoading || isMoviesLoading || isSeriesLoading) && (
-          <LinearProgress />
-        )}
+        {(isPopularLoading ||
+          isMoviesLoading ||
+          isSeriesLoading ||
+          isTopMoviesLoading ||
+          isTopSeriesLoading) && <LinearProgress />}
 
         <Box>
           {isPopularLoading ? (
@@ -43,7 +50,7 @@ const Home: NextPage<HomeProps> = () => {
         </Box>
         <Box sx={{ ...classes.sliderContainerOverlay }}>
           <Box sx={{ ...classes.sliderContainer }}>
-            <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ textAlign: "start" }}>
               <Typography variant="h4" sx={classes.headTxt}>
                 Trending Movies
               </Typography>
@@ -57,7 +64,7 @@ const Home: NextPage<HomeProps> = () => {
           </Box>
 
           <Box sx={classes.sliderContainer}>
-            <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ textAlign: "start" }}>
               <Typography variant="h4" sx={classes.headTxt}>
                 Trending Shows
               </Typography>
@@ -67,6 +74,32 @@ const Home: NextPage<HomeProps> = () => {
               <SkeletonSlider />
             ) : (
               <TvTileSlider seriesData={seriesData} />
+            )}
+          </Box>
+          <Box sx={classes.sliderContainer}>
+            <Box sx={{ textAlign: "start" }}>
+              <Typography variant="h4" sx={classes.headTxt}>
+                Top Movies
+              </Typography>
+            </Box>
+
+            {isSeriesLoading ? (
+              <SkeletonSlider />
+            ) : (
+              <TileSlider movieData={TopMovies} />
+            )}
+          </Box>
+          <Box sx={classes.sliderContainer}>
+            <Box sx={{ textAlign: "start" }}>
+              <Typography variant="h4" sx={classes.headTxt}>
+                Top Shows
+              </Typography>
+            </Box>
+
+            {isSeriesLoading ? (
+              <SkeletonSlider />
+            ) : (
+              <TvTileSlider seriesData={TopSeries} />
             )}
           </Box>
         </Box>

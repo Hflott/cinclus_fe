@@ -19,8 +19,6 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
 
   // console.log("TileSlider", seriesData);
   const sliderOptions = {
-    slidesPerView: 6,
-    slidesPerGroup: 6,
     speed: 600,
     pagination: false,
     navigation: true,
@@ -32,7 +30,7 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
         slidesPerView: 2,
         slidesPerGroup: 2,
       },
-      420: {
+      430: {
         slidesPerView: 3,
         slidesPerGroup: 3,
       },
@@ -40,7 +38,7 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
         slidesPerView: 4,
         slidesPerGroup: 4,
       },
-      650: {
+      710: {
         slidesPerView: 5,
         slidesPerGroup: 5,
       },
@@ -52,23 +50,51 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
         slidesPerView: 3,
         slidesPerGroup: 3,
       },
-      1050: {
+      1120: {
         slidesPerView: 4,
         slidesPerGroup: 4,
       },
-      1280: {
+      1340: {
         slidesPerView: 5,
         slidesPerGroup: 5,
       },
-      1440: {
+      1560: {
         slidesPerView: 6,
         slidesPerGroup: 6,
+      },
+      1800: {
+        slidesPerView: 7,
+        slidesPerGroup: 7,
+      },
+      2000: {
+        slidesPerView: 8,
+        slidesPerGroup: 8,
+      },
+      2200: {
+        slidesPerView: 9,
+        slidesPerGroup: 9,
+      },
+      2440: {
+        slidesPerView: 10,
+        slidesPerGroup: 10,
+      },
+      2800: {
+        slidesPerView: 11,
+        slidesPerGroup: 11,
+      },
+      3000: {
+        slidesPerView: 12,
+        slidesPerGroup: 12,
+      },
+      3200: {
+        slidesPerView: 13,
+        slidesPerGroup: 13,
       },
     },
   };
 
   return (
-    <Container maxWidth="xl">
+    <Container sx={{ maxWidth: { xs: "100%", xl: "100vw" } }}>
       {title && (
         <Typography variant="h5" textAlign="center" sx={classes.headTxt}>
           {title}

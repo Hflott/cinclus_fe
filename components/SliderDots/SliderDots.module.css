@@ -1,7 +1,6 @@
 /* Container for custom dots */
 .customDotsContainer {
-  position: relative; /* Remove !important */
-  justify-content: flex-start;
+  position: relative;
   display: flex;
   gap: 10px;
   z-index: 10;
@@ -29,4 +28,27 @@
 .activeDot {
   background-color: white; /* Active dot color */
   scale: 1.6;
+}
+
+@media (max-width: 768px) {
+  .customDot {
+    width: 8px; /* Smaller dots */
+    height: 8px; /* Smaller dots */
+  }
+
+  .activeDot {
+    scale: 1.6; /* Slightly smaller active dot */
+  }
+}
+
+/* Even smaller dots for screens smaller than 480px */
+@media (max-width: 576px) {
+  .customDotsContainer {
+    scale: 0.8;
+  }
+}
+@media (max-width: 360px) {
+  .customDotsContainer {
+    scale: 0.4;
+  }
 }

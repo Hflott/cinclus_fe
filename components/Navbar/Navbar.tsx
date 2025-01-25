@@ -126,26 +126,17 @@ const Navbar = () => {
       <AppBar position="static">
         <Container maxWidth="xl" sx={{ color: "secondary.main" }} id="app-nav">
           <Toolbar disableGutters>
-            <Link href="/" passHref>
-              <Image
-                src="/icon.svg"
-                height={50}
-                width={50}
-                alt="Icon"
-                style={{ margin: "0 6px" }}
-              />
-            </Link>
-            <Typography
-              noWrap
-              variant="h6"
-              component={Link}
-              href="/"
-              sx={classes.logoTxt}
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: {
+                  md: "none",
+                  "@media (max-width: 980px)": {
+                    display: "flex",
+                  },
+                },
+              }}
             >
-              MonkeyFlix
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -157,6 +148,29 @@ const Navbar = () => {
                 <MenuIcon />
               </IconButton>
             </Box>
+            <Box sx={classes.logo}>
+              <Link href="/" passHref>
+                <Image
+                  src="/icon.svg"
+                  alt="Icon"
+                  layout="responsive"
+                  width={50}
+                  height={50}
+                  style={{
+                    margin: "0 6px",
+                  }}
+                />
+              </Link>
+            </Box>
+            <Typography
+              noWrap
+              variant="h6"
+              component={Link}
+              href="/"
+              sx={classes.logoTxt}
+            >
+              MonkeyFlix
+            </Typography>
             <Typography
               variant="h5"
               noWrap
@@ -166,7 +180,17 @@ const Navbar = () => {
             >
               MonkeyFlix
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: {
+                  md: "flex",
+                  "@media (max-width: 980px)": {
+                    display: "none",
+                  },
+                },
+              }}
+            >
               {/* desktop btn links */}
               {appRoutes.map(({ title, path }) => (
                 <Box key={title}>
@@ -187,10 +211,25 @@ const Navbar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
+              <Box sx={{ m: "5px 20px 0 0" }}>
+                <Link href={"https://discord.com/"} target="_blank">
+                  <Image
+                    src="assets/discord.svg"
+                    alt="Discord"
+                    width={30}
+                    height={30}
+                  />
+                </Link>
+              </Box>
               <Box
                 sx={{
                   position: "relative",
-                  display: { xs: "none", md: "block" },
+                  display: {
+                    md: "block",
+                    "@media (max-width: 980px)": {
+                      display: "none",
+                    },
+                  },
                 }}
               >
                 <Search>
@@ -233,7 +272,17 @@ const Navbar = () => {
                   isError={isError}
                 />
               </Box>
-              <Box sx={{ ml: 1, display: { xs: "none", md: "flex" } }}>
+              <Box
+                sx={{
+                  ml: 1,
+                  display: {
+                    md: "flex",
+                    "@media (max-width: 980px)": {
+                      display: "none",
+                    },
+                  },
+                }}
+              >
                 {sessionData?.user ? (
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -294,7 +343,16 @@ const Navbar = () => {
                 </Menu>
               </Box>
 
-              <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <Box
+                sx={{
+                  display: {
+                    md: "none",
+                    "@media (max-width: 980px)": {
+                      display: "flex",
+                    },
+                  },
+                }}
+              >
                 <IconButton
                   onClick={() => setIsMobileSearch((prev) => !prev)}
                   aria-label="upload picture"
@@ -311,7 +369,12 @@ const Navbar = () => {
               sx={{
                 mb: 1,
                 position: "relative",
-                display: { xs: "block", md: "none" },
+                display: {
+                  md: "none",
+                  "@media (max-width: 980px)": {
+                    display: "block",
+                  },
+                },
               }}
             >
               <Search>

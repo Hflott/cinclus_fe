@@ -1,5 +1,6 @@
 import { Scale } from "@mui/icons-material";
 import zIndex from "@mui/material/styles/zIndex";
+import { transform } from "next/dist/build/swc/generated-native";
 
 export const styles = {
   mediaSlide: {
@@ -25,10 +26,10 @@ export const styles = {
       height: "600px",
     },
     "@media (max-width: 768px)": {
-      height: "400px",
+      height: "500px",
     },
     "@media (max-width: 576px)": {
-      height: "220px",
+      height: "400px",
     },
     "& > span": {
       width: "100%",
@@ -158,11 +159,11 @@ export const styles = {
   },
   mediaItemContent: {
     padding: "20px",
+    marginBottom: "10px",
     zIndex: 3,
     width: "50%",
-    top: "30%",
     position: "absolute",
-    bottom: 0,
+    top: "30%",
     opacity: 0,
     transition: "opacity 1s ease 150ms",
     "@media (max-width: 768px)": {
@@ -192,6 +193,10 @@ export const styles = {
       bottom: "22%",
     },
     "@media (max-width: 576px)": {
+      bottom: "22%",
+      left: "2%",
+    },
+    "@media (max-width: 360px)": {
       display: "none",
     },
   },

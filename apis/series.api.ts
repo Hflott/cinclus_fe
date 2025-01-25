@@ -17,6 +17,23 @@ export const getSeries = async (): Promise<SeriesResult[]> => {
   }
 };
 
+export const getSeriesTop = async (): Promise<SeriesResult[]> => {
+  try {
+    const seriesRes = await fetch(
+      `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}`
+    );
+    const seriesData: SeriesData = await seriesRes.json();
+
+    if (seriesData.hasOwnProperty("success"))
+      throw new Error("Api call failed, check console.");
+
+    return seriesData.results;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Api call failed, check console.");
+  }
+};
+
 export const getSeriesById = async (
   seriesId?: string | string[]
 ): Promise<SeriesResult> => {
@@ -114,7 +131,6 @@ export const getRecentSeries = async (pageNum: number): Promise<SeriesData> => {
     throw new Error("Api call failed, check console.");
   }
 };
-
 export const getTopSeries = async (pageNum: number): Promise<SeriesData> => {
   try {
     const seriesRes = await fetch(
