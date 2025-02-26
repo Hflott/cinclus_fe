@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
+import HomeIcon from "@mui/icons-material/Home";
 import {
   AppBar,
   Avatar,
+  BottomNavigation,
+  BottomNavigationAction,
   Box,
   Button,
   Container,
@@ -11,20 +15,20 @@ import {
   LinearProgress,
   Menu,
   MenuItem,
+  Paper,
   Toolbar,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import MenuIcon from "@mui/icons-material/Menu";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SortIcon from "@mui/icons-material/Sort";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import { signIn, signOut, useSession } from "next-auth/react";
-
-import Sidebar from "../Sidebar/Sidebar";
 import { useCustomRedirect, usePageLoading } from "../../hooks/app.hooks";
 import SearchAuto from "../SearchAuto/SearchAuto";
 import { styles as classes } from "./navbar.styles";
@@ -61,17 +65,31 @@ export const appRoutes = [
 const settings = ["Profile", "Logout"];
 
 const Navbar = () => {
+  const theme = useTheme();
   const router = useRouter();
+  const currentPath = router.pathname;
   const { data: sessionData } = useSession();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md")); // Detect mobile view
   // console.log("sessionData: ", sessionData);
+
+  const navItems = [
+    { label: "Home", icon: <HomeIcon />, path: "/" },
+    { label: "Movies", icon: <OndemandVideoIcon />, path: "/movie" },
+    { label: "TV Shows", icon: <LiveTvIcon />, path: "/tv" },
+    { label: "Discover", icon: <ExploreOutlinedIcon />, path: "/browse" },
+    { label: "Watchlist", icon: <SubscriptionsIcon />, path: "/watchlist" },
+    // Add other navigation items here
+  ];
+
+  const bottomNavValue = navItems.findIndex(
+    (item) => item.path === currentPath
+  );
 
   const isPageLoading = usePageLoading();
   const { customRedirect } = useCustomRedirect();
 
   const [searchVal, setSearchVal] = useState<string>();
   const [isResultsVisible, setIsResultsVisible] = useState<boolean>(false);
-  const [isMobileSearch, setIsMobileSearch] = useState<boolean>(false);
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [anchorElLinks, setAnchorElLinks] = useState<null | HTMLElement>(null);
@@ -86,16 +104,8 @@ const Navbar = () => {
   // console.log("QueryErrorxx: ", error);
   // console.log("isLoading: ", isLoading);
   // console.log("isFetching: ", isFetching);
-
-  const handleOpenNavMenu = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setSidebarOpen(false);
   };
 
   const handleCloseUserMenu = async (
@@ -115,266 +125,112 @@ const Navbar = () => {
     setOpenLinksMenu(title);
   };
 
-  const handleCloseMenuLinks = () => {
-    setAnchorElLinks(null);
-    setOpenLinksMenu(null);
-  };
-
   return (
     <>
       {isPageLoading && <Loader />}
-      <AppBar position="static">
-        <Container maxWidth="xl" sx={{ color: "secondary.main" }} id="app-nav">
-          <Toolbar disableGutters>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: {
-                  md: "none",
-                  "@media (max-width: 980px)": {
-                    display: "flex",
-                  },
-                },
-              }}
-            >
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="secondary"
-              >
-                <MenuIcon />
-              </IconButton>
-            </Box>
+      <AppBar position="fixed" sx={{ width: "100%", zIndex: 1000 }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            color: "secondary.main",
+            gap: 2,
+            padding: { xs: "0 16px", sm: "0 24px" },
+          }}
+        >
+          {/* Left Section - Logo + Desktop Links */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 0, md: 4 },
+              flexShrink: 0,
+            }}
+          >
             <Box sx={classes.logo}>
-              <Link href="/" passHref>
+              <Link href="/">
                 <Image
                   src="/icon.svg"
                   alt="Icon"
-                  layout="responsive"
-                  width={50}
-                  height={50}
-                  style={{
-                    margin: "0 6px",
-                  }}
+                  width={35}
+                  height={35}
+                  style={{ display: "block" }}
+                  quality={100}
                 />
               </Link>
             </Box>
-            <Typography
-              noWrap
-              variant="h6"
-              component={Link}
-              href="/"
-              sx={classes.logoTxt}
-            >
-              MonkeyFlix
-            </Typography>
-            <Typography
-              variant="h5"
-              noWrap
-              component={Link}
-              href="/"
-              sx={classes.logoTxtMob}
-            >
-              MonkeyFlix
-            </Typography>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: {
-                  md: "flex",
-                  "@media (max-width: 980px)": {
-                    display: "none",
-                  },
-                },
-              }}
-            >
-              {/* desktop btn links */}
-              {appRoutes.map(({ title, path }) => (
-                <Box key={title}>
+
+            {/* Desktop Links */}
+            {!isMobile && (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  ml: 2,
+                }}
+              >
+                {appRoutes.map(({ title, path }) => (
                   <Button
-                    onClick={(e) => {
-                      if (path) {
-                        customRedirect(path);
-                      } else {
-                        handleClickMenuLinks(e, title);
-                      }
+                    key={title}
+                    onClick={() => customRedirect(path)}
+                    sx={{
+                      color: "secondary.main",
+                      whiteSpace: "nowrap",
+                      display: { xs: "none", md: "block" },
                     }}
-                    sx={{ my: 2, color: "secondary.main", display: "block" }}
                   >
                     {title}
                   </Button>
-                </Box>
-              ))}
-            </Box>
-
-            <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
-              <Box sx={{ m: "5px 20px 0 0" }}>
-                <Link href={"https://discord.com/"} target="_blank">
-                  <Image
-                    src="assets/discord.svg"
-                    alt="Discord"
-                    width={30}
-                    height={30}
-                  />
-                </Link>
+                ))}
               </Box>
-              <Box
-                sx={{
-                  position: "relative",
-                  display: {
-                    md: "block",
-                    "@media (max-width: 980px)": {
-                      display: "none",
-                    },
-                  },
+            )}
+          </Box>
+
+          {/* Search Bar - Position changes based on viewport */}
+          <Box
+            sx={{
+              position: "relative",
+              flexGrow: 1,
+              maxWidth: 600,
+              marginLeft: { xs: 0, md: 4 },
+              marginRight: { xs: 0, md: 4 },
+              display: isMobile ? "none" : "block",
+            }}
+          >
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                value={searchVal || ""}
+                onChange={(e) => setSearchVal(e.target.value)}
+                onFocus={() => setIsResultsVisible(true)}
+                onBlur={() => setIsResultsVisible(false)}
+                onKeyUp={(e) => {
+                  if (e.key == "Enter") {
+                    e.currentTarget.blur();
+                    customRedirect("/search?q=" + (searchVal ?? ""));
+                  }
                 }}
-              >
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                    value={searchVal || ""}
-                    onChange={(e) => setSearchVal(e.target.value)}
-                    onFocus={() => setIsResultsVisible(true)}
-                    onBlur={() => setIsResultsVisible(false)}
-                    onKeyUp={(e) => {
-                      if (e.key == "Enter") {
-                        e.currentTarget.blur();
-                        customRedirect("/search?q=" + (searchVal ?? ""));
-                      }
-                    }}
-                  />
+              />
+            </Search>
+            <SearchAuto
+              searchVal={searchVal}
+              searchData={searchData}
+              isResultsVisible={isResultsVisible}
+              isError={isError}
+            />
+          </Box>
 
-                  {isFetching && (
-                    <LinearProgress
-                      color="secondary"
-                      sx={{
-                        backgroundColor: "primary.main",
-                        position: "absolute",
-                        top: "100%",
-                        left: 0,
-                        width: "100%",
-                        zIndex: 2,
-                      }}
-                    />
-                  )}
-                </Search>
-                <SearchAuto
-                  searchVal={searchVal}
-                  searchData={searchData}
-                  isResultsVisible={isResultsVisible}
-                  isError={isError}
-                />
-              </Box>
-              <Box
-                sx={{
-                  ml: 1,
-                  display: {
-                    md: "flex",
-                    "@media (max-width: 980px)": {
-                      display: "none",
-                    },
-                  },
-                }}
-              >
-                {sessionData?.user ? (
-                  <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={`/assets/${
-                          sessionData.user?.user?.propic ?? 1
-                        }.png`}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    onClick={() =>
-                      router.pathname !== "/login" ? signIn() : null
-                    }
-                  >
-                    Login
-                  </Button>
-                )}
-                <Menu
-                  sx={{
-                    mt: "45px",
-                    "& .MuiMenu-list, & .MuiMenu-paper": {
-                      background: "#333",
-                    },
-                  }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem
-                      sx={{
-                        "&:hover": {
-                          backgroundColor: "secondary.main",
-                          color: "#303030",
-                        },
-                      }}
-                      key={setting}
-                      onClick={(e) => handleCloseUserMenu(e, setting)}
-                    >
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-
-              <Box
-                sx={{
-                  display: {
-                    md: "none",
-                    "@media (max-width: 980px)": {
-                      display: "flex",
-                    },
-                  },
-                }}
-              >
-                <IconButton
-                  onClick={() => setIsMobileSearch((prev) => !prev)}
-                  aria-label="upload picture"
-                  sx={{ color: isMobileSearch ? "#fff" : "secondary.main" }}
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Box>
-            </Box>
-          </Toolbar>
-
-          {isMobileSearch && (
+          {/* Mobile Search Bar */}
+          {isMobile && (
             <Box
               sx={{
-                mb: 1,
-                position: "relative",
-                display: {
-                  md: "none",
-                  "@media (max-width: 980px)": {
-                    display: "block",
-                  },
-                },
+                flexGrow: 1,
+                maxWidth: "100%",
+                display: { xs: "block", md: "none" },
               }}
             >
               <Search>
@@ -382,7 +238,6 @@ const Navbar = () => {
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                  autoFocus
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
                   value={searchVal || ""}
@@ -390,26 +245,12 @@ const Navbar = () => {
                   onFocus={() => setIsResultsVisible(true)}
                   onBlur={() => setIsResultsVisible(false)}
                   onKeyUp={(e) => {
-                    if (e.key === "Enter") {
+                    if (e.key == "Enter") {
                       e.currentTarget.blur();
                       customRedirect("/search?q=" + (searchVal ?? ""));
                     }
                   }}
                 />
-
-                {isFetching && (
-                  <LinearProgress
-                    color="secondary"
-                    sx={{
-                      backgroundColor: "primary.main",
-                      position: "absolute",
-                      top: "100%",
-                      left: 0,
-                      width: "100%",
-                      zIndex: 2,
-                    }}
-                  />
-                )}
               </Search>
               <SearchAuto
                 searchVal={searchVal}
@@ -419,12 +260,119 @@ const Navbar = () => {
               />
             </Box>
           )}
-        </Container>
+
+          {/* Right Section - Discord + Profile */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              flexShrink: 0,
+              ml: "auto",
+            }}
+          >
+            {/* Discord Link */}
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Link href="https://discord.com/" target="_blank">
+                <Image
+                  src="assets/discord.svg"
+                  alt="Discord"
+                  width={30}
+                  height={30}
+                  quality={100}
+                />
+              </Link>
+            </Box>
+
+            {/* Profile Section */}
+            <Box sx={{ display: "block" }}>
+              {sessionData?.user ? (
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="User avatar"
+                      src={`/assets/${sessionData.user?.user?.propic ?? 1}.png`}
+                    />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={() =>
+                    router.pathname !== "/login" ? signIn() : null
+                  }
+                >
+                  Login
+                </Button>
+              )}
+            </Box>
+          </Box>
+        </Toolbar>
       </AppBar>
-      <Sidebar
-        sidebarOpen={sidebarOpen}
-        handleCloseNavMenu={handleCloseNavMenu}
-      />
+
+      {/* Bottom Navbar (Only for Mobile) */}
+      {isMobile && (
+        <Paper
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            paddingY: "12px",
+            backgroundColor: "transparent",
+          }}
+          elevation={3}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: `rgba(0, 0, 0, 0.8)`, // Semi-transparent background
+              backdropFilter: "blur(30px)", // Strong blur effect
+              zIndex: -1, // Place the background behind the BottomNavigation
+            }}
+          />
+          <BottomNavigation
+            showLabels
+            value={bottomNavValue === -1 ? false : bottomNavValue} // Set to false if not found
+            onChange={(event, newValue) => {
+              router.push(navItems[newValue].path);
+            }}
+            sx={{
+              backgroundColor: "transparent",
+              color: theme.palette.text.primary,
+            }}
+          >
+            {navItems.map((item, index) => (
+              <BottomNavigationAction
+                key={index}
+                label={item.label}
+                icon={item.icon}
+                sx={{
+                  whiteSpace: "nowrap",
+                  minWidth: "70px",
+                  paddingY: "24px",
+                  color: theme.palette.text.primary,
+                  "& .MuiSvgIcon-root": {
+                    fontSize: "32px",
+                  },
+                  "&.Mui-selected": {
+                    color: theme.palette.secondary.main,
+                    "& .MuiSvgIcon-root": {
+                      color: theme.palette.secondary.main,
+                    },
+                  },
+                }}
+              />
+            ))}
+          </BottomNavigation>
+        </Paper>
+      )}
     </>
   );
 };

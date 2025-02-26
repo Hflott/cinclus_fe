@@ -1,13 +1,11 @@
 import type { NextPage } from "next";
-import { useEffect, useRef } from "react";
-import { Box, LinearProgress, Typography } from "@mui/material";
-
+import { Box, LinearProgress, Typography, useTheme } from "@mui/material";
 import styles from "../styles/Home.module.css";
 import { styles as classes } from "../styles/Home.styles";
 import {
+  usePopularMovies,
   useMovies,
   useMoviesPopular,
-  usePopularMovies,
 } from "../hooks/movies.hooks";
 import { useSeries, useSeriesPopular } from "../hooks/series.hooks";
 import TileSlider from "../components/TileSlider/TileSlider";
@@ -20,42 +18,41 @@ import SkeletonMovieSlider from "../components/SkeletonMovieSlider/SkeletonMovie
 type HomeProps = {};
 
 const Home: NextPage<HomeProps> = () => {
+  const theme = useTheme();
   const { data: popularMovies, isLoading: isPopularLoading } =
     usePopularMovies();
   const { data: movieData, isLoading: isMoviesLoading } = useMovies();
   const { data: TopMovies, isLoading: isTopMoviesLoading } = useMoviesPopular();
   const { data: seriesData, isLoading: isSeriesLoading } = useSeries();
   const { data: TopSeries, isLoading: isTopSeriesLoading } = useSeriesPopular();
-  // console.log("MovieDATA", movieData);
-  // console.log("MovieDATA", toPercent(movieData[1].vote_average || 0));
-  // console.log("seriesDATA", seriesData);
 
   return (
     <>
       <CustomHead title="MonkeyFlix - Home" media_type={"movie"} />
-
       <div className={styles.container}>
+        {/* Loading Indicator */}
         {(isPopularLoading ||
           isMoviesLoading ||
           isSeriesLoading ||
           isTopMoviesLoading ||
           isTopSeriesLoading) && <LinearProgress />}
 
-        <Box>
+        {/* Movie Slider (Main Hero Section) */}
+        <Box sx={classes.movieSliderContainer}>
           {isPopularLoading ? (
             <SkeletonMovieSlider />
           ) : (
             <MovieSlider movieData={popularMovies?.pages[0].results} />
           )}
         </Box>
-        <Box sx={{ ...classes.sliderContainerOverlay }}>
-          <Box sx={{ ...classes.sliderContainer }}>
-            <Box sx={{ textAlign: "start" }}>
-              <Typography variant="h4" sx={classes.headTxt}>
-                Trending Movies
-              </Typography>
-            </Box>
 
+        {/* Tile Sliders (Overlapping Section) */}
+        <Box sx={classes.tileSlidersContainer}>
+          {/* Trending Movies */}
+          <Box sx={classes.sliderContainer}>
+            <Typography variant="h4" sx={classes.headTxt}>
+              Trending Movies
+            </Typography>
             {isMoviesLoading ? (
               <SkeletonSlider />
             ) : (
@@ -63,40 +60,36 @@ const Home: NextPage<HomeProps> = () => {
             )}
           </Box>
 
+          {/* Trending Shows */}
           <Box sx={classes.sliderContainer}>
-            <Box sx={{ textAlign: "start" }}>
-              <Typography variant="h4" sx={classes.headTxt}>
-                Trending Shows
-              </Typography>
-            </Box>
-
+            <Typography variant="h4" sx={classes.headTxt}>
+              Trending Shows
+            </Typography>
             {isSeriesLoading ? (
               <SkeletonSlider />
             ) : (
               <TvTileSlider seriesData={seriesData} />
             )}
           </Box>
-          <Box sx={classes.sliderContainer}>
-            <Box sx={{ textAlign: "start" }}>
-              <Typography variant="h4" sx={classes.headTxt}>
-                Top Movies
-              </Typography>
-            </Box>
 
-            {isSeriesLoading ? (
+          {/* Top Movies */}
+          <Box sx={classes.sliderContainer}>
+            <Typography variant="h4" sx={classes.headTxt}>
+              Top Movies
+            </Typography>
+            {isTopMoviesLoading ? (
               <SkeletonSlider />
             ) : (
               <TileSlider movieData={TopMovies} />
             )}
           </Box>
-          <Box sx={classes.sliderContainer}>
-            <Box sx={{ textAlign: "start" }}>
-              <Typography variant="h4" sx={classes.headTxt}>
-                Top Shows
-              </Typography>
-            </Box>
 
-            {isSeriesLoading ? (
+          {/* Top Shows */}
+          <Box sx={classes.sliderContainer}>
+            <Typography variant="h4" sx={classes.headTxt}>
+              Top Shows
+            </Typography>
+            {isTopSeriesLoading ? (
               <SkeletonSlider />
             ) : (
               <TvTileSlider seriesData={TopSeries} />
@@ -107,39 +100,5 @@ const Home: NextPage<HomeProps> = () => {
     </>
   );
 };
-
-// Commented to Remove SSR
-// export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-//   const queryClient = new QueryClient();
-
-//   try {
-//     await queryClient.prefetchInfiniteQuery(
-//       [MovieQueryKey.PopularMovies],
-//       ({ pageParam = 1 }) => getPopularMovies(pageParam),
-//       {
-//         getNextPageParam: (lastPage) => {
-//           return lastPage.page < lastPage.total_pages
-//             ? lastPage.page + 1
-//             : undefined;
-//         },
-//       }
-//     );
-
-//     await queryClient.fetchQuery([MovieQueryKey.MovieData], getMovies);
-//     await queryClient.fetchQuery([SeriesQueryKey.SeriesData], getSeries);
-//     await queryClient.fetchQuery([PeopleQueryKey.PeopleData], getPeople);
-
-//     return {
-//       props: {
-//         dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
-//       },
-//     };
-//   } catch (error) {
-//     console.log(error);
-//     return {
-//       notFound: true,
-//     };
-//   }
-// }
 
 export default Home;

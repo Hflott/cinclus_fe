@@ -31,21 +31,44 @@ a {
   transition: opacity 1s ease 150ms;
 }
 
-@media (max-width: 900px) {
-  .multi-slider .swiper-button-prev:after,
-  .multi-slider .swiper-button-next:after {
-    font-size: 26px;
+/* Navigation Arrows */
+.multi-slider .swiper-button-prev,
+.multi-slider .swiper-button-next {
+  position: absolute;
+  top: 48%;
+  transform: translateY(-48%);
+  width: 48px;
+  height: 96px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Hide arrows on mobile */
+@media (max-width: 600px) {
+  .multi-slider .swiper-button-prev,
+  .multi-slider .swiper-button-next {
+    display: none !important;
   }
 }
 
-.multi-slider .swiper-button-prev,
-.multi-slider .swiper-button-next {
-  color: #ea738d !important;
-  background-color: #222;
-  border-radius: 6px;
-  top: 50%;
-  padding: 6px 8px;
-  width: auto;
-  height: auto;
-  transform: translateY(-50%);
+/* Hide disabled navigation buttons */
+.multi-slider .swiper-button-prev.swiper-button-disabled,
+.multi-slider .swiper-button-next.swiper-button-disabled {
+  display: none;
+}
+
+.multi-slider .swiper-button-next::after,
+.multi-slider .swiper-button-prev::after {
+  color: white;
+}
+
+/* Hover effect */
+.multi-slider .swiper-button-next:hover,
+.multi-slider .swiper-button-prev:hover {
+  background: rgba(0, 0, 0, 0.9);
 }

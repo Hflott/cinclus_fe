@@ -1,37 +1,19 @@
-import zIndex from "@mui/material/styles/zIndex";
+import theme from "../theme";
 
 export const styles = {
-  sliderContainer: {
-    zIndex: 2,
+  movieSliderContainer: {
     position: "relative",
-    m: "60px 0",
-    padding: "0 24px",
-    "@media (max-width: 900px)": {
-      m: "35px 0",
-      padding: "0 10px",
-    },
   },
-  sliderContainerOverlay: {
+  tileSlidersContainer: {
     position: "relative",
-    top: "-300px",
-    m: "60px 0",
-    padding: "0 24px",
-    "@media (max-width: 1400px)": {
-      top: "-200px",
-    },
-    "@media (max-width: 900px)": {
-      m: "35px 0",
-      padding: "0 10px",
-      top: "-150px",
-    },
-    "@media (max-width: 768px)": {
-      top: "-60px",
-    },
+  },
+  sliderContainer: {
+    marginBottom: theme.spacing(4),
   },
   headTxt: {
-    "@media (max-width: 900px)": {
-      fontSize: "18px",
-    },
+    color: "#fff",
+    marginBottom: theme.spacing(2),
+    padding: "0 20px",
   },
   subTxt: {
     "@media (max-width: 900px)": {

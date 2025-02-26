@@ -122,7 +122,7 @@ const Sidebar = ({ sidebarOpen, handleCloseNavMenu }: SidebarProps) => {
   return (
     <div>
       <Drawer
-        anchor="left"
+        anchor="bottom"
         open={sidebarOpen}
         onClose={handleCloseNavMenu}
         sx={classes.drawer}

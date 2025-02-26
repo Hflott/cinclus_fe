@@ -52,7 +52,6 @@ function Watchlist() {
             /> */}
 
             <LazyLoadImage
-              placeholderSrc="/assets/flixtr-placeholder.svg"
               effect="blur"
               src="/assets/alone.png"
               style={{ width: "128px", height: "128px" }}

@@ -1,10 +1,13 @@
-import { Scale } from "@mui/icons-material";
-import zIndex from "@mui/material/styles/zIndex";
-import { transform } from "next/dist/build/swc/generated-native";
-
 export const styles = {
   mediaSlide: {
     marginBottom: "20px",
+    position: "relative",
+    "& .slick-slider": {
+      position: "relative",
+      "&:hover $mediaItemContent": {
+        opacity: 1,
+      },
+    },
   },
   mediaItem: {
     position: "relative",
@@ -16,71 +19,26 @@ export const styles = {
   },
   mediaItemImg: {
     position: "relative",
-    height: "1000px",
-    width: "100%",
+    width: "100vw", // Full viewport width
+    height: { xs: "70vh", sm: "80vh", md: "90vh", lg: "100vh" }, // Adjust height responsively
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     overflow: "hidden",
-    "@media (max-width: 1400px)": {
-      height: "700px",
-    },
-    "@media (max-width: 1300px)": {
-      height: "600px",
-    },
-    "@media (max-width: 768px)": {
-      height: "500px",
-    },
-    "@media (max-width: 576px)": {
-      height: "400px",
-    },
-    "& > span": {
-      width: "100%",
-      height: "100%",
-      "& img": {
-        width: "100%",
-        height: "100%",
-        margin: "0 auto",
-        transition: "opacity 0.5s ease",
-      },
-    },
-    "&::before": {
-      content: '""',
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "50%", // Adjust the width for the amount of opacity fade
-      height: "100%",
-      background:
-        "linear-gradient(to right, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)", // Fade from black to transparent
-      zIndex: 1,
-    },
-    "&::after": {
-      content: '""',
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: -1,
-      borderRadius: "0px 0px 5px 5px",
-      // background: '#242428',
-      // background: "-moz-linear-gradient(0deg,#242428 0,rgba(36,36,40,0) 50%,#242428 100%)",
-      // background: "-webkit-linear-gradient(0deg,#242428 0,rgba(36,36,40,0) 50%,#242428 100%)",
-      background:
-        "linear-gradient(0deg,#000 0%,rgba(86, 86, 91, 0) 80%,#000 100%)",
-      zIndex: 2,
-    },
   },
 
   mediaItemBanner: {},
   overview: {
     lineHeight: "1.6",
     fontWeight: "300",
-    mb: "20px",
+    fontSize: { xs: "0.9rem", md: "1rem" },
     display: "-webkit-box",
-    WebkitLineClamp: "3",
+    WebkitLineClamp: { xs: 3, md: 4 },
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
-    fontSize: "15px",
-    "@media (max-width: 1300px)": {
-      WebkitLineClamp: "2",
+    marginBottom: "20px",
+    "@media (max-width: 768px)": {
+      WebkitLineClamp: 2,
     },
     "@media (max-width: 576px)": {
       display: "none",
@@ -88,116 +46,112 @@ export const styles = {
   },
   title: {
     fontWeight: "bold",
-    fontSize: "48px",
-    "@media (max-width: 1400px)": {
-      fontSize: "40px",
-    },
-    "@media (max-width: 1300px)": {
-      fontSize: "30px",
-    },
+    fontSize: { xs: "2rem", md: "3rem" },
+    lineHeight: 1.2,
+    marginBottom: "10px",
     "@media (max-width: 768px)": {
-      fontSize: "20px",
+      fontSize: "2rem",
     },
     "@media (max-width: 576px)": {
-      fontSize: "16px",
+      fontSize: "1.5rem",
     },
   },
   rating: {
-    fontSize: "18px",
-    "@media (max-width: 1400px)": {
-      fontSize: "18px",
-    },
-    "@media (max-width: 1300px)": {
-      fontSize: "14px",
-    },
+    display: "flex",
+    alignItems: "center",
+    fontSize: { xs: "1rem", md: "1.2rem" },
+    marginBottom: "10px",
     "@media (max-width: 768px)": {
-      fontSize: "14px",
+      fontSize: "1rem",
     },
     "@media (max-width: 576px)": {
-      fontSize: "10px",
+      fontSize: "0.8rem",
     },
   },
   miBtns: {
     display: "flex",
+    gap: "4px",
+    marginTop: "20px",
   },
   watchBtn: {
     whiteSpace: "nowrap",
-    width: "120px",
-    "@media (max-width: 1400px)": {
-      fontSize: "14px",
-    },
-    "@media (max-width: 1300px)": {
-      fontSize: "14px",
-    },
-    "@media (max-width: 768px)": {
-      fontSize: "12px",
-      width: "100px",
+    padding: "10px 20px",
+    fontSize: { xs: "0.9rem", md: "1rem" },
+    transition: "transform 0.3s ease",
+    "&:hover": {
+      transform: "scale(1.05)",
     },
     "@media (max-width: 576px)": {
-      fontSize: "10px",
-      width: "80px",
+      fontSize: "0.8rem",
+      padding: "8px 15px",
     },
   },
   detailBtn: {
-    ml: "20px",
-    width: "120px",
-    "@media (max-width: 1400px)": {
-      fontSize: "14px",
-    },
-    "@media (max-width: 1300px)": {
-      fontSize: "14px",
-    },
-    "@media (max-width: 768px)": {
-      fontSize: "12px",
-      width: "100px",
-      ml: "10px",
+    padding: "10px 20px",
+    fontSize: { xs: "0.9rem", md: "1rem" },
+    transition: "transform 0.3s ease",
+    "&:hover": {
+      transform: "scale(1.05)",
     },
     "@media (max-width: 576px)": {
-      fontSize: "10px",
-      width: "80px",
+      fontSize: "0.8rem",
+      padding: "8px 15px",
     },
   },
   mediaItemContent: {
     padding: "20px",
-    marginBottom: "10px",
     zIndex: 3,
-    width: "50%",
+    width: { xs: "90%", md: "60%" }, // Responsive width
     position: "absolute",
-    top: "30%",
-    opacity: 0,
+    bottom: { xs: "10%", md: "unset" }, // Align to bottom on smaller screens, unset on larger screens
+    top: { md: "30%" }, // Vertically center on larger screens
+    left: { xs: "50%", md: "10%" }, // Center horizontally on smaller screens, align left on larger screens
+    transform: { xs: "translateX(-50%)", md: "none" }, // Remove transform on larger screens
+    opacity: 1,
     transition: "opacity 1s ease 150ms",
+    color: "#fff",
+    textAlign: { xs: "center", md: "left" }, // Text alignment
     "@media (max-width: 768px)": {
-      width: "90%",
+      width: "90%", // Full width on smaller screens
+      padding: "10px", // Reduce padding for smaller screens
     },
     "@media (max-width: 576px)": {
-      p: "10px",
+      padding: "10px", // Further reduce padding for very small screens
     },
   },
-  miContent: {
-    mb: "20px",
-    "@media (max-width: 768px)": {
-      mb: "5px",
-    },
-  },
-  dotsContainer: {
-    position: "absolute",
-    bottom: "30%",
-    left: 30,
-    "@media (max-width: 1400px)": {
-      bottom: "28%",
-    },
-    "@media (max-width: 1300px)": {
-      bottom: "28%",
-    },
-    "@media (max-width: 768px)": {
-      bottom: "22%",
-    },
-    "@media (max-width: 576px)": {
-      bottom: "22%",
-      left: "2%",
-    },
-    "@media (max-width: 360px)": {
-      display: "none",
+  customDots: {
+    "& .slick-dots": {
+      bottom: { xs: "20px", md: "30px" },
+      display: "flex !important",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "0 10px", // Add padding for small screens
+      "& li": {
+        width: { xs: "16px", md: "20px" }, // Fixed width for all list items
+        height: { xs: "16px", md: "20px" },
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: 0,
+        "& button:before": {
+          display: "none",
+        },
+      },
+      "& .custom-dot": {
+        width: { xs: "8px", md: "10px" },
+        height: { xs: "8px", md: "10px" },
+        borderRadius: "50%",
+        backgroundColor: "white",
+        opacity: 0.5,
+        transition: "all 0.3s ease",
+        cursor: "pointer",
+        "&.active": {
+          width: { xs: "16px", md: "20px" }, // Expand within parent li's fixed width
+          borderRadius: "8px",
+          opacity: 1,
+          transform: "scale(1.1)", // Add slight scale for better effect
+        },
+      },
     },
   },
 };

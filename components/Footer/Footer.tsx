@@ -27,6 +27,7 @@ const Footer = () => {
                   style={classes.socialLogo}
                   width={185}
                   height={100}
+                  quality={100}
                 />
               </MuiLink>
             </Grid>
@@ -43,6 +44,7 @@ const Footer = () => {
                   style={classes.socialLogo}
                   width={185}
                   height={100}
+                  quality={100}
                 />
               </MuiLink>
             </Grid>
@@ -59,6 +61,7 @@ const Footer = () => {
                   style={classes.socialLogo}
                   width={185}
                   height={100}
+                  quality={100}
                 />
               </MuiLink>
             </Grid>
@@ -75,6 +78,7 @@ const Footer = () => {
                   style={classes.socialLogo}
                   width={185}
                   height={100}
+                  quality={100}
                 />
               </MuiLink>
             </Grid>

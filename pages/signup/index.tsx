@@ -149,7 +149,6 @@ const Signup = () => {
             /> */}
 
             <LazyLoadImage
-              placeholderSrc="/assets/flixtr-placeholder.svg"
               effect="blur"
               src="icon.svg"
               alt="MonkeyFlix logo"

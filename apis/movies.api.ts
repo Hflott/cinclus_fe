@@ -102,14 +102,29 @@ export const getPopularMovies = async (props: Props): Promise<MovieData> => {
 
   try {
     const movieRes = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&page=${pageNum}${countryQuery}${releaseYearQuery}&include_adult=false&include_video=false`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&page=${pageNum}${countryQuery}${releaseYearQuery}&include_adult=false&include_video=false&append_to_response=images`
     );
     const movieData: MovieData = await movieRes.json();
 
     if (movieData.hasOwnProperty("success"))
       throw new Error("Api call failed, check console.");
 
-    // console.log(movieData);
+    // Fetch additional details (including logos) for each movie
+    const moviesWithLogos = await Promise.all(
+      movieData.results.map(async (movie) => {
+        const detailsRes = await fetch(
+          `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&append_to_response=images&include_image_language=en`
+        );
+        const details = await detailsRes.json();
+        return {
+          ...movie,
+          logo: details.images.logos[0]?.file_path || null, // Assuming you want the first logo
+        };
+      })
+    );
+
+    // Replace the original results with the enriched data
+    movieData.results = moviesWithLogos;
     return movieData;
   } catch (error) {
     console.log(error);

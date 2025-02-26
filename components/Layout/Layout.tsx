@@ -17,7 +17,9 @@ const Layout = ({ children }: LayoutProps) => {
         <Box>
           <Navbar />
         </Box>
-        <Box className="main">{children}</Box>
+        <Box sx={{ marginTop: { xs: "56px", sm: "64px" } }} className="main">
+          {children}
+        </Box>
         <Box>
           <Footer />
         </Box>

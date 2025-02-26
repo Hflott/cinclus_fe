@@ -50,7 +50,6 @@ const CastRoll = ({ castList }: CastRollProps) => {
                 /> */}
 
                 <LazyLoadImage
-                  placeholderSrc="/assets/flixtr-placeholder.svg"
                   src={formatImgSrc(
                     "https://image.tmdb.org/t/p/w138_and_h175_face/",
                     cast.profile_path

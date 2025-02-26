@@ -396,7 +396,6 @@ function Watch() {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box sx={classes.imageBox}>
               <LazyLoadImage
-                placeholderSrc="/assets/flixtr-placeholder.svg"
                 src={`https://image.tmdb.org/t/p/w780${poster_path}`}
                 style={{
                   objectFit: "cover",

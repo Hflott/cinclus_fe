@@ -15,6 +15,7 @@ export interface MovieData {
 export interface MovieResult {
   adult: boolean;
   backdrop_path: string;
+  logo: string;
   id: number;
   title: string;
   original_language: string;
@@ -32,7 +33,10 @@ export interface MovieResult {
   homepage: string;
   genres: { name: string; id: number }[];
   spoken_languages: { english_name: string; name: string }[];
-  images: { backdrops: { file_path: string }[] };
+  images: {
+    backdrops: { file_path: string }[];
+    logos?: { file_path: string }[];
+  };
   credits: {
     cast: Cast[];
   };

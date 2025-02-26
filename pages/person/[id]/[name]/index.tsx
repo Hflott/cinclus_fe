@@ -80,7 +80,6 @@ function PersonInfo() {
             /> */}
 
             <LazyLoadImage
-              placeholderSrc="/assets/flixtr-placeholder.svg"
               src={formatImgSrc(
                 "https://image.tmdb.org/t/p/w780",
                 profile_path

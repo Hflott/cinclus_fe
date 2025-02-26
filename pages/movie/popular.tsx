@@ -23,13 +23,11 @@ function Popular() {
     hasNextPage,
   } = usePopularMovies(releaseYear, country);
 
-  // Set up the IntersectionObserver using react-intersection-observer
   const { ref, inView } = useInView({
-    triggerOnce: false, // Allow triggering multiple times as the user keeps scrolling
-    threshold: 0.9, // Trigger when 90% of the element is in view
+    triggerOnce: false,
+    threshold: 0.9,
   });
 
-  // Automatically fetch more movies when the "load more" button comes into view
   useEffect(() => {
     if (inView && !isFetching && hasNextPage) {
       fetchNextPage();
@@ -58,17 +56,33 @@ function Popular() {
           <Loader />
         ) : (
           <>
-            <Grid container sx={classes.moviesContainer}>
+            <Grid container spacing={2} sx={classes.moviesContainer}>
               {popularMovies?.pages.map((page) =>
                 page.results.map((movie) => (
-                  <Grid item key={movie.id}>
+                  <Grid
+                    item
+                    key={movie.id}
+                    xs={6} // 2 columns on extra small screens
+                    sm={4} // 3 columns on small screens
+                    md={3} // 4 columns on medium screen
+                    lg={3}
+                    xl={3}
+                  >
                     <Poster singleMovieData={movie} />
                   </Grid>
                 ))
               )}
             </Grid>
             {hasNextPage && (
-              <Grid container justifyContent="center" ref={ref}></Grid>
+              <Grid container justifyContent="center" ref={ref}>
+                <LoadingButton
+                  loading={isFetching}
+                  variant="contained"
+                  sx={{ margin: "20px 0" }}
+                >
+                  Load More
+                </LoadingButton>
+              </Grid>
             )}
           </>
         )}
@@ -76,36 +90,5 @@ function Popular() {
     </>
   );
 }
-
-// Commented to Remove SSR
-// export const getServerSideProps = withCSR(async () => {
-//   const queryClient = new QueryClient();
-
-//   try {
-//     // fetching popular movies detail
-//     await queryClient.prefetchInfiniteQuery(
-//       [MovieQueryKey.PopularMovies],
-//       ({ pageParam = 1 }) => getPopularMovies(pageParam),
-//       {
-//         getNextPageParam: (lastPage) => {
-//           return lastPage.page < lastPage.total_pages
-//             ? lastPage.page + 1
-//             : undefined;
-//         },
-//       }
-//     );
-
-//     return {
-//       props: {
-//         dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
-//       },
-//     };
-//   } catch (error) {
-//     console.log(error);
-//     return {
-//       notFound: true,
-//     };
-//   }
-// });
 
 export default Popular;

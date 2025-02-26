@@ -7,12 +7,8 @@ export const styles = {
   },
   headTxt: { fontSize: 26, mb: 1 },
   moviesContainer: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr) )",
-    justifyItems: "center",
-    "@media (max-width: 900px)": {
-      gridTemplateColumns: "repeat(auto-fill, minmax(108px, 1fr))",
-    },
+    // Remove grid-specific styles since we're using MUI Grid
+    padding: "16px", // Add padding to the grid container
   },
   loadBtn: { width: "100%" },
   emptyList: {
