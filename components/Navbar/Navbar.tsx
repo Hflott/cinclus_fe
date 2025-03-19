@@ -9,16 +9,11 @@ import {
   BottomNavigationAction,
   Box,
   Button,
-  Container,
   IconButton,
   InputBase,
-  LinearProgress,
-  Menu,
-  MenuItem,
   Paper,
   Toolbar,
   Tooltip,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
@@ -38,6 +33,7 @@ import { getSearchQuery } from "../../apis/search.api";
 import Loader from "../Loader/Loader";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { AccountCircle } from "@mui/icons-material";
 
 export const appRoutes = [
   {
@@ -128,14 +124,18 @@ const Navbar = () => {
   return (
     <>
       {isPageLoading && <Loader />}
-      <AppBar position="fixed" sx={{ width: "100%", zIndex: 1000 }}>
+      <AppBar
+        elevation={0}
+        position="fixed"
+        sx={{ width: "100%", zIndex: 1000 }}
+      >
         <Toolbar
           sx={{
             display: "flex",
             justifyContent: "space-between",
             color: "secondary.main",
             gap: 2,
-            padding: { xs: "0 16px", sm: "0 24px" },
+            padding: { xs: "0 16px", sm: "0 30px" },
           }}
         >
           {/* Left Section - Logo + Desktop Links */}
@@ -144,7 +144,6 @@ const Navbar = () => {
               display: "flex",
               alignItems: "center",
               gap: { xs: 0, md: 4 },
-              flexShrink: 0,
             }}
           >
             <Box sx={classes.logo}>
@@ -152,10 +151,9 @@ const Navbar = () => {
                 <Image
                   src="/icon.svg"
                   alt="Icon"
-                  width={35}
-                  height={35}
+                  width={40}
+                  height={40}
                   style={{ display: "block" }}
-                  quality={100}
                 />
               </Link>
             </Box>
@@ -166,7 +164,7 @@ const Navbar = () => {
                 sx={{
                   display: "flex",
                   gap: 1,
-                  ml: 2,
+                  ml: 1,
                 }}
               >
                 {appRoutes.map(({ title, path }) => (
@@ -177,6 +175,9 @@ const Navbar = () => {
                       color: "secondary.main",
                       whiteSpace: "nowrap",
                       display: { xs: "none", md: "block" },
+                      "&:hover": {
+                        color: "white",
+                      },
                     }}
                   >
                     {title}
@@ -197,7 +198,7 @@ const Navbar = () => {
               display: isMobile ? "none" : "block",
             }}
           >
-            <Search>
+            <Search sx={{ borderRadius: "20px" }}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -231,9 +232,10 @@ const Navbar = () => {
                 flexGrow: 1,
                 maxWidth: "100%",
                 display: { xs: "block", md: "none" },
+                marginLeft: 1,
               }}
             >
-              <Search>
+              <Search sx={{ borderRadius: "20px" }}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -272,14 +274,20 @@ const Navbar = () => {
             }}
           >
             {/* Discord Link */}
-            <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <Box
+              sx={{
+                display: { xs: "none", md: "flex" },
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
               <Link href="https://discord.com/" target="_blank">
                 <Image
-                  src="assets/discord.svg"
+                  src="/assets/discord.svg"
                   alt="Discord"
-                  width={30}
-                  height={30}
-                  quality={100}
+                  width={40}
+                  height={40}
+                  style={{ display: "block" }}
                 />
               </Link>
             </Box>
@@ -288,7 +296,7 @@ const Navbar = () => {
             <Box sx={{ display: "block" }}>
               {sessionData?.user ? (
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <IconButton onClick={handleOpenUserMenu}>
                     <Avatar
                       alt="User avatar"
                       src={`/assets/${sessionData.user?.user?.propic ?? 1}.png`}
@@ -296,15 +304,15 @@ const Navbar = () => {
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Button
-                  color="secondary"
-                  variant="contained"
+                <IconButton
                   onClick={() =>
                     router.pathname !== "/login" ? signIn() : null
                   }
                 >
-                  Login
-                </Button>
+                  <AccountCircle
+                    sx={{ color: "secondary.main", width: 40, height: 40 }}
+                  />
+                </IconButton>
               )}
             </Box>
           </Box>
@@ -332,7 +340,7 @@ const Navbar = () => {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: `rgba(0, 0, 0, 0.8)`, // Semi-transparent background
+              backgroundColor: `rgb(27, 15, 42, 0.8)`, // Semi-transparent background
               backdropFilter: "blur(30px)", // Strong blur effect
               zIndex: -1, // Place the background behind the BottomNavigation
             }}
@@ -378,11 +386,11 @@ const Navbar = () => {
 };
 
 export const useSearchQuery = (searchQuery?: string | string[]) => {
-  return useQuery(
-    [MovieQueryKey.SearchQuery, searchQuery],
-    () => getSearchQuery(1, searchQuery),
-    { enabled: !!searchQuery }
-  );
+  return useQuery({
+    queryKey: [MovieQueryKey.SearchQuery, searchQuery], // Use queryKey instead of the array argument
+    queryFn: () => getSearchQuery(1, searchQuery),
+    enabled: !!searchQuery,
+  });
 };
 
 const Search = styled("div")(({ theme }) => ({

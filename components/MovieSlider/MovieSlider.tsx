@@ -9,7 +9,6 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import Image from "next/image";
 import StarIcon from "@mui/icons-material/Star";
 import { styles as classes } from "./movieSlider.styles";
 import { MovieResult } from "../../types/apiResponses";
@@ -18,11 +17,13 @@ import Link from "next/link";
 import { IconButton } from "@mui/material";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const CustomPrevArrow = (props: any) => {
   const { onClick } = props;
   return (
     <IconButton
+      disableTouchRipple
       onClick={onClick}
       sx={{
         position: "absolute",
@@ -31,18 +32,20 @@ const CustomPrevArrow = (props: any) => {
         transform: "translateY(-50%)",
         height: "100%",
         px: "15px",
-        borderRadius: "10%",
+        borderRadius: 0,
         zIndex: 10,
         color: "white",
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        "&:hover": {
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
-        },
-        display: { xs: "none", sm: "flex" },
+        background: "transparent",
+        display: "flex",
         "& svg": {
+          opacity: 0.5,
           fontSize: "2rem", // Control icon size
           position: "relative",
-          left: "6px", // Compensate for material icon offset
+        },
+        "&:hover": {
+          "& svg": {
+            opacity: 1,
+          },
         },
       }}
     >
@@ -55,25 +58,29 @@ const CustomNextArrow = (props: any) => {
   const { onClick } = props;
   return (
     <IconButton
+      disableTouchRipple
       onClick={onClick}
       sx={{
         position: "absolute",
         right: 0,
         top: "50%",
         height: "100%",
-        borderRadius: "10%",
         transform: "translateY(-50%)",
         px: "15px",
+        borderRadius: 0,
         zIndex: 10,
         color: "white",
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        "&:hover": {
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
-        },
-        display: { xs: "none", sm: "flex" },
+        background: "transparent",
+        display: "flex",
         "& svg": {
+          opacity: 0.5,
           fontSize: "2rem", // Control icon size
           position: "relative",
+        },
+        "&:hover": {
+          "& svg": {
+            opacity: 1,
+          },
         },
       }}
     >
@@ -86,7 +93,7 @@ type MovieSliderProps = {
   movieData?: MovieResult[];
 };
 
-const MovieSlider = ({ movieData }: MovieSliderProps) => {
+const MovieSlider = ({ movieData = [] }: MovieSliderProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -106,18 +113,16 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
     fade: true,
     dots: true,
     dotsClass: "slick-dots custom-dots",
-    customPaging: (i: number) => (
-      <div
-        className={`custom-dot ${activeIndex === i ? "active" : ""}`}
-        onClick={() => handleDotClick(i)}
-      />
-    ),
+    customPaging: (i: number) => {
+      return <div className="custom-dot" onClick={() => handleDotClick(i)} />;
+    },
     infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
+    swipe: false,
     speed: 300,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 8000,
     cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",
     lazyLoad: "progressive" as const,
     beforeChange: (_current: number, next: number) => setActiveIndex(next),
@@ -125,11 +130,22 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
   };
 
   return (
-    <Box sx={{ ...classes.mediaSlide, ...classes.customDots }}>
+    <Box sx={{ ...classes.mediaSlide, position: "relative" }}>
       <div>
         <Slider ref={sliderRef} {...config}>
           {movieData?.map(
-            ({ id, title, backdrop_path, overview, logo, vote_average }, i) => (
+            (
+              {
+                id,
+                title,
+                backdrop_path,
+                overview,
+                logo,
+                vote_average,
+                release_date,
+              },
+              i
+            ) => (
               <div key={id}>
                 <Box sx={classes.mediaItem}>
                   <Box sx={classes.mediaItemBanner}>
@@ -141,25 +157,19 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
                           height: "100%",
                         }}
                       >
-                        <Image
+                        <LazyLoadImage
                           src={formatImgSrc(
                             "https://image.tmdb.org/t/p/w1280",
                             backdrop_path
                           )}
                           alt={title}
-                          fill
+                          effect="blur"
+                          width="100%"
+                          height="100%"
                           style={{
                             objectFit: "cover",
                             objectPosition: "center",
                           }}
-                          priority={i === 0}
-                          loading={i === 0 ? "eager" : "lazy"}
-                          quality={100}
-                          placeholder="blur"
-                          blurDataURL={formatImgSrc(
-                            "https://image.tmdb.org/t/p/w500",
-                            backdrop_path
-                          )}
                         />
                         {/* Gradient Overlay */}
                         <Box
@@ -170,8 +180,8 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
                             right: 0,
                             bottom: 0,
                             background:
-                              "linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.1) 80%, rgba(0, 0, 0, 1) 100%)",
-                            pointerEvents: "none", // Ensure the gradient doesn't interfere with interactions
+                              "linear-gradient(to top, rgba(27, 15, 42, 1), rgba(27, 15, 42, 0.5) 35%, rgba(27, 15, 42, 0) 85%, rgba(27, 15, 42, 1) 100%)",
+                            pointerEvents: "none",
                           }}
                         />
                       </Box>
@@ -183,77 +193,66 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
                     {logo ? (
                       <Box
                         sx={{
-                          width: { xs: "70%", md: "100%" },
-                          height: { xs: 100, md: 140 },
+                          height: "100%",
+                          width: "70%",
                           position: "relative",
-                          mx: { xs: "auto", md: 0 },
-                          mb: 2,
+                          mx: "auto",
                         }}
                       >
-                        <Image
+                        <LazyLoadImage
                           src={formatImgSrc(
                             "https://image.tmdb.org/t/p/original",
                             logo
                           )}
                           alt={`${title} logo`}
-                          fill
-                          quality={100}
+                          width="100%"
+                          height="100%"
                           style={{ objectFit: "contain" }}
                         />
                       </Box>
                     ) : (
-                      <Typography
-                        variant="h3"
-                        sx={{
-                          ...classes.title,
-                          fontSize: { xs: "2rem", md: "3rem" },
-                        }}
-                      >
+                      <Typography variant="h3" sx={classes.title}>
                         {title}
                       </Typography>
                     )}
+                    {/* Horizontal White Line */}
                     <Box
                       sx={{
-                        background: "rgba(0, 0, 0, 0.5)",
-                        padding: "10px",
-                        borderRadius: "10px",
+                        borderBottom: "2px solid white", // Vertical line style
+                        mt: "10px",
+                        opacity: 0.4,
                       }}
-                    >
-                      {/* Rating */}
+                    />
+                    {/* Movie Info */}
+                    <Box sx={classes.rating}>
+                      <StarIcon sx={{ color: "gold", mr: 1 }} />
+                      <Typography component="span" sx={{ color: "white" }}>
+                        {vote_average?.toFixed(1)}
+                      </Typography>
                       <Box
                         sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          mb: 2,
-                          justifyContent: { xs: "center", md: "flex-start" },
+                          borderLeft: "2px solid white", // Vertical line style
+                          height: "18px", // Adjust the height to match the text size
+                          mx: 2, // Add some margin to the left and right of the line
+                          opacity: 0.4,
                         }}
-                      >
-                        <StarIcon sx={{ color: "gold", mr: 1 }} />
-                        <Typography
-                          variant="h6"
-                          component="span"
-                          sx={{ color: "white" }}
-                        >
-                          {vote_average?.toFixed(1)}/10
-                        </Typography>
-                      </Box>
-
-                      {/* Overview */}
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          ...classes.overview,
-                          fontSize: { xs: "1rem", md: "1.1rem" },
-                          mb: 3,
-                          display: "-webkit-box",
-                          WebkitLineClamp: { xs: 3, md: 4 },
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                        }}
-                      >
-                        {overview}
+                      />
+                      <Typography component="span" sx={{ color: "white" }}>
+                        {new Date(release_date).getFullYear()}
                       </Typography>
                     </Box>
+                    <Box
+                      sx={{
+                        borderTop: "2px solid white", // Vertical line style
+                        mb: "10px",
+                        opacity: 0.4,
+                      }}
+                    />
+
+                    {/* Overview */}
+                    <Typography variant="body1" sx={classes.overview}>
+                      {overview}
+                    </Typography>
 
                     {/* Buttons */}
                     <Box
@@ -278,19 +277,6 @@ const MovieSlider = ({ movieData }: MovieSliderProps) => {
                           size={isMobile ? "medium" : "large"}
                         >
                           Watch now
-                        </Button>
-                      </Link>
-                      <Link
-                        href={`/movie/${id}/${toUrlFriendly(title)}`}
-                        passHref
-                      >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          sx={classes.detailBtn}
-                          size={isMobile ? "medium" : "large"}
-                        >
-                          Details
                         </Button>
                       </Link>
                     </Box>

@@ -1,5 +1,3 @@
-import theme from "../theme";
-
 export const styles = {
   movieSliderContainer: {
     position: "relative",
@@ -8,12 +6,12 @@ export const styles = {
     position: "relative",
   },
   sliderContainer: {
-    marginBottom: theme.spacing(4),
+    marginBottom: 0,
   },
   headTxt: {
     color: "#fff",
-    marginBottom: theme.spacing(2),
     padding: "0 20px",
+    fontSize: "25px",
   },
   subTxt: {
     "@media (max-width: 900px)": {

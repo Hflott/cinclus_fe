@@ -7,7 +7,8 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, FreeMode } from "swiper/modules";
+import { SwiperOptions } from "swiper/types";
+import { Navigation, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -25,13 +26,13 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   if (!seriesData?.length) return null;
 
-  const sliderOptions = {
+  const sliderOptions: SwiperOptions = {
     speed: 600,
     navigation: !isMobile,
     freeMode: true,
     grabCursor: true,
-    slidesPerView: "auto" as const,
-    spaceBetween: theme.spacing(1),
+    slidesPerView: "auto",
+    spaceBetween: theme.spacing(2),
   };
 
   return (
@@ -41,7 +42,7 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
         overflow: "visible",
         maxWidth: { xs: "100%", xl: "100vw" },
         position: "relative",
-        px: { sm: 4 }, // Add horizontal padding
+        px: { sm: 4 },
       }}
     >
       {title && (
@@ -50,20 +51,33 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
         </Typography>
       )}
 
-      <Box className="multi-slider" sx={{ width: "100%" }}>
-        <Swiper
-          {...sliderOptions}
-          modules={[Autoplay, Navigation, FreeMode]}
-          style={{ overflow: "visible" }}
-        >
+      <Box
+        className="multi-slider"
+        sx={{
+          width: "100%",
+          // Fix for slider overflow
+          "& .swiper": {
+            overflow: "visible",
+            padding: theme.spacing(2, 0),
+          },
+          // Match Grid sizing
+          "& .swiper-slide": {
+            width: "120px !important",
+            [theme.breakpoints.up("xs")]: { width: "120px !important" },
+            [theme.breakpoints.up("sm")]: { width: "160px !important" },
+            [theme.breakpoints.up("md")]: { width: "160px !important" },
+            [theme.breakpoints.up("lg")]: { width: "200px !important" },
+          },
+        }}
+      >
+        <Swiper {...sliderOptions} modules={[Navigation, FreeMode]}>
           {seriesData?.map((singleShowData, index) => (
             <SwiperSlide
               key={index}
               style={{
                 display: "flex",
                 justifyContent: "center",
-                height: "auto", // Ensure consistent height
-                width: "auto",
+                height: "auto",
               }}
             >
               <TvPoster singleShowData={singleShowData} />

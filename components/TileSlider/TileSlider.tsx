@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   Container,
@@ -7,7 +7,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, FreeMode } from "swiper/modules";
+import { SwiperOptions } from "swiper/types";
+import { Navigation, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
@@ -24,15 +25,26 @@ type TileSliderProps = {
 const TileSlider = ({ title, movieData }: TileSliderProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const swiperRef = useRef<any>(null);
+
   if (!movieData?.length) return null;
 
-  const sliderOptions = {
+  const sliderOptions: SwiperOptions = {
     speed: 600,
-    navigation: !isMobile,
+    navigation: !isMobile
+      ? {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        }
+      : false,
     freeMode: true,
     grabCursor: true,
-    slidesPerView: "auto" as const,
-    spaceBetween: theme.spacing(1),
+    slidesPerView: "auto",
+    spaceBetween: theme.spacing(2),
+    breakpoints: {
+      920: { slidesPerGroup: 5 },
+      1347: { slidesPerGroup: 6 },
+    },
   };
 
   return (
@@ -42,7 +54,7 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
         overflow: "visible",
         maxWidth: { xs: "100%", xl: "100vw" },
         position: "relative",
-        px: { sm: 4 }, // Add horizontal padding
+        px: { sm: 4 },
       }}
     >
       {title && (
@@ -51,11 +63,29 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
         </Typography>
       )}
 
-      <Box className="multi-slider" sx={{ width: "100%" }}>
+      <Box
+        className="multi-slider"
+        sx={{
+          width: "100%",
+          position: "relative",
+          "& .swiper": {
+            overflow: "visible",
+            padding: theme.spacing(2, 0),
+          },
+          // Match Grid sizing
+          "& .swiper-slide": {
+            width: "120px !important",
+            [theme.breakpoints.up("xs")]: { width: "120px !important" },
+            [theme.breakpoints.up("sm")]: { width: "160px !important" },
+            [theme.breakpoints.up("md")]: { width: "160px !important" },
+            [theme.breakpoints.up("lg")]: { width: "200px !important" },
+          },
+        }}
+      >
         <Swiper
           {...sliderOptions}
-          modules={[Autoplay, Navigation, FreeMode]}
-          style={{ overflow: "visible" }} // Crucial for arrow visibility
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          modules={[Navigation, FreeMode]}
         >
           {movieData?.map((singleMovieData, index) => (
             <SwiperSlide
@@ -63,13 +93,18 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                height: "auto", // Ensure consistent height
-                width: "auto",
+                height: "auto",
               }}
             >
               <Poster singleMovieData={singleMovieData} />
             </SwiperSlide>
           ))}
+          {!isMobile && (
+            <>
+              <div className="swiper-button-prev"></div>
+              <div className="swiper-button-next"></div>
+            </>
+          )}
         </Swiper>
       </Box>
     </Container>

@@ -7,12 +7,12 @@ import Poster from "../../components/Poster/Poster";
 import Loader from "../../components/Loader/Loader";
 import { useTopMovies } from "../../hooks/movies.hooks";
 import CustomHead from "../../components/CustomHead/CustomHead";
-import { IConutry } from "../../utils/filterUtils";
+import { ICountry } from "../../utils/filterUtils";
 import Filter from "../../components/Filter/Filter";
 import { useInView } from "react-intersection-observer";
 
 function TopRated() {
-  const [country, setCountry] = useState<IConutry | undefined>();
+  const [country, setCountry] = useState<ICountry | undefined>();
   const [releaseYear, setReleaseYear] = useState<number | "">("");
 
   const {

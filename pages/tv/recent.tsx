@@ -41,10 +41,18 @@ function Recent() {
         <Typography variant="h4" sx={classes.headTxt}>
           Most recent TV Shows
         </Typography>
-        <Grid container sx={classes.moviesContainer}>
+        <Grid container spacing={2} sx={classes.moviesContainer}>
           {recentSeries?.pages.map((page) =>
             page.results.map((show) => (
-              <Grid item key={show.id}>
+              <Grid
+                item
+                key={show.id}
+                xs={4} // 2 columns on extra small screens
+                sm={3} // 3 columns on small screens
+                md={2} // 4 columns on medium screen
+                lg={2}
+                xl={1}
+              >
                 <TvPoster singleShowData={show} />
               </Grid>
             ))

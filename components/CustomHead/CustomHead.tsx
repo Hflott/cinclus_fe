@@ -8,7 +8,7 @@ type CustomHeadProps = {
 
 const CustomHead = ({ title, media_type }: CustomHeadProps) => {
   const overview =
-    "MonkeyFlix is the largest free streaming platform for movies and tv shows. Collaborative media and info service featuring high quality content for a huge selection of titles and new releases! Available in all countries.";
+    "StreamSlice is the largest free streaming platform for movies and tv shows. Collaborative media and info service featuring high quality content for a huge selection of titles and new releases! Available in all countries.";
   const getMediaTypeText = () => {
     if (media_type === "movie") {
       return "Movies";
@@ -19,9 +19,9 @@ const CustomHead = ({ title, media_type }: CustomHeadProps) => {
   };
   return (
     <Head>
-      <title>{`${title} | ${getMediaTypeText()} - MonkeyFlix`}</title>
+      <title>{`${title} | ${getMediaTypeText()} - StreamSlice`}</title>
       <link rel="icon" href="/icon.svg" />
-      <meta name="title" content={"MonkeyFlix - Watch Movies & TV Shows"} />
+      <meta name="title" content={"StreamSlice - Watch Movies & TV Shows"} />
       <meta name="description" content={overview} />
       <meta
         name="keywords"
@@ -29,10 +29,10 @@ const CustomHead = ({ title, media_type }: CustomHeadProps) => {
       />
 
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="MonkeyFlix" />
+      <meta property="og:site_name" content="StreamSlice" />
       <meta
         property="og:title"
-        content={"MonkeyFlix - Watch Movies & TV Shows"}
+        content={"StreamSlice - Watch Movies & TV Shows"}
       />
       <meta property="og:description" content={overview} />
     </Head>

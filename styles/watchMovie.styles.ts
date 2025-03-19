@@ -1,3 +1,5 @@
+import { AspectRatio, DisplaySettings } from "@mui/icons-material";
+
 export const styles = {
   main: {
     padding: "0 24px",
@@ -6,11 +8,7 @@ export const styles = {
     },
   },
   mustWatch: {
-    p: "20px",
     width: "100%",
-    "@media (max-width: 900px)": {
-      p: "10px",
-    },
   },
   watchHead: {
     padding: "0 24px",
@@ -30,20 +28,21 @@ export const styles = {
     },
   },
   playermenu: {
-    display: "none",
-    backgroundColor: "#222",
-    m: "10px 0 10px 0",
-    "@media (max-width: 900px)": {
-      display: "flex",
-    },
-  },
-  btnGroup: {
+    border: 2,
+    color: "secondary.main",
     display: "flex",
     justifyContent: "center",
-    gap: "10px",
-    m: "25px 24px 0 24px",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#222",
+    margin: "20px 100px 0 100px",
+    borderRadius: "10px",
+    "&:hover": {
+      backgroundColor: "#444",
+      borderColor: "secondary.main",
+    },
     "@media (max-width: 900px)": {
-      display: "none",
+      margin: "20px 5px 0 5px",
     },
   },
   backIco: {
@@ -55,23 +54,38 @@ export const styles = {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    "& #watch-iframe1": {
-      backgroundColor: "primary.main",
+    // Aspect ratio container
+    "& .aspect-ratio-box": {
+      position: "relative",
+      width: "100%",
+      paddingTop: "56.25%", // 16:9 aspect ratio (9/16 = 0.5625)
+      margin: "20px 100px",
+      "@media (max-width: 900px)": {
+        margin: "20px 0",
+      },
+      "@media (max-width: 600px)": {
+        // For mobile vertical screens
+        paddingTop: "75%", // Switch to 4:3 aspect ratio (16/9 = 1.7778)
+      },
     },
     "& iframe": {
-      border: 0,
-      marginTop: "20px",
-      width: "80%",
-      height: "calc(90vh - 80px)",
-      boxSizing: "borderBox",
-      "@media (max-width: 600px)": {
-        height: "calc(35vh - 60px)",
-        boxSizing: "border-box",
-      },
-      "@media (max-width: 900px)": {
-        width: "100%",
-      },
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%", // Fill the aspect ratio container
+      borderRadius: "20px",
+      border: 2,
+      color: "secondary.main",
+      boxSizing: "border-box", // Corrected typo
     },
+  },
+  info: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    margin: "20px 100px 20px 100px",
   },
   top: {
     position: "relative",
@@ -103,11 +117,11 @@ export const styles = {
   detailGrid: {
     marginTop: "20px",
     marginBottom: "20px",
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr", // 2 columns
-    gridGap: "20px", // Adjust spacing
+    display: "Grid",
+    GridTemplateColumns: "1fr 1fr", // 2 columns
+    GridGap: "20px", // Adjust spacing
     "@media (max-width: 600px)": {
-      gridTemplateColumns: "1fr", // Stack into a single column on smaller screens
+      GridTemplateColumns: "1fr", // Stack into a single column on smaller screens
     },
   },
   watchlistBtn: {

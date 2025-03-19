@@ -3,7 +3,7 @@ import Link from "next/link";
 // import Image from "next/image";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
+import { Box, Button, Grid, CircularProgress, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -56,7 +56,7 @@ function MovieInfo() {
     if (error) setWatchlistExists(false);
   }, [singleMovieData?.id, isWatchlistLoad, isFetching, error]);
 
-  if (isLoading) return <LinearProgress />;
+  if (isLoading) return <CircularProgress />;
 
   const {
     id,

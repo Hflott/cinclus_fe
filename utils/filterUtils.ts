@@ -1,10 +1,10 @@
-export interface IConutry {
+export interface ICountry {
   name: string;
   code: string;
   langCode: string;
 }
 
-export const countries: IConutry[] = [
+export const countries: ICountry[] = [
   {
     name: "America",
     code: "US",

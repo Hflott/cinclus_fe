@@ -1,4 +1,7 @@
 import { SeriesResult, SeriesData, ShowSeason } from "../types/apiResponses";
+import { QueryFunctionContext } from "@tanstack/react-query";
+import { ICountry } from "../utils/filterUtils";
+import { SeriesQueryKey } from "../hooks/series.hooks";
 
 export const getSeries = async (): Promise<SeriesResult[]> => {
   try {
@@ -63,7 +66,7 @@ const getSeriesStreamable = async (
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_Player_URL_VS}/${seriesId}/1-1`,
+      `${process.env.NEXT_PUBLIC_PLAYER_URL_VS}/${seriesId}/1-1`,
       {
         method: "HEAD",
       }
@@ -97,53 +100,91 @@ export const getSeriesSeasonById = async (
 };
 
 export const getPopularSeries = async (
-  pageNum: number
+  context: QueryFunctionContext<
+    (SeriesQueryKey | ICountry | number | string | undefined)[]
+  >
 ): Promise<SeriesData> => {
+  const pageNum = context.pageParam || 1;
+  const country = context.queryKey[1] as ICountry;
+  const releaseYear = context.queryKey[2];
+
   try {
+    const countryQuery = country
+      ? `&region=${country.code}&with_original_language=${country.langCode}`
+      : "";
+    const yearQuery = releaseYear
+      ? `&first_air_date.gte=${releaseYear}-01-01&first_air_date.lte=${releaseYear}-12-31`
+      : "";
+
     const seriesRes = await fetch(
-      `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&page=${pageNum}`
+      `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&page=${pageNum}${countryQuery}${yearQuery}`
     );
     const seriesData: SeriesData = await seriesRes.json();
 
-    if (seriesData.hasOwnProperty("success"))
-      throw new Error("Api call failed, check console.");
-
+    if ("success" in seriesData) throw new Error("API call failed");
     return seriesData;
   } catch (error) {
-    console.log(error);
-    throw new Error("Api call failed, check console.");
+    console.error("getPopularSeries error:", error);
+    throw new Error("Failed to fetch popular series");
   }
 };
 
-export const getRecentSeries = async (pageNum: number): Promise<SeriesData> => {
+export const getRecentSeries = async (
+  context: QueryFunctionContext<
+    (SeriesQueryKey | ICountry | number | string | undefined)[]
+  >
+): Promise<SeriesData> => {
+  const pageNum = context.pageParam || 1;
+  const country = context.queryKey[1] as ICountry;
+  const releaseYear = context.queryKey[2];
+
   try {
+    const countryQuery = country
+      ? `&region=${country.code}&with_original_language=${country.langCode}`
+      : "";
+    const yearQuery = releaseYear
+      ? `&first_air_date.gte=${releaseYear}-01-01&first_air_date.lte=${releaseYear}-12-31`
+      : "";
+
     const seriesRes = await fetch(
-      `https://api.themoviedb.org/3/tv/on_the_air?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&with_original_language=en&page=${pageNum}`
+      `https://api.themoviedb.org/3/tv/on_the_air?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&page=${pageNum}${countryQuery}${yearQuery}`
     );
     const seriesData: SeriesData = await seriesRes.json();
 
-    if (seriesData.hasOwnProperty("success"))
-      throw new Error("Api call failed, check console.");
-
+    if ("success" in seriesData) throw new Error("API call failed");
     return seriesData;
   } catch (error) {
-    console.log(error);
-    throw new Error("Api call failed, check console.");
+    console.error("getRecentSeries error:", error);
+    throw new Error("Failed to fetch recent series");
   }
 };
-export const getTopSeries = async (pageNum: number): Promise<SeriesData> => {
+
+export const getTopSeries = async (
+  context: QueryFunctionContext<
+    (SeriesQueryKey | ICountry | number | string | undefined)[]
+  >
+): Promise<SeriesData> => {
+  const pageNum = context.pageParam || 1;
+  const country = context.queryKey[1] as ICountry;
+  const releaseYear = context.queryKey[2];
+
   try {
+    const countryQuery = country
+      ? `&region=${country.code}&with_original_language=${country.langCode}`
+      : "";
+    const yearQuery = releaseYear
+      ? `&first_air_date.gte=${releaseYear}-01-01&first_air_date.lte=${releaseYear}-12-31`
+      : "";
+
     const seriesRes = await fetch(
-      `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&page=${pageNum}`
+      `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.NEXT_PUBLIC_TMDB_KEY}&page=${pageNum}${countryQuery}${yearQuery}`
     );
     const seriesData: SeriesData = await seriesRes.json();
 
-    if (seriesData.hasOwnProperty("success"))
-      throw new Error("Api call failed, check console.");
-
+    if ("success" in seriesData) throw new Error("API call failed");
     return seriesData;
   } catch (error) {
-    console.log(error);
-    throw new Error("Api call failed, check console.");
+    console.error("getTopSeries error:", error);
+    throw new Error("Failed to fetch top series");
   }
 };

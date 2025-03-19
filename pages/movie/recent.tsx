@@ -7,12 +7,12 @@ import { styles as classes } from "../../styles/styles";
 import Loader from "../../components/Loader/Loader";
 import { useRecentMovies } from "../../hooks/movies.hooks";
 import CustomHead from "../../components/CustomHead/CustomHead";
-import { IConutry } from "../../utils/filterUtils";
+import { ICountry } from "../../utils/filterUtils";
 import Filter from "../../components/Filter/Filter";
 import { useInView } from "react-intersection-observer";
 
 function Recent() {
-  const [country, setCountry] = useState<IConutry | undefined>();
+  const [country, setCountry] = useState<ICountry | undefined>();
   const [releaseYear, setReleaseYear] = useState<number | "">("");
 
   const {
@@ -57,10 +57,18 @@ function Recent() {
           <Loader />
         ) : (
           <>
-            <Grid container sx={classes.moviesContainer}>
+            <Grid container spacing={2} sx={classes.moviesContainer}>
               {recentMovies?.pages.map((page) =>
                 page.results.map((movie) => (
-                  <Grid item key={movie.id}>
+                  <Grid
+                    item
+                    key={movie.id}
+                    xs={4} // 2 columns on extra small screens
+                    sm={3} // 3 columns on small screens
+                    md={2} // 4 columns on medium screen
+                    lg={2}
+                    xl={1}
+                  >
                     <Poster singleMovieData={movie} />
                   </Grid>
                 ))

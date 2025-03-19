@@ -1,40 +1,23 @@
 export const styles = {
-    container: {
-      display: 'flex',
-      marginBottom: '20px',
+  mediaSlide: {
+    marginBottom: "20px",
+    position: "relative",
+  },
+  mediaItem: {
+    position: "relative",
+    width: "100%",
+    outline: "none",
+    "@media (max-width: 768px)": {
+      margin: "0 3px",
     },
-    tile: {
-      width: "3.5%",
-      height: "500px",
-      "@media (max-width: 1400px)": {
-        height: "450px",
-      },
-      "@media (max-width: 1300px)": {
-        height: "450px",
-      },
-      "@media (max-width: 768px)": {
-        height: "350px",
-      },
-      "@media (max-width: 576px)": {
-        height: "220px",
-      },
-    },
-    tileCenter: {
-      margin: '0 20px',
-      width: "93%",
-      height: "500px",
-      "@media (max-width: 1400px)": {
-        height: "450px",
-      },
-      "@media (max-width: 1300px)": {
-        height: "450px",
-      },
-      "@media (max-width: 768px)": {
-        margin: '0 5px',
-        height: "350px",
-      },
-      "@media (max-width: 576px)": {
-        height: "220px",
-      },
-    },
-  };
+  },
+  mediaItemImg: {
+    position: "relative",
+    width: "100vw", // Full viewport width
+    height: { xs: "60vh", md: "60vh", lg: "75vh" },
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+};

@@ -30,7 +30,4 @@ export const styles = {
     fontWeight: 500,
     textAlign: "center",
   },
-  // Maintain these empty objects if they're used in component
-  posterUp: {},
-  posterDown: {},
 };

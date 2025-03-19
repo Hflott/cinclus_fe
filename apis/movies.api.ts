@@ -1,6 +1,6 @@
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { MovieData, MovieResult } from "../types/apiResponses";
-import { IConutry } from "../utils/filterUtils";
+import { ICountry } from "../utils/filterUtils";
 import { MovieQueryKey } from "../hooks/movies.hooks";
 
 // &with_original_language=hi
@@ -9,7 +9,7 @@ import { MovieQueryKey } from "../hooks/movies.hooks";
 // &primary_release_date.gte=2020-01-01&primary_release_date.lte=2020-12-31
 
 type Props = QueryFunctionContext<
-  (number | "" | IConutry | MovieQueryKey | undefined)[]
+  (number | "" | ICountry | MovieQueryKey | undefined)[]
 >;
 
 export const getMovies = async (): Promise<MovieResult[]> => {
@@ -75,7 +75,7 @@ const getMovieStreamable = async (
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_Player_URL_VS}/${movieId}`,
+      `${process.env.NEXT_PUBLIC_PLAYER_URL_VS}/${movieId}`,
       {
         method: "HEAD",
       }
@@ -89,7 +89,7 @@ const getMovieStreamable = async (
 
 export const getPopularMovies = async (props: Props): Promise<MovieData> => {
   const pageNum = props.pageParam || 1;
-  const country = props.queryKey[1] as IConutry;
+  const country = props.queryKey[1] as ICountry;
   const releaseYear = props.queryKey[2];
 
   const countryQuery = country
@@ -136,7 +136,7 @@ export const getRecentMovies = async (props: Props): Promise<MovieData> => {
   // console.log("RR", props);
 
   const pageNum = props.pageParam || 1;
-  const country = props.queryKey[1] as IConutry;
+  const country = props.queryKey[1] as ICountry;
   const releaseYear = props.queryKey[2];
 
   const countryQuery = country
@@ -167,7 +167,7 @@ export const getTopMovies = async (props: Props): Promise<MovieData> => {
   // console.log("RR", props);
 
   const pageNum = props.pageParam || 1;
-  const country = props.queryKey[1] as IConutry;
+  const country = props.queryKey[1] as ICountry;
   const releaseYear = props.queryKey[2];
 
   const countryQuery = country
@@ -196,7 +196,7 @@ export const getTopMovies = async (props: Props): Promise<MovieData> => {
 
 // TODO: remove if not used
 const getExploreMovies = async (
-  props: QueryFunctionContext<(IConutry | MovieQueryKey | undefined)[]>
+  props: QueryFunctionContext<(ICountry | MovieQueryKey | undefined)[]>
 ): Promise<MovieData> => {
   console.log("PP", props);
   // &with_original_language=hi
@@ -205,7 +205,7 @@ const getExploreMovies = async (
   // &primary_release_date.gte=2020-01-01&primary_release_date.lte=2020-12-31
 
   const pageNum = props.pageParam || 1;
-  const country = props.queryKey[1] as IConutry;
+  const country = props.queryKey[1] as ICountry;
 
   const countryQuery = country
     ? `&with_original_language=${country.langCode}&region=${country.code}`

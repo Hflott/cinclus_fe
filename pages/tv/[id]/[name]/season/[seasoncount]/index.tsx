@@ -6,13 +6,15 @@ import {
   Button,
   ButtonGroup,
   Grid,
-  LinearProgress,
+  CircularProgress,
   Typography,
   Select,
   MenuItem,
   Card,
   CardContent,
   FormControl,
+  Breadcrumbs,
+  ListSubheader,
 } from "@mui/material";
 
 import { SeriesResult } from "../../../../../../types/apiResponses";
@@ -23,9 +25,13 @@ import {
   useSeriesSeasonById,
 } from "../../../../../../hooks/series.hooks";
 import CustomHead from "../../../../../../components/CustomHead/CustomHead";
-import { convertToNumber, rounded } from "../../../../../../utils/utils";
+import {
+  convertToNumber,
+  formatImgSrc,
+  formatMinutes,
+  rounded,
+} from "../../../../../../utils/utils";
 import DisqusComments from "../../../../../../components/Disqus/Disqus";
-import { PlayArrow } from "@mui/icons-material";
 import StarIcon from "@mui/icons-material/Star";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { LoadingButton } from "@mui/lab";
@@ -38,7 +44,6 @@ import {
   useWatchlistById,
 } from "../../../../../../hooks/watchlist.hooks";
 import { useDispatch } from "react-redux";
-import SeasonRoll from "../../../../../../components/SeasonRoll/SeasonRoll";
 
 function SeasonCount() {
   const router = useRouter();
@@ -55,9 +60,9 @@ function SeasonCount() {
 
   const [watchlistExists, setWatchlistExists] = useState(false);
 
-  const { mutateAsync: addWatchlist, isLoading: isLoadingPost } =
+  const { mutateAsync: addWatchlist, isPending: isLoadingPost } =
     useAddToWatchlist();
-  const { mutateAsync: removeWatchlist, isLoading: isLoadingRemove } =
+  const { mutateAsync: removeWatchlist, isPending: isLoadingRemove } =
     useRemoveFromWatchlist();
 
   const {
@@ -72,6 +77,16 @@ function SeasonCount() {
       setEp(1);
     }
   }, [seasoncount]);
+
+  const serverNames: { [key: number]: string } = {
+    1: "embed",
+    2: "VidSrc",
+    3: "Multiembed",
+    4: "Vidlink",
+    5: "Multiembed VIP",
+    6: "Embed-api",
+    7: "Autoembed",
+  };
 
   useEffect(() => {
     setWatchlistExists(false);
@@ -95,15 +110,16 @@ function SeasonCount() {
     }
   }, [isShowLoading]);
 
-  if (isSeasonLoading || isShowLoading) return <LinearProgress />;
+  if (isSeasonLoading || isShowLoading || !tvShowSeasonData)
+    return <CircularProgress />;
 
   const {
     id: seriesId,
     poster_path,
     overview,
     seasons,
-    episode_run_time,
     genres,
+    logo,
     vote_average,
     first_air_date,
     recommendations,
@@ -135,6 +151,112 @@ function SeasonCount() {
       return playerId;
     });
   };
+
+  const ClickablePills = ({
+    items,
+    type,
+  }: {
+    items: string[];
+    type: "genre" | "actor";
+  }) => {
+    const router = useRouter();
+
+    const handleSearch = (value: string) => {
+      const queryParam =
+        type === "genre"
+          ? `genre=${encodeURIComponent(value)}`
+          : `actor=${encodeURIComponent(value)}`;
+
+      router.push(`/movies?${queryParam}`);
+    };
+
+    return (
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+        {items.map((item) => (
+          <Button
+            key={item}
+            variant="outlined"
+            color="secondary"
+            size="large"
+            onClick={() => handleSearch(item)}
+            sx={{
+              borderRadius: "20px",
+              textTransform: "capitalize",
+              "&:hover": { backgroundColor: "secondary.main", color: "white" },
+            }}
+          >
+            {item}
+          </Button>
+        ))}
+      </Box>
+    );
+  };
+
+  const DetailRow = ({
+    label,
+    value,
+    type,
+  }: {
+    label: string;
+    value: string | string[];
+    type?: "pills";
+  }) => (
+    <Box sx={{ mb: 2 }}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 400,
+          color: "text.primary",
+          mb: 1,
+        }}
+      >
+        {label}
+      </Typography>
+
+      {type === "pills" ? (
+        Array.isArray(value) ? (
+          <ClickablePills
+            items={value}
+            type={label.toLowerCase().includes("genre") ? "genre" : "actor"}
+          />
+        ) : null
+      ) : (
+        <Typography
+          variant="body1"
+          sx={{
+            fontWeight: 600,
+            fontSize: "1rem",
+            color: "secondary.main",
+          }}
+        >
+          {value || "N/A"}
+        </Typography>
+      )}
+    </Box>
+  );
+  const renderWatchlistButton = () =>
+    watchlistExists ? (
+      <LoadingButton
+        loading={isLoadingRemove}
+        variant="outlined"
+        color="error"
+        fullWidth
+        onClick={handleRemoveWatchlist}
+      >
+        Remove from Watchlist
+      </LoadingButton>
+    ) : (
+      <LoadingButton
+        loading={isLoadingPost}
+        variant="outlined"
+        color="secondary"
+        fullWidth
+        onClick={handleAddToWatchlist}
+      >
+        Add to Watchlist
+      </LoadingButton>
+    );
+
   const handleAddToWatchlist = async () => {
     try {
       if (isNotLogged) {
@@ -151,7 +273,7 @@ function SeasonCount() {
       const data = await addWatchlist({
         token: sessionData?.user.authToken ?? "",
         tmdb_id: seriesId,
-        media_type: "movie",
+        media_type: "tv",
         media_name: title,
         release_date: first_air_date,
         poster_path: poster_path,
@@ -182,19 +304,51 @@ function SeasonCount() {
         title={`Watching season ${seasoncount} episode ${ep} of ${showTitle}`}
         media_type="tv"
       />
+      <Breadcrumbs
+        aria-label="navigation"
+        sx={{ mx: 4, mt: 10, color: "#999" }}
+      >
+        <Link href="/" passHref>
+          <Typography
+            sx={{ ":hover": { textDecoration: "underline" } }}
+            component="span"
+            color="inherit"
+          >
+            Home
+          </Typography>
+        </Link>
+        <Link href="/movie" passHref>
+          <Typography
+            sx={{ ":hover": { textDecoration: "underline" } }}
+            component="span"
+            color="inherit"
+          >
+            Series
+          </Typography>
+        </Link>
+        <Typography
+          component="span"
+          color="text.primary"
+          sx={{ textTransform: "capitalize" }}
+        >
+          {typeof name === "string"
+            ? name.replace(/-/g, " ").replace(/_/g, " ")
+            : "Loading..."}
+        </Typography>
+      </Breadcrumbs>
       <Grid container direction="column">
         <Grid item sx={classes.watchHead}>
           <Typography sx={{ textTransform: "capitalize", paddingLeft: "10px" }}>
-            Watching season {seasoncount} episode {ep} of{" "}
-            {typeof name === "string" && name?.replaceAll("-", " ")}
+            Watching {typeof name === "string" && name?.replaceAll("-", " ")}
           </Typography>
         </Grid>
-
-        <FormControl fullWidth sx={classes.playermenu}>
+        <Grid item sx={{ width: "100%", display: "flex" }}>
+          {/* Player Menu */}
           <Select
             labelId="select-player-label"
             id="select-player"
             value={player}
+            sx={classes.playermenu}
             onChange={(e) => {
               const selectedPlayer = Number(e.target.value) as
                 | 1
@@ -210,14 +364,23 @@ function SeasonCount() {
             MenuProps={{
               PaperProps: {
                 sx: {
-                  backgroundColor: "transparent", // Make the background transparent
-                  borderRadius: "20px",
-                  boxShadow: "none", // Optional: removes the dropdown shadow if you don't need it
+                  backgroundColor: "#222", // Make the background transparent
+                  borderRadius: "30px",
                 },
               },
             }}
           >
-            {[1, 2, 3, 4, 5, 6, 7].map((playerId) => (
+            {/* Recommended Players Section */}
+            <ListSubheader sx={{ color: "#FFD700", backgroundColor: "#222" }}>
+              Recommended
+              <Box
+                sx={{
+                  borderTop: "1px solid white", // Vertical line style
+                  opacity: 0.4,
+                }}
+              />
+            </ListSubheader>
+            {[1, 2, 4, 7].map((playerId) => (
               <MenuItem
                 key={playerId}
                 value={playerId}
@@ -235,403 +398,439 @@ function SeasonCount() {
                   },
                 }}
               >
-                Server {playerId}
+                {serverNames[playerId]}
+                {/* Star icon for recommended players */}
+              </MenuItem>
+            ))}
+
+            {/* Ads Players Section */}
+            <ListSubheader sx={{ color: "#B0B0B0", backgroundColor: "#222" }}>
+              Backups
+              <Box
+                sx={{
+                  borderTop: "1px solid white", // Vertical line style
+                  opacity: 0.4,
+                }}
+              />
+            </ListSubheader>
+            {[3, 5, 6].map((playerId) => (
+              <MenuItem
+                key={playerId}
+                value={playerId}
+                sx={{
+                  backgroundColor: player === playerId ? "secondary" : "#222", // Custom color for active/inactive state
+                  "&:hover": {
+                    backgroundColor: player === playerId ? "secondary" : "#444", // Custom hover color
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#EA738D", // Set selected background color
+                  },
+                  // Ensure the selected state does not conflict with hover
+                  "&:hover.Mui-selected": {
+                    backgroundColor: "#EA738D", // Set selected background color on hover
+                  },
+                }}
+              >
+                {serverNames[playerId]}
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
-        <ButtonGroup
-          variant="contained"
-          aria-label="Media player list"
-          sx={classes.btnGroup}
-        >
-          <Button
-            sx={{
-              borderRadius: "30px",
-              backgroundColor: player === 1 ? "secondary" : "#222", // Custom color for active/inactive state
-              "&:hover": {
-                backgroundColor: player === 1 ? "secondary" : "#444", // Custom hover color
-              },
-            }}
-            color={player === 1 ? "secondary" : "primary"}
-            onClick={() => changePlayer(1)}
-          >
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
-              <p>Server 1</p>
-            </span>
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: player === 2 ? "secondary" : "#222", // Custom color for active/inactive state
-              "&:hover": {
-                backgroundColor: player === 2 ? "secondary" : "#444", // Custom hover color
-              },
-            }}
-            color={player === 2 ? "secondary" : "primary"}
-            onClick={() => changePlayer(2)}
-          >
-            Server 2
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: player === 3 ? "secondary" : "#222", // Custom color for active/inactive state
-              "&:hover": {
-                backgroundColor: player === 3 ? "secondary" : "#444", // Custom hover color
-              },
-            }}
-            color={player === 3 ? "secondary" : "primary"}
-            onClick={() => changePlayer(3)}
-          >
-            Server 3
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: player === 4 ? "secondary" : "#222", // Custom color for active/inactive state
-              "&:hover": {
-                backgroundColor: player === 4 ? "secondary" : "#444", // Custom hover color
-              },
-            }}
-            color={player === 4 ? "secondary" : "primary"}
-            onClick={() => changePlayer(4)}
-          >
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
-              <p>Server 4</p>
-            </span>
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: player === 5 ? "secondary" : "#222", // Custom color for active/inactive state
-              "&:hover": {
-                backgroundColor: player === 5 ? "secondary" : "#444", // Custom hover color
-              },
-            }}
-            color={player === 5 ? "secondary" : "primary"}
-            onClick={() => changePlayer(5)}
-          >
-            Server 5
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: player === 6 ? "secondary" : "#222", // Custom color for active/inactive state
-              "&:hover": {
-                backgroundColor: player === 6 ? "secondary" : "#444", // Custom hover color
-              },
-            }}
-            color={player === 6 ? "secondary" : "primary"}
-            onClick={() => changePlayer(6)}
-          >
-            Server 6
-          </Button>
-          <Button
-            sx={{
-              borderRadius: "30px",
-              backgroundColor: player === 7 ? "secondary" : "#222", // Custom color for active/inactive state
-              "&:hover": {
-                backgroundColor: player === 7 ? "secondary" : "#444", // Custom hover color
-              },
-            }}
-            color={player === 7 ? "secondary" : "primary"}
-            onClick={() => changePlayer(7)}
-          >
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <StarIcon sx={{ color: "#FFD700", marginRight: 1 }} />
-              <p>Server 7</p>
-            </span>
-          </Button>
-        </ButtonGroup>
-        <Grid sx={classes.moviePlayer}>
-          <Grid
-            container
-            item
-            xs={12}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
-          >
-            <Grid item sx={classes.moviePlayer}>
-              {player === 1 && (
-                <iframe
-                  allowFullScreen
-                  id="watch-iframe1"
-                  src={`${process.env.NEXT_PUBLIC_Player_URL_VS}/tv/${id}/${
-                    seasoncount ? seasoncount : 1
-                  }/${ep}`}
-                ></iframe>
-              )}
-
-              {player === 2 && (
-                <iframe
-                  allowFullScreen
-                  id="watch-iframe2"
-                  src={`${
-                    process.env.NEXT_PUBLIC_Player_URL_SE
-                  }video_id=${id}&tmdb=1&s=${
-                    seasoncount ? seasoncount : 1
-                  }&e=${ep}`}
-                ></iframe>
-              )}
-
-              {player === 3 && (
-                <iframe
-                  allowFullScreen
-                  id="watch-iframe3"
-                  src={`${process.env.NEXT_PUBLIC_Player_URL_EM}tv/${id}/${
-                    seasoncount ? seasoncount : 1
-                  }/${ep}`}
-                ></iframe>
-              )}
-
-              {player === 4 && (
-                <iframe
-                  allowFullScreen
-                  id="watch-iframe4"
-                  src={`${process.env.NEXT_PUBLIC_Player_URL_VL}tv/${id}/${
-                    seasoncount ? seasoncount : 1
-                  }/${ep}`}
-                ></iframe>
-              )}
-
-              {player === 5 && (
-                <iframe
-                  allowFullScreen
-                  id="watch-iframe5"
-                  src={`${
-                    process.env.NEXT_PUBLIC_Player_URL_SEVIP
-                  }video_id=${id}&tmdb=1&s=${
-                    seasoncount ? seasoncount : 1
-                  }&e=${ep}`}
-                ></iframe>
-              )}
-              {player === 6 && (
-                <iframe
-                  allowFullScreen
-                  id="watch-iframe6"
-                  src={`${
-                    process.env.NEXT_PUBLIC_Player_URL_EMSTR
-                  }/?id=${id}&s=${seasoncount ? seasoncount : 1}&e=${ep}`}
-                ></iframe>
-              )}
-              {player === 7 && (
-                <iframe
-                  allowFullScreen
-                  id="watch-iframe6"
-                  src={`${process.env.NEXT_PUBLIC_Player_URL_AUTOEM}/tv/${id}/${
-                    seasoncount ? seasoncount : 1
-                  }/${ep}`}
-                ></iframe>
-              )}
-            </Grid>
-          </Grid>
         </Grid>
-        <Grid item xs={12} sx={{ padding: "80px" }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box sx={classes.imageBox}>
+        <Grid item sx={classes.moviePlayer}>
+          <div className="aspect-ratio-box">
+            {player === 1 && (
+              <iframe
+                allowFullScreen
+                id="watch-iframe3"
+                src={`${process.env.NEXT_PUBLIC_PLAYER_URL_EM}tv/${id}/${
+                  seasoncount ? seasoncount : 1
+                }/${ep}`}
+              ></iframe>
+            )}
+            {player === 2 && (
+              <iframe
+                allowFullScreen
+                id="watch-iframe1"
+                src={`${process.env.NEXT_PUBLIC_PLAYER_URL_VS}/tv/${id}/${
+                  seasoncount ? seasoncount : 1
+                }/${ep}`}
+              ></iframe>
+            )}
+
+            {player === 3 && (
+              <iframe
+                allowFullScreen
+                id="watch-iframe2"
+                src={`${
+                  process.env.NEXT_PUBLIC_PLAYER_URL_SE
+                }video_id=${id}&tmdb=1&s=${
+                  seasoncount ? seasoncount : 1
+                }&e=${ep}`}
+              ></iframe>
+            )}
+
+            {player === 4 && (
+              <iframe
+                allowFullScreen
+                id="watch-iframe4"
+                src={`${process.env.NEXT_PUBLIC_PLAYER_URL_VL}/tv/${id}/${
+                  seasoncount ? seasoncount : 1
+                }/${ep}`}
+              ></iframe>
+            )}
+
+            {player === 5 && (
+              <iframe
+                allowFullScreen
+                id="watch-iframe5"
+                src={`${
+                  process.env.NEXT_PUBLIC_PLAYER_URL_SEVIP
+                }video_id=${id}&tmdb=1&s=${
+                  seasoncount ? seasoncount : 1
+                }&e=${ep}`}
+              ></iframe>
+            )}
+            {player === 6 && (
+              <iframe
+                allowFullScreen
+                id="watch-iframe6"
+                src={`${process.env.NEXT_PUBLIC_PLAYER_URL_EMSTR}/?id=${id}&s=${
+                  seasoncount ? seasoncount : 1
+                }&e=${ep}`}
+              ></iframe>
+            )}
+            {player === 7 && (
+              <iframe
+                allowFullScreen
+                id="watch-iframe7"
+                src={`${process.env.NEXT_PUBLIC_PLAYER_URL_AUTOEM}/tv/${id}/${
+                  seasoncount ? seasoncount : 1
+                }/${ep}`}
+              ></iframe>
+            )}
+          </div>
+        </Grid>
+        <Grid
+          container
+          spacing={4}
+          sx={{ p: { xs: "0 20px 0 20px", md: "0 100px 0 100px" } }}
+        >
+          {/* Poster Column - Left side on desktop */}
+          <Grid item md={4} sx={{ display: { xs: "none", md: "block" } }}>
+            <Box
+              sx={{
+                position: "relative",
+                width: "100%",
+                maxWidth: "780px",
+                height: "auto",
+                border: 2,
+                color: "#EA738D",
+                borderRadius: "20px",
+                overflow: "hidden",
+                mb: 2,
+              }}
+            >
               <LazyLoadImage
                 src={`https://image.tmdb.org/t/p/w780${poster_path}`}
-                style={{
-                  objectFit: "cover",
-                  width: "300px",
-                  height: "100%",
-                  borderRadius: "8px",
-                  marginRight: "20px",
-                }}
+                style={{ width: "100%", height: "auto" }}
                 effect="blur"
                 alt={title}
               />
             </Box>
-            <Box>
-              <Typography sx={classes.title}>{showTitle}</Typography>
-              <Typography variant="body1" sx={{ marginTop: "10px" }}>
+
+            {/* Desktop Watchlist Button */}
+            <Box
+              sx={{ display: { xs: "none", md: "block" }, maxWidth: "780px" }}
+            >
+              {renderWatchlistButton()}
+            </Box>
+          </Grid>
+
+          {/* Details Column - Right side on desktop */}
+          <Grid item xs={12} md={8}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                gap: 3,
+              }}
+            >
+              {/* Title */}
+              {logo ? (
+                <Box
+                  sx={{
+                    height: "100%",
+                    width: "70%",
+                    position: "relative",
+                    mx: "auto",
+                  }}
+                >
+                  <LazyLoadImage
+                    src={formatImgSrc(
+                      "https://image.tmdb.org/t/p/original",
+                      logo
+                    )}
+                    alt={`${name} logo`}
+                    width="100%"
+                    height="100%"
+                    style={{ objectFit: "contain" }}
+                  />
+                </Box>
+              ) : (
+                <Typography variant="h3" sx={classes.title}>
+                  {showTitle}
+                </Typography>
+              )}
+
+              {/* Details Grid - Two columns on desktop */}
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  {/* Genres as pills */}
+                  <DetailRow
+                    label="Genres"
+                    value={genres.map((g) => g.name)}
+                    type="pills"
+                  />
+
+                  {/* Regular text details */}
+                  <DetailRow label="Release Date" value={first_air_date} />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  {/* Cast as pills */}
+                  <DetailRow
+                    label="Cast"
+                    value={cast.slice(0, 6).map((a) => a.name)}
+                    type="pills"
+                  />
+
+                  {/* Regular text details */}
+                  <DetailRow
+                    label="TMDB Score"
+                    value={rounded(vote_average).toString()}
+                  />
+                  <DetailRow
+                    label="Languages"
+                    value={spoken_languages
+                      .map((l) => l.english_name)
+                      .join(", ")}
+                  />
+                </Grid>
+              </Grid>
+
+              {/* Overview */}
+              <Typography variant="h5">Summary</Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: { xs: "1rem", md: "1.1rem" },
+                  lineHeight: 1.6,
+                  fontWeight: 500,
+                  color: "#EA738D",
+                }}
+              >
                 {overview}
               </Typography>
 
-              {/* Movie Details Grid */}
-              <Grid container spacing={2} sx={classes.detailGrid}>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                    Genres:
-                  </Typography>
-                  <Typography variant="body2">
-                    {genres?.map((genre, index) => (
-                      <React.Fragment key={genre.id}>
-                        {genre.name}
-                        {index < genres.length - 1 && ", "}
-                      </React.Fragment>
-                    ))}
-                  </Typography>
-                </Grid>
+              {/* Mobile Buttons */}
+              <Box
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                  flexDirection: "column",
+                  gap: 2,
+                  mt: "auto",
+                }}
+              >
+                <Link href={`/movie/${id}/${name}`}>
+                  <Button variant="outlined" color="secondary" fullWidth>
+                    More Details
+                  </Button>
+                </Link>
+                {renderWatchlistButton()}
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+        <Box sx={{ p: { xs: 2, md: 4 } }}>
+          {/* Season Navigation */}
+          <Box sx={classes.seasonNav}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{ borderRadius: "20px" }}
+              disabled={Number(seasoncount) <= 1}
+              onClick={() =>
+                router.replace(
+                  {
+                    pathname: `/tv/${id}/${name}/season/${
+                      Number(seasoncount) - 1
+                    }`,
+                    query: { e: 1 },
+                  },
+                  undefined,
+                  { shallow: true }
+                )
+              }
+            >
+              Previous
+            </Button>
 
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                    Languages:
-                  </Typography>
-                  <Typography variant="body2">
-                    {spoken_languages?.map((lang, index) => (
-                      <React.Fragment key={lang.english_name}>
-                        {lang.english_name}
-                        {index < spoken_languages.length - 1 && ", "}
-                      </React.Fragment>
-                    ))}
-                  </Typography>
-                </Grid>
+            <FormControl sx={{ minWidth: 160 }}>
+              <Select
+                sx={{
+                  background: "#444",
+                  border: 2,
+                  borderRadius: "30px",
+                  color: "secondary.main",
+                }}
+                value={seasoncount || 1}
+                onChange={(e) => {
+                  const newSeason = e.target.value;
+                  router.replace(
+                    {
+                      pathname: `/tv/${id}/${name}/season/${newSeason}`,
+                      query: { e: 1 },
+                    },
+                    undefined,
+                    { shallow: true }
+                  );
+                }}
+              >
+                {seasons?.map((season) => (
+                  <MenuItem
+                    key={season.season_number}
+                    value={season.season_number}
+                  >
+                    {season.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                    Release Date:
-                  </Typography>
-                  <Typography variant="body2">{first_air_date}</Typography>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                    IMDb Score:
-                  </Typography>
-                  <Typography variant="body2">
-                    {rounded(vote_average)}
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                    Cast:
-                  </Typography>
-                  <Typography variant="body2">
-                    {cast?.slice(0, 6).map((actor, index) => (
-                      <React.Fragment key={actor.name}>
-                        {actor.name}
-                        {index < Math.min(cast.length, 6) - 1 && ", "}
-                      </React.Fragment>
-                    ))}
-                    {cast?.length > 6 && " ..."}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Link href={`/tv/${id}/${name}`}>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  sx={{ width: "200px" }}
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{ borderRadius: "20px" }}
+              disabled={Number(seasoncount) >= seasons?.length}
+              onClick={() =>
+                router.replace(
+                  {
+                    pathname: `/tv/${id}/${name}/season/${
+                      Number(seasoncount) + 1
+                    }`,
+                    query: { e: 1 },
+                  },
+                  undefined,
+                  { shallow: true }
+                )
+              }
+            >
+              Next
+            </Button>
+          </Box>
+          <Box sx={classes.episodeScrollContainer}>
+            <Box sx={classes.episodeGrid}>
+              {tvShowSeasonData?.episodes?.map((episode) => (
+                <Card
+                  key={episode.episode_number}
+                  sx={{
+                    ...classes.episodeCard,
+                    borderLeft:
+                      ep === episode.episode_number ? "4px solid" : "none",
+                    borderColor: "secondary.main",
+                  }}
+                  onClick={() => {
+                    router.replace(
+                      {
+                        pathname: router.asPath.split("?")[0],
+                        query: { e: episode.episode_number, p: player },
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
+                    setEp(episode.episode_number);
+                  }}
                 >
-                  More details
-                </Button>
-              </Link>
+                  <Box sx={classes.imageContainer}>
+                    <LazyLoadImage
+                      src={
+                        episode.still_path
+                          ? `https://image.tmdb.org/t/p/w400${episode.still_path}`
+                          : "../../assets/img-na.png"
+                      }
+                      alt={episode.name}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        backgroundColor: "#222",
+                      }}
+                      effect="blur"
+                      onError={(
+                        e: React.SyntheticEvent<HTMLImageElement, Event>
+                      ) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "../../assets/img-na.png";
+                      }}
+                    />
+
+                    <Box sx={classes.gradientOverlay}>
+                      <Typography variant="h6" color="common.white">
+                        Episode {episode.episode_number}
+                      </Typography>
+                      <Typography
+                        variant="subtitle2"
+                        color="common.white"
+                        sx={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {episode.name}
+                      </Typography>
+                    </Box>
+
+                    {ep === episode.episode_number && (
+                      <StarIcon
+                        sx={{
+                          position: "absolute",
+                          top: 8,
+                          right: 8,
+                          color: "secondary.main",
+                          fontSize: "2rem",
+                        }}
+                      />
+                    )}
+                  </Box>
+
+                  <CardContent sx={{ p: 2 }}>
+                    <Typography variant="caption" color="text.secondary">
+                      Aired {new Date(episode.air_date).toLocaleDateString()}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        mt: 1,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {episode.overview || "No description available"}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
             </Box>
           </Box>
-          <Box sx={{ marginTop: "20px" }}>
-            {watchlistExists ? (
-              <LoadingButton
-                loading={isLoadingRemove}
-                variant="outlined"
-                color="error"
-                sx={classes.watchlistBtn}
-                onClick={handleRemoveWatchlist}
-              >
-                Remove from watchlist
-              </LoadingButton>
-            ) : (
-              <LoadingButton
-                loading={isLoadingPost}
-                variant="outlined"
-                color="secondary"
-                sx={classes.watchlistBtn}
-                onClick={handleAddToWatchlist}
-              >
-                Add to watchlist
-              </LoadingButton>
-            )}
-          </Box>
-        </Grid>
-        <Grid sx={{ padding: "10px" }}>
-          <SeasonRoll
-            seasonList={seasons}
-            showId={seriesId}
-            showName={showTitle}
-          />
-        </Grid>
-        <Grid item xs={2.5} sx={{ padding: "10px" }}>
-          <Box>
-            <Typography variant="h5" sx={{ mb: "10px" }}>
-              Episodes
-            </Typography>
-            <Grid container spacing={2}>
-              {tvShowSeasonData?.episodes?.map(({ episode_number, name }) => (
-                <Grid item xs={12} sm={6} md={4} key={episode_number}>
-                  <Card
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        ep === episode_number ? "#EA738D" : "#222",
-                      color: ep === episode_number ? "#000" : "#fff",
-                      "&:hover": {
-                        backgroundColor:
-                          ep === episode_number
-                            ? "#EA738D"
-                            : "rgba(255, 255, 255, 0.31)",
-                      },
-                      borderRadius: "8px",
-                      boxShadow: 3,
-                    }}
-                    onClick={() => {
-                      setEp((prevEp) => {
-                        if (prevEp === episode_number) return prevEp;
-
-                        router.replace(
-                          {
-                            pathname: router.asPath.split("?")[0],
-                            query: { e: episode_number, p: player },
-                          },
-                          undefined,
-                          {
-                            shallow: true,
-                          }
-                        );
-
-                        return episode_number;
-                      });
-                    }}
-                  >
-                    {/* <CardMedia
-                      component="img"
-                      height="120"
-                      image={backdrop_path || "/path/to/default/image.jpg"} // Use a default image if no image is available
-                      alt={`Episode ${episode_number}`}
-                    /> */}
-                    <CardContent
-                      sx={{ display: "flex", alignItems: "center", gap: 2 }}
-                    >
-                      <PlayArrow sx={{ color: "text.primary" }} />
-                      <Typography variant="h6" color="text.primary">
-                        {`Episode ${episode_number}`}
-                      </Typography>
-                      <Typography variant="body1" color="text.primary">
-                        {name || "No title available."}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </Grid>
-
+        </Box>
         <Grid container justifyContent={"center"} sx={{ marginTop: "40px" }}>
           <DisqusComments
             identifier={`${id}-season-${seasoncount}-ep${ep}`} // Use the unique identifier

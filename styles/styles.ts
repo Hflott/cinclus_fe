@@ -7,12 +7,12 @@ export const styles = {
   },
   headTxt: { fontSize: 26, mb: 1 },
   moviesContainer: {
-    // Remove grid-specific styles since we're using MUI Grid
-    padding: "16px", // Add padding to the grid container
+    // Remove Grid-specific styles since we're using MUI Grid
+    padding: "16px", // Add padding to the Grid container
   },
   loadBtn: { width: "100%" },
   emptyList: {
-    display: "grid",
+    display: "Grid",
     justifyItems: "center",
     textAlign: "center",
     gap: "30px",

@@ -55,7 +55,7 @@ export const styles = {
     background: "red",
     color: "text.primary",
     fontSize: "14px",
-    display: "grid",
+    display: "Grid",
     placeContent: "center",
   },
   seasonNames: {

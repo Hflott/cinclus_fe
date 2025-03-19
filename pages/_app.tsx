@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material";
 
@@ -32,9 +28,16 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   );
 
   useEffect(() => {
-    const handleRouteChange = (url: URL) => {
-      gtag.pageview(url);
+    const handleRouteChange = (url: string) => {
+      let pageUrl: URL;
+      try {
+        pageUrl = new URL(url, window.location.origin); // Parse string to URL
+      } catch {
+        pageUrl = new URL(window.location.href); // Fallback to current URL
+      }
+      gtag.pageview(pageUrl);
     };
+
     router.events.on("routeChangeComplete", handleRouteChange);
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
@@ -44,15 +47,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Provider store={store}>
-            <ThemeProvider theme={theme}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </ThemeProvider>
-          </Provider>
-        </Hydrate>
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </Provider>
       </QueryClientProvider>
     </SessionProvider>
   );

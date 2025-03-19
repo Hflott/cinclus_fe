@@ -10,10 +10,9 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  Button,
   IconButton,
+  Button,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import Lock from "@mui/icons-material/Lock";
@@ -32,6 +31,7 @@ import { signupRequest } from "../../apis/auth.api";
 import AvatarSelector from "../../components/AvatarSelector/AvatarSelector";
 import { useCustomRedirect } from "../../hooks/app.hooks";
 import { useRouter } from "next/router";
+import { LoadingButton } from "@mui/lab";
 
 interface IFormValues {
   name: string;
@@ -151,7 +151,7 @@ const Signup = () => {
             <LazyLoadImage
               effect="blur"
               src="icon.svg"
-              alt="MonkeyFlix logo"
+              alt="StreamSlice logo"
               style={classes.logo}
             />
           </Grid>

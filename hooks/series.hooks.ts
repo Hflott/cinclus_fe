@@ -8,8 +8,7 @@ import {
   getTopSeries,
   getSeriesTop,
 } from "../apis/series.api";
-
-import { IConutry } from "../utils/filterUtils";
+import { ICountry } from "../utils/filterUtils";
 
 export enum SeriesQueryKey {
   SeriesData = "SeriesData",
@@ -21,74 +20,79 @@ export enum SeriesQueryKey {
 }
 
 export const useSeries = () => {
-  return useQuery([SeriesQueryKey.SeriesData], getSeries);
+  return useQuery({
+    queryKey: [SeriesQueryKey.SeriesData],
+    queryFn: getSeries,
+  });
 };
+
 export const useSeriesPopular = () => {
-  return useQuery([SeriesQueryKey.TopSeries], getSeriesTop);
+  return useQuery({
+    queryKey: [SeriesQueryKey.TopSeries],
+    queryFn: getSeriesTop,
+  });
 };
 
 export const useSeriesById = (seriesId?: string | string[]) => {
-  return useQuery([SeriesQueryKey.SingleShowData, seriesId], () =>
-    getSeriesById(seriesId)
-  );
+  return useQuery({
+    queryKey: [SeriesQueryKey.SingleShowData, seriesId],
+    queryFn: () => getSeriesById(seriesId),
+    enabled: !!seriesId, // Only fetch when seriesId exists
+  });
 };
 
 export const useSeriesSeasonById = (
   seriesId: string | string[] | undefined,
   seasonCount: string | string[] | undefined
 ) => {
-  return useQuery([SeriesQueryKey.TvShowSeasonData, seriesId], () =>
-    getSeriesSeasonById(seriesId, seasonCount)
-  );
+  return useQuery({
+    queryKey: [SeriesQueryKey.TvShowSeasonData, seriesId, seasonCount],
+    queryFn: () => getSeriesSeasonById(seriesId, seasonCount),
+    enabled: !!seriesId && !!seasonCount, // Only fetch when both IDs exist
+  });
 };
 
 export const usePopularSeries = (
   releaseYear?: number | "",
-  country?: IConutry
+  country?: ICountry
 ) => {
-  return useInfiniteQuery(
-    [SeriesQueryKey.PopularSeries, country, releaseYear],
-    ({ pageParam = 1 }) => getPopularSeries(pageParam),
-    {
-      getNextPageParam: ({ page, total_pages }) => {
-        return page < total_pages ? page + 1 : undefined;
-      },
-      select: (data) => {
-        return data;
-      },
-    }
-  );
+  return useInfiniteQuery({
+    queryKey: [SeriesQueryKey.PopularSeries, country, releaseYear],
+    queryFn: getPopularSeries,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return lastPage.page < lastPage.total_pages
+        ? lastPage.page + 1
+        : undefined;
+    },
+  });
 };
 
 export const useRecentSeries = (
   releaseYear?: number | "",
-  country?: IConutry
+  country?: ICountry
 ) => {
-  return useInfiniteQuery(
-    [SeriesQueryKey.RecentSeries, country, releaseYear],
-    ({ pageParam = 1 }) => getRecentSeries(pageParam),
-    {
-      getNextPageParam: ({ page, total_pages }) => {
-        return page < total_pages ? page + 1 : undefined;
-      },
-      select: (data) => {
-        return data;
-      },
-    }
-  );
+  return useInfiniteQuery({
+    queryKey: [SeriesQueryKey.RecentSeries, country, releaseYear],
+    queryFn: getRecentSeries,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return lastPage.page < lastPage.total_pages
+        ? lastPage.page + 1
+        : undefined;
+    },
+  });
 };
 
-export const useTopSeries = (releaseYear?: number | "", country?: IConutry) => {
-  return useInfiniteQuery(
-    [SeriesQueryKey.TopSeries, country, releaseYear],
-    ({ pageParam = 1 }) => getTopSeries(pageParam),
-    {
-      getNextPageParam: ({ page, total_pages }) => {
-        return page < total_pages ? page + 1 : undefined;
-      },
-      select: (data) => {
-        return data;
-      },
-    }
-  );
+export const useTopSeries = (releaseYear?: number | "", country?: ICountry) => {
+  return useInfiniteQuery({
+    queryKey: [SeriesQueryKey.TopSeries, country, releaseYear],
+    queryFn: getTopSeries,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return lastPage.page < lastPage.total_pages
+        ? lastPage.page + 1
+        : undefined;
+    },
+  });
 };

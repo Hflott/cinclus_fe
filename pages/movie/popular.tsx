@@ -7,12 +7,12 @@ import { styles as classes } from "../../styles/styles";
 import Loader from "../../components/Loader/Loader";
 import { usePopularMovies } from "../../hooks/movies.hooks";
 import CustomHead from "../../components/CustomHead/CustomHead";
-import { IConutry } from "../../utils/filterUtils";
+import { ICountry } from "../../utils/filterUtils";
 import Filter from "../../components/Filter/Filter";
 import { useInView } from "react-intersection-observer";
 
 function Popular() {
-  const [country, setCountry] = useState<IConutry | undefined>();
+  const [country, setCountry] = useState<ICountry | undefined>();
   const [releaseYear, setReleaseYear] = useState<number | "">("");
 
   const {
@@ -62,11 +62,11 @@ function Popular() {
                   <Grid
                     item
                     key={movie.id}
-                    xs={6} // 2 columns on extra small screens
-                    sm={4} // 3 columns on small screens
-                    md={3} // 4 columns on medium screen
-                    lg={3}
-                    xl={3}
+                    xs={4} // 2 columns on extra small screens
+                    sm={3} // 3 columns on small screens
+                    md={2} // 4 columns on medium screen
+                    lg={2}
+                    xl={1}
                   >
                     <Poster singleMovieData={movie} />
                   </Grid>

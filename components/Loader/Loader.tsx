@@ -1,11 +1,11 @@
 import React from "react";
-import LinearProgress from "@mui/material/LinearProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type Props = {};
 
 const Loader = () => {
   return (
-    <LinearProgress
+    <CircularProgress
       sx={{
         position: "fixed",
         top: 0,

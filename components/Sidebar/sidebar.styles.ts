@@ -21,7 +21,7 @@ export const styles = {
   },
   profileBtn: {
     p: "40px",
-    display: "grid",
+    display: "Grid",
     placeContent: "center",
   },
   profileIco: {

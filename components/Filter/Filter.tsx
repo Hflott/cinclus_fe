@@ -8,13 +8,13 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from "@mui/material";
-import { IConutry, countries, getYears } from "../../utils/filterUtils";
+import { ICountry, countries, getYears } from "../../utils/filterUtils";
 
 type FilterProps = {
   releaseYear: number | "";
-  country: IConutry | undefined;
+  country: ICountry | undefined;
   setReleaseYear: React.Dispatch<React.SetStateAction<number | "">>;
-  setCountry: React.Dispatch<React.SetStateAction<IConutry | undefined>>;
+  setCountry: React.Dispatch<React.SetStateAction<ICountry | undefined>>;
 };
 
 const Filter = ({

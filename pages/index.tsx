@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Box, LinearProgress, Typography, useTheme } from "@mui/material";
+import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import styles from "../styles/Home.module.css";
 import { styles as classes } from "../styles/Home.styles";
 import {
@@ -28,14 +28,14 @@ const Home: NextPage<HomeProps> = () => {
 
   return (
     <>
-      <CustomHead title="MonkeyFlix - Home" media_type={"movie"} />
+      <CustomHead title="StreamSlice - Home" media_type={"movie"} />
       <div className={styles.container}>
         {/* Loading Indicator */}
         {(isPopularLoading ||
           isMoviesLoading ||
           isSeriesLoading ||
           isTopMoviesLoading ||
-          isTopSeriesLoading) && <LinearProgress />}
+          isTopSeriesLoading) && <CircularProgress />}
 
         {/* Movie Slider (Main Hero Section) */}
         <Box sx={classes.movieSliderContainer}>
@@ -46,13 +46,11 @@ const Home: NextPage<HomeProps> = () => {
           )}
         </Box>
 
-        {/* Tile Sliders (Overlapping Section) */}
+        {/* Tile Sliders */}
         <Box sx={classes.tileSlidersContainer}>
           {/* Trending Movies */}
           <Box sx={classes.sliderContainer}>
-            <Typography variant="h4" sx={classes.headTxt}>
-              Trending Movies
-            </Typography>
+            <Typography sx={classes.headTxt}>Trending Movies</Typography>
             {isMoviesLoading ? (
               <SkeletonSlider />
             ) : (
@@ -62,9 +60,7 @@ const Home: NextPage<HomeProps> = () => {
 
           {/* Trending Shows */}
           <Box sx={classes.sliderContainer}>
-            <Typography variant="h4" sx={classes.headTxt}>
-              Trending Shows
-            </Typography>
+            <Typography sx={classes.headTxt}>Trending Shows</Typography>
             {isSeriesLoading ? (
               <SkeletonSlider />
             ) : (

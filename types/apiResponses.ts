@@ -81,6 +81,7 @@ export interface SeriesResult {
   adult: boolean;
   backdrop_path: string;
   id: number;
+  logo: string;
   name: string;
   original_language: string;
   original_name: string;
@@ -100,7 +101,10 @@ export interface SeriesResult {
   genres: { name: string; id: number }[];
   status: string;
   spoken_languages: { english_name: string; name: string }[];
-  images: { backdrops: { file_path: string }[] };
+  images: {
+    backdrops: { file_path: string }[];
+    logos?: { file_path: string }[];
+  };
   credits: {
     cast: Cast[];
   };

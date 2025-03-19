@@ -6,7 +6,6 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-
 import { setNotify } from "../redux/notifySlice";
 import {
   addToWatchlist,
@@ -24,62 +23,55 @@ export const useWatchlist = () => {
   const { data: sessionData } = useSession();
   const token = sessionData?.user.authToken;
 
-  return useInfiniteQuery(
-    [WatchlistQueryKey.WatchlistAll],
-    ({ pageParam = 1 }) => getWatchlist(token ?? "", pageParam),
-    {
-      getNextPageParam: ({ page, total_pages }) => {
-        return page < total_pages ? page + 1 : undefined;
-      },
-      select: (data) => {
-        return data;
-      },
-      retry: false,
-      enabled: !!token,
-    }
-  );
+  return useInfiniteQuery({
+    queryKey: [WatchlistQueryKey.WatchlistAll],
+    queryFn: ({ pageParam = 1 }) => getWatchlist(token ?? "", pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
+    retry: false,
+    enabled: !!token,
+  });
 };
 
 export const useWatchlistById = (tmdbId: number | undefined) => {
   const { data: sessionData } = useSession();
   const token = sessionData?.user.authToken;
 
-  return useQuery(
-    [WatchlistQueryKey.WatchlistById, tmdbId],
-    () => getWatchlistById({ token, tmdbId }),
-    {
-      retry: false,
-      enabled: !!token,
-    }
-  );
+  return useQuery({
+    queryKey: [WatchlistQueryKey.WatchlistById, tmdbId],
+    queryFn: () => {
+      if (!tmdbId) throw new Error("Missing TMDB ID");
+      return getWatchlistById({ token: token ?? "", tmdbId });
+    },
+    retry: false,
+    enabled: !!token && !!tmdbId,
+  });
 };
 
 export const useAddToWatchlist = () => {
   const dispatch = useDispatch();
-  const cache = useQueryClient();
+  const queryClient = useQueryClient();
 
-  return useMutation(addToWatchlist, {
+  return useMutation({
+    mutationFn: addToWatchlist,
     onSuccess: (data) => {
-      // Update cache data
-      cache.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [WatchlistQueryKey.WatchlistById],
       });
-
-      cache.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [WatchlistQueryKey.WatchlistAll],
-        exact: true,
       });
 
       dispatch(
         setNotify({
           isOpen: true,
-          message: data.message ?? "Added successfull",
+          message: data.message ?? "Added successfully",
           type: "success",
         })
       );
-      // console.log("Successdata", data);
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       dispatch(
         setNotify({
           isOpen: true,
@@ -87,36 +79,34 @@ export const useAddToWatchlist = () => {
           type: "error",
         })
       );
-      console.log("QueryError", error);
+      console.error("Mutation error:", error);
     },
   });
 };
 
 export const useRemoveFromWatchlist = () => {
   const dispatch = useDispatch();
-  const cache = useQueryClient();
+  const queryClient = useQueryClient();
 
-  return useMutation(removeFromWatchlist, {
+  return useMutation({
+    mutationFn: removeFromWatchlist,
     onSuccess: (data) => {
-      // Update cache data
-      cache.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [WatchlistQueryKey.WatchlistById],
       });
-      cache.resetQueries({
+      queryClient.invalidateQueries({
         queryKey: [WatchlistQueryKey.WatchlistAll],
-        exact: true,
       });
 
       dispatch(
         setNotify({
           isOpen: true,
-          message: data.message ?? "Removed.",
+          message: data.message ?? "Removed successfully",
           type: "success",
         })
       );
-      // console.log("Successdata", data);
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       dispatch(
         setNotify({
           isOpen: true,
@@ -124,7 +114,7 @@ export const useRemoveFromWatchlist = () => {
           type: "error",
         })
       );
-      console.log("QueryError", error);
+      console.error("Mutation error:", error);
     },
   });
 };

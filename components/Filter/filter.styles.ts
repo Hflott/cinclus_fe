@@ -2,8 +2,8 @@ import { colors } from "../../theme";
 
 export const styles = {
   filter: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
+    display: "Grid",
+    GridTemplateColumns: "1fr 1fr",
     gap: "20px",
   },
   selectMain: {

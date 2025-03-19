@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 // import Image from "next/image";
 import { useRouter } from "next/router";
-import { LinearProgress, Grid, Box, Typography, Collapse } from "@mui/material";
+import {
+  CircularProgress,
+  Grid,
+  Box,
+  Typography,
+  Collapse,
+} from "@mui/material";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -27,7 +33,7 @@ function PersonInfo() {
 
   // console.log("singlePersonData: ", singlePersonData);
 
-  if (isLoading) return <LinearProgress />;
+  if (isLoading) return <CircularProgress />;
 
   const {
     profile_path,

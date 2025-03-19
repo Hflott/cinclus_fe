@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
 
 import PersonPoster from "../PersonPoster/PersonPoster";
 import { PeopleResult } from "../../types/apiResponses";
@@ -51,8 +51,8 @@ const TileSlider = ({ title, peopleData }: TileSliderProps) => {
       },
       1200: {
         slidesPerView: 7,
-      }
-    }
+      },
+    },
   };
 
   return (
@@ -62,20 +62,19 @@ const TileSlider = ({ title, peopleData }: TileSliderProps) => {
           {title}
         </Typography>
       )}
-      
+
       <Box className="multi-slider">
-        <Swiper
-          {...sliderOptions}
-          modules={[Autoplay, Navigation]}
-        >
+        <Swiper {...sliderOptions} modules={[Autoplay, Navigation]}>
           {peopleData?.map((singlePersonData, index) => (
-            <SwiperSlide key={index} style={{ display: 'grid', placeContent: 'center' }}>
+            <SwiperSlide
+              key={index}
+              style={{ display: "Grid", placeContent: "center" }}
+            >
               <PersonPoster singlePersonData={singlePersonData} />
             </SwiperSlide>
           ))}
         </Swiper>
       </Box>
-      
     </Container>
   );
 };

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useEffect, useRef } from "react";
-import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
+import { Box, Button, Grid, CircularProgress, Typography } from "@mui/material";
 
 import styles from "../../styles/Home.module.css";
 import { styles as classes } from "../../styles/Home.styles";
@@ -33,7 +33,7 @@ const Tv: NextPage<TvProps> = () => {
         {(isPopularLoading ||
           isSeriesLoading ||
           isRecentLoading ||
-          isTopLoading) && <LinearProgress />}
+          isTopLoading) && <CircularProgress />}
         <Box sx={{ ...classes.sliderContainer, m: "20px 0 60px 0" }}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h4" sx={classes.headTxt}>

@@ -18,7 +18,7 @@ import Loader from "../../components/Loader/Loader";
 import { usePopularMovies, useMovies } from "../../hooks/movies.hooks"; // Use the correct hook
 import { usePopularSeries } from "../../hooks/series.hooks"; // Assuming this exists
 import CustomHead from "../../components/CustomHead/CustomHead";
-import { IConutry } from "../../utils/filterUtils";
+import { ICountry } from "../../utils/filterUtils";
 import Filter from "../../components/Filter/Filter";
 import { useInView } from "react-intersection-observer";
 import { MovieResult, SeriesResult } from "../../types/apiResponses";
@@ -29,7 +29,7 @@ type MediaType = "movie" | "tv" | "all"; // Add "all" to the mediaType options
 
 function Browse() {
   const [mediaType, setMediaType] = useState<MediaType>("all");
-  const [country, setCountry] = useState<IConutry | undefined>();
+  const [country, setCountry] = useState<ICountry | undefined>();
   const [releaseYear, setReleaseYear] = useState<number | "">("");
   const [showFilters, setShowFilters] = useState(false); // State to toggle filter drawer
   const [genre, setGenre] = useState(""); // To store selected genre
@@ -131,7 +131,7 @@ function Browse() {
               <RadioGroup
                 row
                 value={mediaType}
-                onChange={(e) => setMediaType(e.target.value as MediaType)} // Correctly cast to MediaType
+                onChange={(e) => setMediaType(e.target.value as MediaType)}
               >
                 <FormControlLabel
                   value="movie"
@@ -178,7 +178,7 @@ function Browse() {
           </Box>
         </Collapse>
 
-        <Grid container sx={classes.moviesContainer}>
+        <Grid container spacing={2} sx={classes.moviesContainer}>
           {mediaType === "all" // When mediaType is "all", combine both movies and TV shows
             ? [...(popularMovies?.pages || []), ...(popularSeries?.pages || [])] // Combine movies and TV shows
                 .map((page) =>
@@ -186,17 +186,31 @@ function Browse() {
                     if ("release_date" in item) {
                       // It's a MovieResult
                       return (
-                        <Grid item key={item.id}>
-                          <Poster singleMovieData={item as MovieResult} />{" "}
-                          {/* Cast as MovieResult */}
+                        <Grid
+                          item
+                          key={item.id}
+                          xs={4} // 2 columns on extra small screens
+                          sm={3} // 3 columns on small screens
+                          md={2} // 4 columns on medium screen
+                          lg={2}
+                          xl={1}
+                        >
+                          <Poster singleMovieData={item as MovieResult} />
                         </Grid>
                       );
                     } else {
                       // It's a SeriesResult
                       return (
-                        <Grid item key={item.id}>
-                          <TvPoster singleShowData={item as SeriesResult} />{" "}
-                          {/* Cast as SeriesResult */}
+                        <Grid
+                          item
+                          key={item.id}
+                          xs={6} // 2 columns on extra small screens
+                          sm={4} // 3 columns on small screens
+                          md={3} // 4 columns on medium screen
+                          lg={2}
+                          xl={1}
+                        >
+                          <TvPoster singleShowData={item as SeriesResult} />
                         </Grid>
                       );
                     }

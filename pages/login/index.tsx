@@ -28,7 +28,6 @@ import CustomHead from "../../components/CustomHead/CustomHead";
 import { signIn, useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setNotify } from "../../redux/notifySlice";
-import { FiberPin } from "@mui/icons-material";
 
 interface IFormValues {
   email: string;
@@ -122,7 +121,7 @@ const Login = () => {
             <LazyLoadImage
               effect="blur"
               src="/icon.svg"
-              alt="MonkeyFlix Logo"
+              alt="StreamSlice Logo"
               style={classes.logo}
             />
           </Grid>

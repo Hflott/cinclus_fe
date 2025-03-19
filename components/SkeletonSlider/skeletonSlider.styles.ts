@@ -1,25 +1,51 @@
 export const styles = {
   container: {
-    display: "flex",
-    justifyContent: "center",
-    overflow: "hidden",
+    py: 4,
+    px: { xs: 2, sm: 3, md: 4 },
+    maxWidth: {
+      xs: "100%",
+      sm: "720px",
+      md: "1140px",
+      lg: "1366px",
+      xl: "1600px",
+    },
   },
   tile: {
-    flexShrink: 0,
-    padding: "10px 10px",
-    width: 170,
-    "@media (max-width: 900px)": {
-      padding: "10px 3px",
-      width: 114,
+    maxWidth: {
+      xs: "140px",
+      sm: "180px",
+      md: "220px",
+      lg: "280px",
     },
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   image: {
-    height: 223,
-    "@media (max-width: 900px)": {
-      height: 162,
+    maxWidth: {
+      xs: "140px",
+      sm: "180px",
+      md: "220px",
+      lg: "280px",
     },
+    width: "100%",
+    height: 0,
+    paddingBottom: "150%",
+    borderRadius: 2,
+    bgcolor: "grey.900",
+  },
+  textContainer: {
+    px: 0.5,
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   text: {
-    fontSize: "13px",
+    width: "100%",
+    fontSize: "1rem",
+    bgcolor: "grey.800",
   },
 };

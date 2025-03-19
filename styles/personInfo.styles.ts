@@ -46,15 +46,15 @@ export const styles = {
     },
   },
   belowTitle: {
-    display: "grid",
+    display: "Grid",
     gap: "10px",
-    gridTemplateColumns: "auto 1fr",
+    GridTemplateColumns: "auto 1fr",
     fontSize: "13px",
   },
 
   detailLast: {
     flex: "0 1 150px",
-    display: "grid",
+    display: "Grid",
     placeContent: "center",
     padding: "40px 25px",
     background: "rgba(255,255,255, 0.1)",

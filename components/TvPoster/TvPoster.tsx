@@ -1,12 +1,12 @@
 // import Image from "next/image";
 import Link from "next/link";
 import { Box, Typography } from "@mui/material";
-import Image from "next/image";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { styles as classes } from "./tvPoster.styles";
 import { SeriesResult } from "../../types/apiResponses";
 import { formatImgSrc, toUrlFriendly } from "../../utils/utils";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 type TvPosterProps = {
   singleShowData: SeriesResult;
@@ -17,70 +17,58 @@ const TvPoster = ({ singleShowData }: TvPosterProps) => {
   const titleConverted = toUrlFriendly(name);
 
   return (
-    <Box
-      sx={{
-        ...classes.poster,
-        position: "relative",
-        margin: { xs: 1, sm: 1.5, md: 2 },
-        fontSize: "clamp(8px, 1.5vw, 20px)", // Base font-size for scaling
-      }}
-    >
+    <Box sx={classes.poster}>
       <Link
         shallow
         href={`/tv/${id}/${titleConverted}/season/1`}
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
-        {/* Image Container - Size controlled by font-size */}
+        {/* Image Container - Controlled by Grid */}
         <Box
           sx={{
             ...classes.posterUp,
-            width: "14em", // 12 times base font-size
-            height: "auto",
-            aspectRatio: "2/3",
-            margin: "0 auto",
+            width: "100%", // Fill Grid item width
+            aspectRatio: "2/3", // Maintain poster ratio
+            position: "relative",
+            overflow: "hidden",
           }}
         >
           <Box sx={classes.posterImg}>
-            <Image
+            <LazyLoadImage
               src={formatImgSrc(
                 "https://image.tmdb.org/t/p/w220_and_h330_face/",
                 poster_path
               )}
               alt={titleConverted}
-              placeholder="blur"
-              quality={100}
-              blurDataURL={formatImgSrc(
-                "https://image.tmdb.org/t/p/w500",
-                poster_path
-              )}
-              width={220} // Adjust based on actual image size or container constraints
-              height={330} // Adjust accordingly
+              effect="blur"
+              width="100%"
+              height="100%"
               style={{
                 objectFit: "cover",
                 objectPosition: "center",
-                width: "100%",
-                height: "100%",
               }}
-              className="poster-img"
             />
           </Box>
         </Box>
 
-        {/* Text Content - All sizes relative to base font-size */}
+        {/* Text Content - Fixed font sizes */}
         <Box
           sx={{
             ...classes.posterDown,
-            paddingTop: "1em", // Relative to font-size
-            width: "12em", // Match image width
-            margin: "0 auto",
+            paddingTop: 1, // Use theme spacing (8px)
+            width: "100%",
           }}
         >
           <Typography
             variant="subtitle2"
             sx={{
               ...classes.posterTitle,
-              fontSize: { xs: "1.8em", sm: "1.4em", md: "1.2em", lg: "1.05em" },
+              fontSize: "1rem", // Fixed size
               lineHeight: 1.2,
+              overflow: "hidden",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
             }}
             title={name}
           >
@@ -92,12 +80,7 @@ const TvPoster = ({ singleShowData }: TvPosterProps) => {
               variant="subtitle2"
               sx={{
                 ...classes.posterYear,
-                fontSize: {
-                  xs: "1.6em",
-                  sm: "1.3em",
-                  md: "1em",
-                  lg: ".95em",
-                },
+                fontSize: "0.875rem", // Fixed size
                 opacity: 0.8,
               }}
             >

@@ -2,8 +2,9 @@ export const styles = {
   poster: {
     position: "relative",
     color: "secondary.main",
-    width: "100%",
-    height: "auto",
+    height: "100%", // Fill parent container
+    width: "100%", // Fill slide width
+    margin: 0, // Remove external margins
     display: "flex",
     flexDirection: "column",
   },
@@ -17,10 +18,7 @@ export const styles = {
   },
   posterImg: {
     overflow: "hidden",
-    transition: "all 0.2s ease",
-    "&:hover": {
-      transform: "scale(1.05)",
-    },
+    transition: "opacity 0.4s ease, transform 0.2s ease",
   },
   posterDown: {
     textAlign: "left",

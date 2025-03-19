@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 // import Image from "next/image";
 import { useRouter } from "next/router";
-import { Grid, Box, Typography, Button, LinearProgress } from "@mui/material";
+import { Grid, Box, Typography, Button, CircularProgress } from "@mui/material";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { SeriesResult } from "../../../../types/apiResponses";
 import { styles as classes } from "../../../../styles/tvShowInfo.styles";
-import ImgRoll from "../../../../components/ImgRoll/ImgRoll";
-import ClipRoll from "../../../../components/ClipRoll/ClipRoll";
 import CastRoll from "../../../../components/CastRoll/CastRoll";
 import TvTileSlider from "../../../../components/TvTileSlider/TvTileSlider";
 import SeasonRoll from "../../../../components/SeasonRoll/SeasonRoll";
@@ -20,7 +18,6 @@ import {
   toUrlFriendly,
 } from "../../../../utils/utils";
 import CustomHead from "../../../../components/CustomHead/CustomHead";
-import { scrollToTop } from "../../../../hooks/app.hooks";
 import {
   useAddToWatchlist,
   useRemoveFromWatchlist,
@@ -40,9 +37,9 @@ function TvShowInfo() {
   const { data: singleShowData, isLoading } = useSeriesById(router.query.id);
   const [watchlistExists, setWatchlistExists] = useState(false);
 
-  const { mutateAsync: addWatchlist, isLoading: isLoadingPost } =
+  const { mutateAsync: addWatchlist, isPending: isLoadingPost } =
     useAddToWatchlist();
-  const { mutateAsync: removeWatchlist, isLoading: isLoadingRemove } =
+  const { mutateAsync: removeWatchlist, isPending: isLoadingRemove } =
     useRemoveFromWatchlist();
 
   const {
@@ -59,7 +56,7 @@ function TvShowInfo() {
     if (error) setWatchlistExists(false);
   }, [singleShowData?.id, isWatchlistLoad, isFetching, error]);
 
-  if (isLoading) return <LinearProgress />;
+  if (isLoading) return <CircularProgress />;
 
   const {
     id,
