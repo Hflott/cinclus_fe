@@ -33,6 +33,10 @@ const TvTileSlider = ({ title, seriesData }: TvTileSliderProps) => {
     grabCursor: true,
     slidesPerView: "auto",
     spaceBetween: theme.spacing(2),
+    breakpoints: {
+      920: { slidesPerGroup: 5 },
+      1347: { slidesPerGroup: 6 },
+    },
   };
 
   return (

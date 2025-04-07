@@ -72,19 +72,6 @@ const Poster = ({ singleMovieData }: PosterProps) => {
           >
             {title}
           </Typography>
-
-          <Box sx={classes.posterYearMain}>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                ...classes.posterYear,
-                fontSize: "0.875rem", // Fixed size
-                opacity: 0.8,
-              }}
-            >
-              {new Date(release_date).getFullYear()}
-            </Typography>
-          </Box>
         </Box>
       </Link>
     </Box>

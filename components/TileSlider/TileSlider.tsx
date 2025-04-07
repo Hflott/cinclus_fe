@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import {
-  Box,
   Container,
   Typography,
-  useMediaQuery,
+  Box,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { SwiperOptions } from "swiper/types";
@@ -31,12 +31,7 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
 
   const sliderOptions: SwiperOptions = {
     speed: 600,
-    navigation: !isMobile
-      ? {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        }
-      : false,
+    navigation: !isMobile,
     freeMode: true,
     grabCursor: true,
     slidesPerView: "auto",
@@ -99,12 +94,6 @@ const TileSlider = ({ title, movieData }: TileSliderProps) => {
               <Poster singleMovieData={singleMovieData} />
             </SwiperSlide>
           ))}
-          {!isMobile && (
-            <>
-              <div className="swiper-button-prev"></div>
-              <div className="swiper-button-next"></div>
-            </>
-          )}
         </Swiper>
       </Box>
     </Container>

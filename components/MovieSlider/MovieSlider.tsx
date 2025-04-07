@@ -120,7 +120,6 @@ const MovieSlider = ({ movieData = [] }: MovieSliderProps) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    swipe: false,
     speed: 300,
     autoplaySpeed: 8000,
     cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",

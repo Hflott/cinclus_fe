@@ -11,9 +11,10 @@ export const styles = {
   posterUp: {
     overflow: "hidden",
     borderRadius: "12px",
-    outline: "3px solid transparent",
+    transition: "transform 0.3s ease",
     "&:hover": {
       outline: "3px solid white",
+      transform: "translateY(-6px)",
     },
   },
   posterImg: {
@@ -31,15 +32,6 @@ export const styles = {
     textOverflow: "ellipsis",
     fontWeight: 500,
     lineHeight: 1.2,
-  },
-  posterYearMain: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 0.5,
-  },
-  posterYear: {
-    opacity: 0.8,
   },
   posterType: {
     borderRadius: "4px",
